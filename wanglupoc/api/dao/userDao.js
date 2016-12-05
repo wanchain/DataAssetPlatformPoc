@@ -77,7 +77,8 @@ export default {
         console.log("mongodb will find user:" + user.name);
         var qPromise = User.findOne( { name : user.name } ).exec();
         return qPromise.then(quser => {
-            console.log("xxxxxx");
+          console.log("xxxxxx");
+          console.log(quser);
             return new Promise( (resolve, reject) => {
                 quser.comparePassword(user.password, (err, isMatch)=>{
                     if (!err) resolve(isMatch);

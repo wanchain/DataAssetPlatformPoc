@@ -2,12 +2,15 @@ import { combineReducers } from 'redux';
 import multireducer from 'multireducer';
 import { routerReducer } from 'react-router-redux';
 import {reducer as reduxAsyncConnect} from 'redux-async-connect';
+import { pagination } from 'violet-paginator';
 
 import auth from './auth';
 import counter from './counter';
 import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
+import assets from './assets';
+// import assetsManager from './AssetsManagerRedux';
 
 export default combineReducers({
   routing: routerReducer,
@@ -20,5 +23,7 @@ export default combineReducers({
     counter3: counter
   }),
   info,
+  pagination,
+  assets,
   widgets
 });

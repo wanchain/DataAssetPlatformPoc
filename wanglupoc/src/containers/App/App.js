@@ -87,20 +87,32 @@ export default class App extends Component {
               <LinkContainer to="/survey">
                 <NavItem eventKey={3}>Survey</NavItem>
               </LinkContainer>
+              <LinkContainer to="/pagination">
+                <NavItem eventKey={4}>Pagination</NavItem>
+              </LinkContainer>
               <LinkContainer to="/about">
-                <NavItem eventKey={4}>About Us</NavItem>
+                <NavItem eventKey={5}>About Us</NavItem>
               </LinkContainer>
 
               {!user &&
               <LinkContainer to="/login">
-                <NavItem eventKey={5}>Login</NavItem>
+                <NavItem eventKey={6}>Login</NavItem>
               </LinkContainer>}
               {user &&
               <LinkContainer to="/logout">
-                <NavItem eventKey={6} className="logout-link" onClick={this.handleLogout}>
+                <NavItem eventKey={7} className="logout-link" onClick={this.handleLogout}>
                   Logout
                 </NavItem>
               </LinkContainer>}
+              <LinkContainer to="/myrouter">
+                <NavItem eventKey={199}>MyRouter</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/myrouterc">
+                <NavItem eventKey={299}>MyRouterC</NavItem>
+              </LinkContainer>
+              <LinkContainer to="/myroutera">
+                <NavItem eventKey={399}>AssetsManager</NavItem>
+              </LinkContainer>
             </Nav>
             {user &&
             <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.name}</strong>.</p>}

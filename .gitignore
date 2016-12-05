@@ -1,0 +1,10 @@
+# Created by .ignore support plugin (hsz.mobi)
+wanglupoc/node_modules/
+wanglupoc/.idea/
+.idea/
+wanglupoc/static/dist/
+wanglupoc/*.iml
+wanglupoc/webpack-assets.json
+wanglupoc/webpack-stats.json
+wanglupoc/npm-debug.log*
+wanglupoc/*.swp
