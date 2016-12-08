@@ -1,6 +1,7 @@
 /**
  * Created by jishiwu on 12/6/16.
  */
+import AssetsData from '../../containers/AssetsManager/AssetsData';
 
 const ASSETSADD = 'assets/ASSETSADD';
 const ASSETSADD_SUCCESS = 'assets/ASSETSADD_SUCCESS';
@@ -15,8 +16,10 @@ const ASSETSALL = 'assets/ASSETSALL';
 const ASSETSALL_SUCCESS = 'assets/ASSETSALL_SUCCESS';
 const ASSETSALL_FAIL = 'assets/ASSETSALL_FAIL';
 
+const assetsDataTest = new AssetsData();
 const initialState = {
-  items: []
+  items: [],
+  assetsData: assetsDataTest
 };
 
 export default function(state = initialState, action = {}) {
@@ -27,11 +30,17 @@ export default function(state = initialState, action = {}) {
         ...state,
       };
     case ASSETSADD_SUCCESS:
-      console.log('assetsadd: receive success');
-      return {
-        ...state,
-        shouldfetchall: false
-      };
+      {
+        console.log('assetsadd: receive success');
+
+        let assetsData = state.assetsData;
+        assetsData = assetsData.addAssetItem(action.result.data);
+        console.log(assetsData);
+        return {
+          ...state,
+          assetsData: assetsData
+        };
+      }
     case ASSETSADD_FAIL:
       console.log('assetsadd: receive failed');
       return {
@@ -87,11 +96,17 @@ export default function(state = initialState, action = {}) {
         ...state
       };
     case ASSETSALL_SUCCESS:
-      console.log('ASSETSALL_SUCCESS: receive success');
-      return {
-        ...state,
-        items: action.result.data
-      };
+      {
+        console.log('ASSETSALL_SUCCESS: receive success');
+        let assetsData = state.assetsData ? state.assetsData : new AssetsData();
+        console.log(assetsData);
+        assetsData = assetsData.setAll(action.result.data);
+        return {
+          ...state,
+          items: action.result.data,
+          assetsData: assetsData
+        };
+      }
     case ASSETSALL_FAIL:
       console.log('ASSETSALL_FAIL: receive failed');
       return {

@@ -11,12 +11,14 @@ import * as assetsActions from 'redux/modules/assets';
   (state) => ({
     items: state.assets.items,
     error: state.assets.error,
+    assetsData: state.assets.assetsData
   }),
   assetsActions
 )
 export default class AssetsList extends Component {
   static propTypes = {
     location: React.PropTypes.object,
+    assetsData: React.PropTypes.object,
     error: React.PropTypes.string,
     items: React.PropTypes.array,
     addOneAssets: React.PropTypes.func,
@@ -78,9 +80,9 @@ export default class AssetsList extends Component {
     const assetStyle = require('./assetmanager.scss');
     const items = [];
 
-    if (this.props.items) {
-      if (this.props.items.length !== 0) {
-        this.props.items.map(
+    if (this.props.assetsData && this.props.assetsData.showDataItem) {
+      if (this.props.assetsData.showDataItem.length !== 0) {
+        this.props.assetsData.showDataItem.map(
           item => items.push(<AssetsListItem key={item.corporation} item={item} />)
         );
       }

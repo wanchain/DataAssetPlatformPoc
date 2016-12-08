@@ -17,18 +17,15 @@ export default function add(req) {
   });
   return new Promise((resolve, reject) => {
     // if save success
-    newAssets.save(function (err) {
+    newAssets.save(function (err, data) {
       if(err) {
         console.log("add error: " + err);
         reject(err);
       } else {
         console.log("add success!!");
-        resolve("create success");
+        resolve({data: data});
       }
     });
-    console.log("add.... ");
-    // else reject
-
   });
 
   // return Promise.resolve({success: 'yes'});
@@ -102,7 +99,7 @@ export function modify(req) {
           if (err) {
             reject(err);
           } else {
-            resolve({item: data});
+            resolve({data: data});
           }
         });
       }
