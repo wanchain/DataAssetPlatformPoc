@@ -8,12 +8,17 @@ export default function add(req) {
   console.log(req.body);
 
   var newAssets = Assets({
-    corporation: req.body.corporation,
-    property: req.body.property,
-    stocktotalnumber: req.body.stocktotalnumber,
-    totalvalue: req.body.totalvalue,
-    exchangestate: req.body.exchangestate,
-    createtime: req.body.createtime,
+    assetsName: req.body.assetsName ? req.body.assetsName : '',
+    assetsTitle: req.body.assetsTitle ? req.body.assetsTitle : '',
+    assetsType: req.body.assetsType ? req.body.assetsType : 0,
+    publishType: req.body.publishType ? req.body.publishType : 0,
+    stockNumber: req.body.stockNumber ? req.body.stockNumber : 0,
+    unitType: req.body.unitType ? req.body.unitType : 0,
+    unitPrice: req.body.unitPrice ? req.body.unitPrice : 0,
+    members: req.body.members ? req.body.members : '',
+    publishTime: req.body.publishTime ? req.body.publishTime : new Date(),
+    totalValue: req.body.totalValue ? req.body.totalValue : 0,
+    exchangeState: req.body.exchangeState ? req.body.exchangeState : false
   });
   return new Promise((resolve, reject) => {
     // if save success
@@ -27,8 +32,6 @@ export default function add(req) {
       }
     });
   });
-
-  // return Promise.resolve({success: 'yes'});
 }
 
 export function getall(req) {
@@ -51,7 +54,7 @@ export function delone(req) {
   console.log(req.body);
   var id = req.body.id;
   return new Promise((resolve, reject) => {
-    Assets.find({corporation: id}, function (err, asset) {
+    Assets.find({assetsName: id}, function (err, asset) {
       if (err) {
         console.log("delOne:" + err);
         reject(err);
@@ -88,12 +91,17 @@ export function modify(req) {
         var aAsset = asset[0];
 
         // modify its attributes
-        aAsset.corporation = item.corporation;
-        aAsset.property = item.property;
-        aAsset.stocktotalnumber = item.stocktotalnumber;
-        aAsset.totalvalue = item.totalvalue;
-        aAsset.exchangestate = item.exchangestate;
-        aAsset.createtime = item.createtime;
+        aAsset.assetsName = item.assetsName;
+        aAsset.assetsTitle = item.assetsTitle;
+        aAsset.assetsType = item.assetsType;
+        aAsset.publishType = item.publishType;
+        aAsset.stockNumber = item.stockNumber;
+        aAsset.unitType = item.unitType;
+        aAsset.unitPrice = item.unitPrice;
+        aAsset.members = item.members;
+        aAsset.publishTime = item.publishTime;
+        aAsset.totalValue = item.totalValue;
+        aAsset.exchangeState = item.exchangeState;
 
         aAsset.save(function (err, data) {
           if (err) {

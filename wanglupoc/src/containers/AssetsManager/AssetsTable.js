@@ -33,12 +33,12 @@ export default class AssetsTable extends Component {
   renderitem(data) {
     return (
       <tr key={data.id}>
-        <th scope="row">{data.corporation}</th>
-        <th>{data.property}</th>
-        <th>{data.stocktotalnumber}</th>
-        <th>{data.totalvalue}</th>
-        <th>{data.exchangestate}</th>
-        <th>{data.createtime}</th>
+        <th scope="row">{data.assetsName}</th>
+        <th>{data.assetsName}</th>
+        <th>{data.stockNumber}</th>
+        <th>{data.totalValue}</th>
+        <th>{data.exchangeState}</th>
+        <th>{data.publishTime}</th>
         <th>
           <table>
             <tbody>

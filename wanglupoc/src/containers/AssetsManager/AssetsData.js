@@ -6,12 +6,12 @@
 // class AssetsDataItem {
 //   constructor(item) {
 //     this.info = {};
-//     this.info.corporation = item.corporation;
-//     this.info.property = item.property;
-//     this.info.stocktotalnumber = item.stocktotalnumber;
-//     this.info.totalvalue = item.totalvalue;
-//     this.info.exchangestate = item.exchangestate;
-//     this.info.createtime = item.createtime;
+//     this.info.assetsName = item.assetsName;
+//     this.info.assetsName = item.assetsName;
+//     this.info.stockNumber = item.stockNumber;
+//     this.info.totalValue = item.totalValue;
+//     this.info.exchangeState = item.exchangeState;
+//     this.info.publishTime = item.publishTime;
 //     this.info._id = item._id;
 //   }
 // }
@@ -51,12 +51,12 @@ export default class AssetsData {
   editAssetItem(itemMod) {
     this.allDataItem.forEach(item => {
       if (item.info._id === itemMod.info._id) {
-        item.info.corporation = itemMod.corporation;
-        item.info.property = itemMod.property;
-        item.info.stocktotalnumber = itemMod.stocktotalnumber;
-        item.info.totalvalue = itemMod.totalvalue;
-        item.info.exchangestate = itemMod.exchangestate;
-        item.info.createtime = itemMod.createtime;
+        item.info.assetsName = itemMod.assetsName;
+        item.info.assetsName = itemMod.assetsName;
+        item.info.stockNumber = itemMod.stockNumber;
+        item.info.totalValue = itemMod.totalValue;
+        item.info.exchangeState = itemMod.exchangeState;
+        item.info.publishTime = itemMod.publishTime;
       }
     });
     this._sortAsset(this.sortType);
@@ -97,9 +97,9 @@ export default class AssetsData {
         break;
       case 1: // asset name
         this.allDataItem.sort((item1, item2) => {
-          if (item1.corporation < item2.corporation) {
+          if (item1.assetsName < item2.assetsName) {
             return -1;
-          } else if (item1.corporation > item2.corporation) {
+          } else if (item1.assetsName > item2.assetsName) {
             return 1;
           }
           return 0;
@@ -116,7 +116,7 @@ export default class AssetsData {
         this.showDataItem = this.allDataItem;
         break;
       case 1:
-        this.showDataItem = this.allDataItem.filter(item => { return item.property === 1; });
+        this.showDataItem = this.allDataItem.filter(item => { return item.assetsName === 1; });
         break;
       default:
         break;
@@ -125,12 +125,12 @@ export default class AssetsData {
   _searchAsset(word) {
     this.word = word;
     this.showDataItem = this.showDataItem.filter(item => {
-      return (item.corporation.indexOf(word) !== -1) ||
-        (item.property.indexOf(word) !== -1) ||
-        (item.stocktotalnumber.indexOf(word) !== -1) ||
-        (item.totalvalue.indexOf(word) !== -1) ||
-        (item.exchangestate.indexOf(word) !== -1) ||
-        (item.createtime.indexOf(word) !== -1);
+      return (item.assetsName.indexOf(word) !== -1) ||
+        (item.assetsName.indexOf(word) !== -1) ||
+        (item.stockNumber.indexOf(word) !== -1) ||
+        (item.totalValue.indexOf(word) !== -1) ||
+        (item.exchangeState.indexOf(word) !== -1) ||
+        (item.publishTime.indexOf(word) !== -1);
     });
   }
 

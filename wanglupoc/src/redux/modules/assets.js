@@ -1,7 +1,7 @@
 /**
  * Created by jishiwu on 12/6/16.
  */
-import AssetsData from '../../containers/AssetsManager/AssetsData';
+// import AssetsData from '../../containers/AssetsManager/AssetsData';
 
 const ASSETSADD = 'assets/ASSETSADD';
 const ASSETSADD_SUCCESS = 'assets/ASSETSADD_SUCCESS';
@@ -15,12 +15,44 @@ const ASSETSDEL_FAIL = 'assets/ASSETSDEL_FAIL';
 const ASSETSALL = 'assets/ASSETSALL';
 const ASSETSALL_SUCCESS = 'assets/ASSETSALL_SUCCESS';
 const ASSETSALL_FAIL = 'assets/ASSETSALL_FAIL';
+const ASSETSET = 'assets/ASSETSET';
+const ASSETSEARCH = 'assets/ASSETSEARCH';
+const ASSETSLISTACTIVE = 'assets/ASSETSLISTACTIVE';
+const ASSETSCREATESTEP = 'assets/ASSETSCREATESTEP';
+const ASSETSRESETCREATE = 'assets/ASSETSRESETCREATE';
 
-const assetsDataTest = new AssetsData();
 const initialState = {
   items: [],
-  assetsData: assetsDataTest
+  items2show: [],
+  item: {
+    assetsName: '',
+    assetsTitle: '',
+    assetsType: 0,
+    publishType: 0,
+    stockNumber: 0,
+    unitType: 0,
+    unitPrice: 0,
+    members: '',
+    publishTime: '',
+    totalValue: 0,
+    exchangeState: false
+  },
+  word: '',
+  isListActive: true,
+  createStep: 1
 };
+
+function _search(items, word) {
+  const rt = items.filter((item)=>{
+    return (item.assetsName.indexOf(word) !== -1) ||
+      (item.assetsType.toString().indexOf(word) !== -1) ||
+      (item.stockNumber.toString().indexOf(word) !== -1) ||
+      (item.totalValue.toString().indexOf(word) !== -1) ||
+      (item.exchangeState.toString().indexOf(word) !== -1) ||
+      (item.publishTime.toString().indexOf(word) !== -1);
+  });
+  return rt;
+}
 
 export default function(state = initialState, action = {}) {
   switch (action.type) {
@@ -32,13 +64,13 @@ export default function(state = initialState, action = {}) {
     case ASSETSADD_SUCCESS:
       {
         console.log('assetsadd: receive success');
-
-        let assetsData = state.assetsData;
-        assetsData = assetsData.addAssetItem(action.result.data);
-        console.log(assetsData);
+        const newitems = state.items.filter(()=>{return true;});
+        newitems.push(action.result.data);
+        const items2show = _search(newitems, state.word);
         return {
           ...state,
-          assetsData: assetsData
+          items: newitems,
+          items2show: items2show
         };
       }
     case ASSETSADD_FAIL:
@@ -54,13 +86,27 @@ export default function(state = initialState, action = {}) {
       };
     case ASSETSMOD_SUCCESS:
       console.log('ASSETSMOD_SUCCESS');
-      return {
-        ...state
-      };
+      {
+        const newitems = state.items.filter(()=>{return true;});
+        for (let tmp = 0; tmp < newitems.length; tmp++) {
+          if (newitems[tmp]._id === action.result.data._id) {
+            newitems[tmp] = action.result.data;
+            break;
+          }
+        }
+        const items2show = _search(newitems, state.word);
+        return {
+          ...state,
+          items: newitems,
+          items2show: items2show
+        };
+      }
+      break;
     case ASSETSMOD_FAIL:
       console.log('ASSETSMOD_FAIL');
       return {
-        ...state
+        ...state,
+        error: action.error
       };
     case ASSETSDEL:
       console.log('ASSETSDEL');
@@ -69,26 +115,24 @@ export default function(state = initialState, action = {}) {
       };
     case ASSETSDEL_SUCCESS:
       console.log('ASSETSDEL_SUCCESS');
-      const itemf = action.result.data;
-      const newitems = state.items.filter(item => {
-        return item._id !== itemf._id;
-      });
-      // if success, we'd better fetch all again..
-      // const items = state.items;
-      // for (let tmp = 0; tmp < items.length; tmp++) {
-      //   if (item._id === items[tmp]._id) {
-      //     items.splice(tmp, 1);
-      //     break;
-      //   }
-      // }
-      return {
-        ...state,
-        items: newitems
-      };
+      {
+        const del = action.result.data;
+        const newitems = state.items.filter(item => {
+          return item._id !== del._id;
+        });
+        const items2show = _search(newitems, state.word);
+        return {
+          ...state,
+          items: newitems,
+          items2show: items2show
+        };
+      }
+      break;
     case ASSETSDEL_FAIL:
       console.log('ASSETSDEL_FAIL');
       return {
-        ...state
+        ...state,
+        error: action.error
       };
     case ASSETSALL:
       console.log('ASSETSALL: begin');
@@ -98,21 +142,70 @@ export default function(state = initialState, action = {}) {
     case ASSETSALL_SUCCESS:
       {
         console.log('ASSETSALL_SUCCESS: receive success');
-        let assetsData = state.assetsData ? state.assetsData : new AssetsData();
-        console.log(assetsData);
-        assetsData = assetsData.setAll(action.result.data);
+        const items2show = _search(action.result.data, state.word);
         return {
           ...state,
           items: action.result.data,
-          assetsData: assetsData
+          items2show: items2show
         };
       }
+      break;
     case ASSETSALL_FAIL:
       console.log('ASSETSALL_FAIL: receive failed');
       return {
-        ...state
+        ...state,
+        error: action.error
       };
 
+      // it seams like
+    case ASSETSET:
+      console.log('ASSETSET');
+      return {
+        ...state,
+        item: action.payload.item
+      };
+
+    case ASSETSEARCH:
+      {
+        console.log('ASSETSEARCH');
+        const word = action.payload.word;
+        const items2show = _search(state.items, word);
+
+        return {
+          ...state,
+          items2show: items2show,
+          word: action.payload.word
+        };
+      }
+      break;
+    case ASSETSLISTACTIVE:
+      {
+        console.log('ASSETSLISTACTIVE');
+        return {
+          ...state,
+          isListActive: action.payload.isListActive
+        };
+      }
+      break;
+    case ASSETSCREATESTEP:
+      {
+        console.log('ASSETSCREATESTEP');
+        return {
+          ...state,
+          createStep: action.payload.createStep
+        };
+      }
+      break;
+    case ASSETSRESETCREATE:
+      {
+        console.log('ASSETSRESETCREATE');
+        return {
+          ...state,
+          item: action.payload.item,
+          createStep: action.payload.createStep
+        };
+      }
+      break;
     default:
       return state;
   }
@@ -122,14 +215,7 @@ export function addOneAssets(obj) {
   return {
     types: [ASSETSADD, ASSETSADD_SUCCESS, ASSETSADD_FAIL],
     promise: (client) => client.post('/assets/add', {
-      data: {
-        corporation: obj.corporation,
-        property: obj.property,
-        stocktotalnumber: obj.stocktotalnumber,
-        totalvalue: obj.totalvalue,
-        exchangestate: obj.exchangestate,
-        createtime: obj.createtime
-      }
+      data: obj
     })
   };
 }
@@ -146,7 +232,7 @@ export function delOne(item) {
     types: [ASSETSDEL, ASSETSDEL_SUCCESS, ASSETSDEL_FAIL],
     promise: (client) => client.post('/assets/delone', {
       data: {
-        id: item.corporation
+        id: item.assetsName
       }
     })
   };
@@ -162,3 +248,51 @@ export function modify(item) {
     })
   };
 }
+
+export function setItem(item) {
+  return {
+    type: ASSETSET,
+    payload: {item: item}
+  };
+}
+
+export function search(word) {
+  return {
+    type: ASSETSEARCH,
+    payload: {word: word}
+  };
+}
+export function setListActive(bActive) {
+  return {
+    type: ASSETSLISTACTIVE,
+    payload: {isListActive: bActive}
+  };
+}
+export function setCreateStep(step) {
+  return {
+    type: ASSETSCREATESTEP,
+    payload: {createStep: step}
+  };
+}
+export function resetCreate() {
+  return {
+    type: ASSETSRESETCREATE,
+    payload: {
+      item: {
+        assetsName: '',
+        assetsTitle: '',
+        assetsType: 0,
+        publishType: 0,
+        stockNumber: 0,
+        unitType: 0,
+        unitPrice: 0,
+        members: '',
+        publishTime: '',
+        totalValue: 0,
+        exchangeState: false
+      },
+      createStep: 1
+    }
+  };
+}
+

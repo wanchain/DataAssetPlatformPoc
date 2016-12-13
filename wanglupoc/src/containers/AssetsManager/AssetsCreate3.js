@@ -2,27 +2,18 @@
  * Created by jishiwu on 11/22/16.
  */
 import React, {Component} from 'react';
-// import Helmet from 'react-helmet';
-// import AssetsNavbar from './AssetsNavbar';
-// import PathNavbar from './PathNavbar';
-// import {connect} from 'react-redux';
-// import {bindActionCreators} from 'redux';
-import {Link} from 'react-router';
-// import {listAssetsActived} from 'redux/modules/AssetsManagerRedux';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
+import * as assetsActions from 'redux/modules/assets';
 
-// @connect(
-//   state =>({
-//     assetsManager: state.assetsManager
-//   }),
-//   dispatch => {
-//     return bindActionCreators({listAssetsActived}, dispatch);
-//   }
-// )
+@connect(
+  () => ({ }),
+  assetsActions
+)
 export default class AssetsCreate3 extends Component {
   static propTypes = {
-    // assetsManager: PropTypes.object,
-    // listAssetsActived: PropTypes.func,
-    location: React.PropTypes.object,
+    setCreateStep: React.PropTypes.func,
+    setListActive: React.PropTypes.func
   };
 
   constructor(props) {
@@ -35,7 +26,8 @@ export default class AssetsCreate3 extends Component {
   };
 
   handleSubmit() {
-    this.props.location.state.setListActive();
+    this.props.setListActive(true);
+    browserHistory.push('/myroutera');
   }
 
   render() {
@@ -57,7 +49,7 @@ export default class AssetsCreate3 extends Component {
           </p>
           <hr/>
           <p className={assetStyle.center}>
-            <Link onMouseUp={this.handleSubmit} to={{pathname: '/myroutera'}}><button className="btn btn-primary">进入资产列表</button></Link>
+            <button className="btn btn-primary" onClick={this.handleSubmit}>进入资产列表</button>
           </p>
          </div>
       </div>

@@ -2,28 +2,23 @@
  * Created by jishiwu on 11/22/16.
  */
 import React, {Component} from 'react';
-// import Helmet from 'react-helmet';
-// import AssetsNavbar from './AssetsNavbar';
-// import PathNavbar from './PathNavbar';
-// import {connect} from 'react-redux';
-// import {bindActionCreators} from 'redux';
-import {Link} from 'react-router';
-// import { nextAssetsStep} from 'redux/modules/AssetsManagerRedux';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
+import * as assetsActions from 'redux/modules/assets';
 
-
-// @connect(
-//   state =>({
-//     assetsManager: state.assetsManager
-//   }),
-//   dispatch => {
-//     return bindActionCreators({ nextAssetsStep}, dispatch);
-//   }
-// )
+@connect(
+  (state) => ({
+    item: state.assets.item
+  }),
+  assetsActions
+)
 export default class AssetsCreate2 extends Component {
   static propTypes = {
-    // nextAssetsStep: PropTypes.func,
-    // assetsManager: PropTypes.object,
     location: React.PropTypes.object,
+    item: React.PropTypes.object,
+    setItem: React.PropTypes.func,
+    addOneAssets: React.PropTypes.func,
+    setCreateStep: React.PropTypes.func
   };
 
   constructor(props) {
@@ -35,69 +30,43 @@ export default class AssetsCreate2 extends Component {
     this.importOwnersFromExcel = this.importOwnersFromExcel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSave = this.handleSave.bind(this);
-
-    const createData = this.props.location.state.createStep2;
-
-    this.state = {
-      stockNumber: createData.stockNumber,
-      unitType: createData.unitType,
-      unitPrice: createData.unitPrice,
-      members: createData.members,
-    };
   }
 
   onStockNumberChange(event) {
     event.target.value = event.target.value.replace(/\D/g, '');
-    this.setState({
-      stockNumber: event.target.value
-    });
+    const tmp = Object.assign({}, this.props.item);
+    tmp.stockNumber = event.target.value;
+    this.props.setItem(tmp);
   }
 
   onAssetUnitChange(event) {
     event.target.value = event.target.value.replace(/\D/g, '');
-    this.setState({
-      unitType: event.target.value
-    });
+    const tmp = Object.assign({}, this.props.item);
+    tmp.unitType = event.target.value;
+    this.props.setItem(tmp);
   }
 
   onAssetUnitPriceChange(event) {
     event.target.value = event.target.value.replace(/\D/g, '');
-    this.setState({
-      unitPrice: event.target.value
-    });
+    const tmp = Object.assign({}, this.props.item);
+    tmp.unitPrice = event.target.value;
+    this.props.setItem(tmp);
   }
 
   importOwnersFromExcel(event) {
     console.log(event);
-    // TODO: first: clear members...maybe it's better saved as a json string, than
-    this.setState({
-      members: event.target.value
-    });
+    const tmp = Object.assign({}, this.props.item);
+    tmp.members = event.target.value;
+    this.props.setItem(tmp);
   }
 
   handleSubmit(event) {
     event.preventDefault();
 
-    const stockNumber = this.refs.stockNumber.value;
-    const unitType = this.refs.unitType.value;
-    const unitPrice = this.refs.unitPrice.value;
-    const members = this.refs.members.value;
-
-    // check valid
-    console.log(stockNumber);
-    console.log(unitType);
-    console.log(unitPrice);
-    console.log(members);
-
-    // submit
-    this.props.location.state.createStep2.setCreateStep2({
-      stockNumber: stockNumber, unitType: unitType, unitPrice: unitPrice, members: members
-    });
-
-    // clear state
-    this.props.location.state.setStep(3);
-
-    // TODO: if success, we should clear the creatData?????
+    // check data, then submit
+    this.props.addOneAssets(this.props.item);
+    this.props.setCreateStep(3);
+    browserHistory.push('/myroutera/create/step3');
   }
 
   handleSave(event) {
@@ -113,17 +82,18 @@ export default class AssetsCreate2 extends Component {
     // {/*<a className="btn btn-success" to="/assets/create/3">下一步</a>*/}
     return (
       <div >
+        <div id="target"></div>
         <form onSubmit={this.handleSubmit}>
           <h4>资产总量&nbsp;<small>本次发行的资产总计数量</small></h4>
-            <input value={this.state.stockNumber}
+            <input value={this.props.item.stockNumber}
               ref="stockNumber" onChange={this.onStockNumberChange} type="text" placeholder="请输入整数"/>&nbsp;&nbsp;
             <img src={errorBtnIcn}/><br/>
           <h4>资产单位&nbsp;<small>以什么单位标识资产数量，如“股”，“份”</small></h4>
-            <input value={this.state.unitType}
+            <input value={this.props.item.unitType}
               ref="unitType" onChange={this.onAssetUnitChange} type="text" placeholder="中英文不超过4个字符"/>&nbsp;&nbsp;
             <img src={errorBtnIcn}/><br/>
           <h4>资产单价&nbsp;<small>发行时的资产单价：每个整数资产的价格</small></h4>
-            <input value={this.state.unitPrice}
+            <input value={this.props.item.unitPrice}
               ref="unitPrice" onChange={this.onAssetUnitPriceChange} type="text" placeholder="以人民币计价，小数2位"/>&nbsp;&nbsp;
             <img src={rightBtnIcn}/><br/>
           <h4>资产所有者名单导入&nbsp;<small>按照模板导入EXCEL文件</small></h4>
@@ -137,9 +107,7 @@ export default class AssetsCreate2 extends Component {
           <hr/>
 
           <button onClick={this.handleSave} className="btn btn-success">保存</button>&nbsp;&nbsp;
-          <Link onMouseDown={this.handleSubmit} to={{pathname: '/myroutera/create/step3', state: this.props.location.state}}>
-            <button className="btn btn-primary">提交</button>
-          </Link>
+          <button className="btn btn-primary" onClick={this.handleSubmit}>提交</button>
 
         </form>
        </div>

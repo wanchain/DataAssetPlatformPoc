@@ -4,24 +4,23 @@
 import React, {Component} from 'react';
 // import PathNavbar from './PathNavbar';
 // import {connect, Link} from 'react-redux';
-import {Link} from 'react-router';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
 // import {bindActionCreators} from 'redux';
 // import { nextAssetsStep} from 'redux/modules/AssetsManagerRedux';
-
-// @connect(
-//   state =>({
-//     assetsManager: state.assetsManager
-//   }),
-//   dispatch => {
-//     return bindActionCreators({ nextAssetsStep }, dispatch);
-//   }
-// )
+import * as assetsActions from 'redux/modules/assets';
+@connect(
+  (state) => ({
+    item: state.assets.item
+  }),
+  assetsActions
+)
 export default class AssetsCreate1 extends Component {
   static propTypes = {
-    // assetsManager: PropTypes.object,
-    // nextAssetsStep: PropTypes.func,
     location: React.PropTypes.object,
-
+    item: React.PropTypes.object,
+    setItem: React.PropTypes.func,
+    setCreateStep: React.PropTypes.func
   };
 
   constructor(props) {
@@ -31,52 +30,29 @@ export default class AssetsCreate1 extends Component {
     this.checkAssetName = this.checkAssetName.bind(this);
     this.checkTitle = this.checkTitle.bind(this);
     this.selectAssetClass = this.selectAssetClass.bind(this);
-
-    if (this.props.location && this.props.location.state) {
-      const createData = this.props.location.state.createStep1;
-      this.state = {
-        assetsName: createData.assetsName,
-        assetsTitle: createData.assetsTitle,
-      };
-    }
   }
-
-  // componentDidMount() {
-  //
-  // }
 
   handleSubmit(event) {
     event.preventDefault();
-    // const path = '/myroutera/create/step2';
-    // this.context.router.push(path);
-
-    const assetsName = this.refs.assetsName.value;
-    const assetsTitle = this.refs.assetsTitle.value;
-
-    // check valid
-    console.log(assetsName);
-    console.log(assetsTitle);
-
-    // set Manager's value
-    this.props.location.state.createStep1.setCreateStep1({
-      assetsName: assetsName, assetsTitle: assetsTitle
-    });
-    this.props.location.state.setStep(2);
-
-    // TODO: Link to the next step.
+    this.props.setCreateStep(2);
+    browserHistory.push('/myroutera/create/step2');
   }
 
   checkAssetName(event) {
-    this.setState({
-      assetsName: event.target.value
-    });
+    // this.setState({
+    //   assetsName: event.target.value
+    // });
+
+    const tmp = Object.assign({}, this.props.item);
+    tmp.assetsName = event.target.value;
+    this.props.setItem(tmp);
   }
 
   checkTitle(event) {
     // TODO: limit to 4 char
-    this.setState({
-      assetsTitle: event.target.value
-    });
+    const tmp = {...this.props.item};
+    tmp.assetsTitle = event.target.value;
+    this.props.setItem(tmp);
   }
 
   selectAssetClass() {
@@ -96,11 +72,11 @@ export default class AssetsCreate1 extends Component {
       <div>
         <form onSubmit={this.handleSubmit}>
           <h4>资产名称&nbsp;<small>资产名称将作为识别该资产的对外标识</small></h4>
-            <input value={this.state.assetsName ? this.state.assetsName : ''}
+            <input value={this.props.item.assetsName}
               ref="assetsName" onChange={this.checkAssetName} type="text" placeholder="请输入资产名称" required/>&nbsp;&nbsp;
             <img src={rightBtnIcn}/><br/>
           <h4>英文代码&nbsp;<small>英文代码是该资产的英文缩写，便于查找和识别</small></h4>
-            <input value={this.state.assetsTitle ? this.state.assetsTitle : ''}
+            <input value={this.props.item.assetsTitle}
               ref="assetsTitle" onChange={this.checkTitle} type="text" placeholder="请输入英文代码" required/>&nbsp;&nbsp;
             <img src={rightBtnIcn}/><br/>
           <h4 >资产类型&nbsp;<small>不同的资产类型创建模式和要求不同</small></h4>
@@ -118,7 +94,8 @@ export default class AssetsCreate1 extends Component {
           <hr/>
         </form>
 
-        <Link onMouseDown={this.handleSubmit} to={{pathname: '/myroutera/create/step2', state: this.props.location.state }}><button className="btn btn-success">下一步</button></Link>
+        {/* <Link onMouseDown={this.handleSubmit} to="/myroutera/create/step2" ><button className="btn btn-success">下一步</button></Link>*/}
+        <button className="btn btn-success" onClick={this.handleSubmit}>下一步</button>
       </div>
     );
   }

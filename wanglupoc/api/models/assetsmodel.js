@@ -20,12 +20,17 @@ import mongoose from 'mongoose';
 // });
 
 const assetsSchema = new mongoose.Schema({
-  corporation: { type: String, required: true, unique: true },
-  property: Number,
-  stocktotalnumber: Number,
-  totalvalue: Number,
-  exchangestate: Boolean,
-  createtime: String,
+  assetsName: { type: String, required: true, unique: true },
+  assetsTitle: String,
+  assetsType: Number,
+  publishType: Number,
+  stockNumber: Number,
+  unitType: Number,
+  unitPrice: Number,
+  members: String,
+  publishTime: Date,
+  totalValue: Number,
+  exchangeState: Boolean,
   created_at: Date,
   updated_at: Date
 });

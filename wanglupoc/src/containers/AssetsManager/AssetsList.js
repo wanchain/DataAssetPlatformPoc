@@ -6,33 +6,31 @@ import AssetsListItem from './AssetsListItem';
 import {connect} from 'react-redux';
 import * as assetsActions from 'redux/modules/assets';
 
-
 @connect(
   (state) => ({
-    items: state.assets.items,
+    items: state.assets.items2show,
     error: state.assets.error,
-    assetsData: state.assets.assetsData
+    word: state.assets.word
   }),
   assetsActions
 )
 export default class AssetsList extends Component {
   static propTypes = {
-    location: React.PropTypes.object,
-    assetsData: React.PropTypes.object,
-    error: React.PropTypes.string,
     items: React.PropTypes.array,
+    error: React.PropTypes.string,
+    word: React.PropTypes.string,
+
     addOneAssets: React.PropTypes.func,
     getAll: React.PropTypes.func,
     delOne: React.PropTypes.func,
-    modify: React.PropTypes.func
+    modify: React.PropTypes.func,
+    search: React.PropTypes.func
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      searchvalue: '',
-      on2: 0
     };
   }
 
@@ -42,20 +40,18 @@ export default class AssetsList extends Component {
 
   onSearchValueChanged(event) {
     console.log(event.target.value);
-    this.setState({
-      searchvalue: event.target.value
-    });
+    this.props.search(event.target.value);
   }
 
   onCreateOne() {
-    const corporation = 'wl' + Math.random();
+    const assetsName = 'wl' + Math.random();
     this.props.addOneAssets({
-      corporation: corporation,
-      property: 1,
-      stocktotalnumber: 1000,
-      totalvalue: 10000,
-      exchangestate: true,
-      createtime: '2016/12/6',
+      assetsName: assetsName,
+      assetsType: 0,
+      stockNumber: 1000,
+      totalValue: 10000,
+      exchangeState: true,
+      publishTime: new Date(),
     });
   }
 
@@ -65,7 +61,7 @@ export default class AssetsList extends Component {
 
   onCreateOne3() {
     const item = this.props.items[0];
-    item.corporation = 'wanglutech' + Math.random();
+    item.assetsName = 'wanglutech' + Math.random();
     this.props.modify(item);
   }
 
@@ -80,10 +76,10 @@ export default class AssetsList extends Component {
     const assetStyle = require('./assetmanager.scss');
     const items = [];
 
-    if (this.props.assetsData && this.props.assetsData.showDataItem) {
-      if (this.props.assetsData.showDataItem.length !== 0) {
-        this.props.assetsData.showDataItem.map(
-          item => items.push(<AssetsListItem key={item.corporation} item={item} />)
+    if (this.props.items) {
+      if (this.props.items.length !== 0) {
+        this.props.items.map(
+          item => items.push(<AssetsListItem key={item._id} item={item} />)
         );
       }
     }
@@ -103,7 +99,7 @@ export default class AssetsList extends Component {
           </div>
           <div className="col-md-9" >
             <input
-              value={ this.state.searchvalue}
+              value={ this.props.word}
               onChange={ this.onSearchValueChanged.bind(this)}
               className={assetStyle.searchtext} placeholder="sou" />
           </div>
