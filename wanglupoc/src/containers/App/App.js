@@ -104,12 +104,6 @@ export default class App extends Component {
                   Logout
                 </NavItem>
               </LinkContainer>}
-              <LinkContainer to="/myrouter">
-                <NavItem eventKey={199}>MyRouter</NavItem>
-              </LinkContainer>
-              <LinkContainer to="/myrouterc">
-                <NavItem eventKey={299}>MyRouterC</NavItem>
-              </LinkContainer>
               <LinkContainer to="/myroutera">
                 <NavItem eventKey={399}>AssetsManager</NavItem>
               </LinkContainer>

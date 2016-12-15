@@ -49,12 +49,12 @@ export default class AssetsListItem extends React.Component {
           <table>
             <tbody>
               <tr>
-                <td><a >暂停交易&nbsp;</a></td>
-                <td><a onClick={this.modify.bind(this)} >&nbsp;修改</a></td>
+                <td><button >暂停交易&nbsp;</button></td>
+                <td><button onClick={this.modify.bind(this)} >&nbsp;修改</button></td>
               </tr>
               <tr>
-                <td><a >名称修改&nbsp;</a></td>
-                <td><a onClick={this.delOne.bind(this)} >&nbsp;删除</a></td>
+                <td><button >名称修改&nbsp;</button></td>
+                <td><button onClick={this.delOne.bind(this)} >&nbsp;删除</button></td>
               </tr>
             </tbody>
           </table>

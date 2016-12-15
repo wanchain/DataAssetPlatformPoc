@@ -24,7 +24,8 @@ export default class AssetsList extends Component {
     getAll: React.PropTypes.func,
     delOne: React.PropTypes.func,
     modify: React.PropTypes.func,
-    search: React.PropTypes.func
+    search: React.PropTypes.func,
+    setListActive: React.PropTypes.func,
   };
 
   constructor(props) {
@@ -32,6 +33,10 @@ export default class AssetsList extends Component {
 
     this.state = {
     };
+  }
+
+  componentWillMount() {
+    this.props.setListActive(true);
   }
 
   componentDidMount() {
@@ -85,10 +90,7 @@ export default class AssetsList extends Component {
     }
 
     return (
-      <div className="col-md-10">
-        <button onClick={this.onCreateOne.bind(this)}> add one</button><br/>
-        <button onClick={this.onCreateOne2.bind(this)}> fetch all </button>
-        <button onClick={this.onCreateOne3.bind(this)}> modify one </button>
+      <div className="col-md-12">
         <header className={assetStyle.header}> 资产列表 </header>
 
         <br/>

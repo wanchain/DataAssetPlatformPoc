@@ -55,6 +55,8 @@ function _search(items, word) {
 }
 
 export default function(state = initialState, action = {}) {
+  // console.log(state);
+  // console.log(action.type);
   switch (action.type) {
     case ASSETSADD:
       console.log('assetsadd: begin');

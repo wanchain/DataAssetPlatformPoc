@@ -55,14 +55,12 @@ export default class AssetsManager extends Component {
     const assetStyle = require('./assetmanager.scss');
     const isListActive = this.props.isListActive;
 
-    const createPath = this.props.createStep > 1 ? '/myroutera/create/step' + this.props.createStep : '/myroutera/create';
-
     return (
       <div className="container">
         <Helmet title="AssetsCreate step1"/>
         <div className="row">
 
-          <div className="col-md-2">
+          <div className="col-md-2" id="left">
             <header className={assetStyle.header}>
               <img className={assetStyle.iconStyle} src={assetsIcon}/>&nbsp;&nbsp;管理平台
             </header>
@@ -75,11 +73,11 @@ export default class AssetsManager extends Component {
 
               <li className="divider"/>
               <li onClick={this.setCreateActive.bind(this)}>
-                <Link to={createPath} ><img src={isListActive ? assetsPublish1 : assetsPublish2} />&nbsp;资产发行</Link>
+                <Link to="/myroutera/create" ><img src={isListActive ? assetsPublish1 : assetsPublish2} />&nbsp;资产发行</Link>
               </li>
             </ul>
           </div>
-          <div className="col-md-10" >
+          <div className="col-md-10" id="right">
             {!isListActive &&
               <div>
                   <header className={assetStyle.header}>

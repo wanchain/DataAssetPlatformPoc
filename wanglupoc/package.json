@@ -117,6 +117,7 @@
     "express": "^4.13.3",
     "express-session": "^1.12.1",
     "file-loader": "^0.8.5",
+    "gbk": "^0.1.0",
     "hoist-non-react-statics": "^1.0.3",
     "http-proxy": "^1.12.0",
     "immutable": "^3.8.1",

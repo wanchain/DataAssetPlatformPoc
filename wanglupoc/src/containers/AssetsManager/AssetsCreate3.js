@@ -22,8 +22,10 @@ export default class AssetsCreate3 extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  props = {
-  };
+  componentWillMount() {
+    this.props.setListActive(false);
+    this.props.setCreateStep(3);
+  }
 
   handleSubmit() {
     this.props.setListActive(true);
