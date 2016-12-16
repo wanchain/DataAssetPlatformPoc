@@ -17,7 +17,7 @@ import * as assetsActions from 'redux/modules/assets';
 export default class AssetsList extends Component {
   static propTypes = {
     items: React.PropTypes.array,
-    error: React.PropTypes.string,
+    error: React.PropTypes.object,
     word: React.PropTypes.string,
 
     addOneAssets: React.PropTypes.func,
@@ -31,6 +31,8 @@ export default class AssetsList extends Component {
   constructor(props) {
     super(props);
 
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onSearchValueChanged = this.onSearchValueChanged.bind(this);
     this.state = {
     };
   }
@@ -44,9 +46,11 @@ export default class AssetsList extends Component {
   }
 
   onSearchValueChanged(event) {
+    event.preventDefault();
     console.log(event.target.value);
     this.props.search(event.target.value);
   }
+
 
   onCreateOne() {
     const assetsName = 'wl' + Math.random();
@@ -70,10 +74,9 @@ export default class AssetsList extends Component {
     this.props.modify(item);
   }
 
-  handleSubmit() {
-    // TODO: search for assets
-
-    // TODO: set AssetsTable props
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.search(this.props.word);
   }
 
   render() {

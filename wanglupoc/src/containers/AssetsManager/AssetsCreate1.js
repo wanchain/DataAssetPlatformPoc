@@ -30,8 +30,8 @@ export default class AssetsCreate1 extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.checkAssetName = this.checkAssetName.bind(this);
     this.checkTitle = this.checkTitle.bind(this);
-    this.selectAssetClass = this.selectAssetClass.bind(this);
     this.selectAssetType = this.selectAssetType.bind(this);
+    this.publicPublish = this.publicPublish.bind(this);
   }
   componentWillMount() {
     this.props.setListActive(false);
@@ -64,10 +64,6 @@ export default class AssetsCreate1 extends Component {
     const tmp = {...this.props.item};
     tmp.assetsTitle = event.target.value;
     this.props.setItem(tmp);
-  }
-
-  selectAssetClass() {
-    // TODO:
   }
 
   publicPublish() {

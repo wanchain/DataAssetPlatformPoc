@@ -33,6 +33,7 @@ export default class AssetsCreate2 extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.onPublishTimeChange = this.onPublishTimeChange.bind(this);
+    this.setOwnerMembers = this.setOwnerMembers.bind(this);
   }
 
   componentWillMount() {
@@ -68,23 +69,57 @@ export default class AssetsCreate2 extends Component {
     this.props.setItem(tmp);
   }
 
-  importOwnersFromExcel(event) {
-    console.log(event);
+  setOwnerMembers(str) {
+    console.log(str);
     const tmp = Object.assign({}, this.props.item);
-    tmp.members = event.target.value;
+    tmp.members = str;
     this.props.setItem(tmp);
+  }
 
-    require('../../../local_modules/simple-excel');
-    const csvParser = new window.SimpleExcel.Parser.CSV();
-    // const csvParser = new SimpleExcelOut.Parser.CSV();
-    csvParser.loadFile(event.target.files[0], () => {
-      console.log(csvParser.getSheet());
-    });
+  static stringToHex(str) {
+    let val = '';
+    for (let tmp = 0; tmp < str.length; tmp++) {
+      if (val === '') {
+        val = str.charCodeAt(tmp).toString(16);
+      } else {
+        val += ',' + str.charCodeAt(tmp).toString(16);
+      }
+    }
+    return val;
+  }
 
-    // const gbk = window.gbk;
-    // const name = csvParser.getSheet().getCell(0, 0).value;
-    // const utf8String = gbk.toString('utf-8', name);
-    // console.log(utf8String);
+  importOwnersFromExcel(event) {
+    // const out = require('../../../local_modules/simple-excel');
+    // const csvParser = new out.SimpleExcel.Parser.CSV;
+    // csvParser.loadFile(event.target.files[0], () => {
+    //   console.log(csvParser.getSheet());
+    //   const records = csvParser.getSheet();
+    //   const cell = records.getCell(1, 1);
+    //   console.log(cell);
+    // });
+
+    if (event.target.files[0]) {
+      const reader = new FileReader();
+      const self = this;
+      reader.onload = function NoName() {
+        self.setOwnerMembers(this.result);
+
+        // TODO: show table result
+        const csv = require('../../../local_modules/csv');
+        const out = csv.parse(this.result, { header: true });
+        out.map(item => {
+          for (const key in item) {
+            if (item.hasOwnProperty(key)) {
+              // console.log(AssetsCreate2.stringToHex(key));
+              // console.log(key);
+              console.log(item[key]);
+            }
+          }
+        });
+        console.log(out);
+      };
+      reader.readAsText(event.target.files[0], 'GBK');
+    }
   }
 
   handleSubmit(event) {

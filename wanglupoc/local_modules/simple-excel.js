@@ -1,12 +1,20 @@
-// SimpleExcel.js v0.1.3
-// Client-side script to easily parse / convert / write any Microsoft Excel XLSX / XML / CSV / TSV / HTML / JSON / etc formats
-// https://github.com/faisalman/simple-excel-js
-//
-// Copyright © 2013-2014 Faisal Salman <fyzlman@gmail.com>
-// Dual licensed under GPLv2 & MIT
+// <script> window, require exports, node global
 
-(function (window, undefined) {
-
+(function(root, factory) {
+  var globalObject;
+  if(typeof window ==="undefined" ){
+    globalObject = global;
+  } else {
+    globalObject = window;
+  }
+  if (typeof define === "function" && define.amd) {
+    define([], factory(root, globalObject));
+  } else if (typeof module === "object" && module.exports) {
+    module.exports = factory(root, globalObject);
+  } else {
+    root.CSV = factory(root, globalObject);
+  }
+}(this, function(out, globalObj) {
     'use strict';
 
     ///////////////////////
@@ -84,7 +92,7 @@
             return ignoreCase ? str1.toLowerCase() == str2.toLowerCase() : str1 == str2;
         },
         isSupportedBrowser: function() {
-            return true;//!![].forEach && !!window.FileReader;
+            return !![].forEach && !!globalObj.FileReader;
         },
         overrideProperties : function (old, fresh) {
             for (var i in old) {
@@ -134,6 +142,7 @@
     var Sheet = function () {
         this.records = new Records();
     };
+
     Sheet.prototype.getCell = function (colNum, rowNum) {
         return this.records.getCell(colNum, rowNum);
     };
@@ -196,6 +205,7 @@
     CSVParser.prototype._filetype = Format.CSV;
     CSVParser.prototype.loadString = function (str, sheetnum) {
         // TODO: implement real CSV parser
+      console.log("CSVParser=%s", this);
         var self = this;
         sheetnum = sheetnum || 0;
         self._sheet[sheetnum] = new Sheet();
@@ -321,7 +331,7 @@
         },
         saveFile    : function () {
             // TODO: find a reliable way to save as local file
-            window.open('data:' + this._mimetype + ';base64,' + window.btoa(this.getString()));
+            globalObj.open('data:' + this._mimetype + ';base64,' + globalObj.btoa(this.getString()));
             return this;
         }
     };
@@ -368,6 +378,7 @@
 
     var SimpleExcel = {
         Cell                : Cell,
+        Records             : Records,
         DataType            : DataType,
         Exception           : Exception,
         isSupportedBrowser  : Utils.isSupportedBrowser(),
@@ -376,9 +387,9 @@
         Writer              : Writer
     };
 
-    window.SimpleExcel = SimpleExcel;
+    out.SimpleExcel = SimpleExcel;
 
-})(window);
+}));
 
 
 // var SimpleExcelOut = SimpleExcelOut || window.SimpleExcel;
