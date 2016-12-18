@@ -13,6 +13,20 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true
+  },
+
+  userType: {
+    type:String,
+    enum: ['customer', 'admin']
+  },
+
+  ethAddress: {
+    type: String,
+    lowercase:true
+  },
+
+  so_privatekey: {
+    type: String
   }
 });
 
