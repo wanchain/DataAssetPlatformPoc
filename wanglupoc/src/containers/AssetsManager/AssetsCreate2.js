@@ -128,7 +128,7 @@ export default class AssetsCreate2 extends Component {
     // check data, then submit
     this.props.addOneAssets(this.props.item);
     this.props.setCreateStep(3);
-    browserHistory.push('/myroutera/create/step3');
+    browserHistory.push('/am/create/step3');
   }
 
   handleSave(event) {

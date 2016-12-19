@@ -1,3 +1,6 @@
+body{
+  padding: 0px;
+}
 .app {
   .brand {
     position: absolute;
@@ -18,5 +21,46 @@
   }
 }
 .appContent {
-  margin: 50px 0; // for fixed navbar
+  margin: 2px 0; // for fixed navbar
+  height: calc(100% - 128px);
+}
+.header{
+  width: 100%;
+  background: #fff;
+  height: 60px;
+  padding: 0px;
+  border-width: 0px 0px 8px 0px;
+  border-style: solid;
+  border-color: #ddd;
+}
+.footer {
+  width: 100%;
+  border-width: 15px 0px 0px 0px;
+  border-style: solid;
+  border-color: #ddd;
+  background: #222;
+  color: #eee;
+  height: 68px;
+}
+.footer p{
+  margin: 5px;
+  text-align: center;
+  background-color: #1c1e22;
+  color: #fff
+}
+.logo{
+  float: left;
+  margin: 10px;
+}
+.aboutpng{
+  margin: 0px;
+}
+.topbutton{
+  border-radius: 5px;
+  width: 70px;
+  height: 30px;
+  padding: 0px;
+  border-width: 0px;
+  margin: 11px 7.5px;
+  background: #008aff;
 }

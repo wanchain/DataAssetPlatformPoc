@@ -3,21 +3,23 @@ import {IndexRoute, Route} from 'react-router';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
 import {
     App,
-    Chat,
-    Home,
-    Widgets,
     About,
     Login,
     LoginSuccess,
-    Survey,
     AssetsManager,
     AssetsList,
     AssetsCreate,
     AssetsCreate1,
     AssetsCreate2,
     AssetsCreate3,
+  MainPage,
+  OAssets,
+  Deposit,
+  Withdraw,
+  TRecords,
+  TMarket,
+  ExistEvidents,
     NotFound,
-    Pagination,
   } from 'containers';
 
 export default (store) => {
@@ -44,28 +46,33 @@ export default (store) => {
   return (
     <Route path="/" component={App}>
       { /* Home (main) route */ }
-      <IndexRoute component={Home}/>
+      <IndexRoute component={Login}/>
 
       { /* Routes requiring login */ }
       <Route onEnter={requireLogin}>
-        <Route path="chat" component={Chat}/>
         <Route path="loginSuccess" component={LoginSuccess}/>
       </Route>
 
       { /* Routes */ }
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
-      <Route path="pagination" component={Pagination}/>
-      <Route path="survey" component={Survey}/>
-      <Route path="widgets" component={Widgets}/>
 
-      <Route component={AssetsManager}>
-        <Route path="/myroutera" component={AssetsList}/>
-        <Route component={AssetsCreate}>
-          <Route path="/myroutera/create" component={AssetsCreate1}/>
-          <Route path="/myroutera/create/step2" component={AssetsCreate2}/>
-          <Route path="/myroutera/create/step3" component={AssetsCreate3}/>
+      <Route path="/am" component={AssetsManager}>
+        <IndexRoute component={AssetsList}/>
+        <Route path="/am/create" component={AssetsCreate}>
+          <IndexRoute component={AssetsCreate1}/>
+          <Route path="/am/create/step2" component={AssetsCreate2}/>
+          <Route path="/am/create/step3" component={AssetsCreate3}/>
         </Route>
+      </Route>
+
+      <Route path="/main" component={MainPage} >
+        <IndexRoute component={OAssets}/>
+        <Route path="/deposit" component={Deposit}/>
+        <Route path="/withdraw" component={Withdraw}/>
+        <Route path="/trecords" component={TRecords}/>
+        <Route path="/tmarket" component={TMarket}/>
+        <Route path="/ee" component={ExistEvidents}/>
       </Route>
 
       { /* Catch all route */ }

@@ -45,7 +45,7 @@ export default class AssetsCreate1 extends Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.setCreateStep(2);
-    browserHistory.push('/myroutera/create/step2');
+    browserHistory.push('/am/create/step2');
   }
 
   checkAssetName(event) {

@@ -1,0 +1,29 @@
+.main {
+  background: #ddd;
+}
+.mainleft {
+  background: #fff;
+  padding: 0px;
+  border-width: 0px 8px 0px 0px;
+  border-style: solid;
+  border-color: #ddd;
+  text-align: center;
+}
+.mainright {
+  background: #fff;
+}
+a {
+  border-bottom: none;
+  color: #337ab7;
+}
+a:hover, a:focus{
+  color: #332af7;
+}
+body{
+  padding: 0px;
+  background: #ddd;
+}
+
+.divider {
+  width: 80%;
+}

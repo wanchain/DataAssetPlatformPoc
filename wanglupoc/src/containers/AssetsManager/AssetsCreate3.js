@@ -29,7 +29,7 @@ export default class AssetsCreate3 extends Component {
 
   handleSubmit() {
     this.props.setListActive(true);
-    browserHistory.push('/myroutera');
+    browserHistory.push('/am');
   }
 
   render() {

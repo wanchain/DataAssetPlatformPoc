@@ -68,12 +68,12 @@ export default class AssetsManager extends Component {
             <ul className="nav nav-list">
               <li className="divider"/>
               <li onClick={this.setListActive.bind(this)}>
-                <Link to="/myroutera" ><img src={isListActive ? assetsList2 : assetsList1} />&nbsp;资产列表</Link>
+                <Link to="/am" ><img src={isListActive ? assetsList2 : assetsList1} />&nbsp;资产列表</Link>
               </li>
 
               <li className="divider"/>
               <li onClick={this.setCreateActive.bind(this)}>
-                <Link to="/myroutera/create" ><img src={isListActive ? assetsPublish1 : assetsPublish2} />&nbsp;资产发行</Link>
+                <Link to="/am/create" ><img src={isListActive ? assetsPublish1 : assetsPublish2} />&nbsp;资产发行</Link>
               </li>
             </ul>
           </div>
