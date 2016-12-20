@@ -104,7 +104,8 @@ export default function(state = initialState, action = {}) {
     // deposit
     case DEPOSIT:
       console.log('DEPOSITGETBALANCE');
-      break;
+      return state;
+
     case DEPOSIT_SUCCESS:
       console.log('DEPOSITGETBALANCE_SUCCESS');
       return {
@@ -129,7 +130,7 @@ export function setFocus(index) {
 export function sendTransaction(transaction) {
   return {
     types: [DEPOSITSENDTRANSACTION, DEPOSITSENDTRANSACTION_SUCCESS, DEPOSITSENDTRANSACTION_FAIL],
-    promise: (client) => client.post('/assets/sendTransaction', {
+    promise: (client) => client.post('/assets/customTokenTransfer', {
       data: transaction
     })
   };
@@ -147,7 +148,7 @@ export function getbalance(userid) {
 export function doDeposit(userid) {
   return {
     types: [DEPOSIT, DEPOSIT_SUCCESS, DEPOSIT_FAIL],
-    promise: (client) => client.post('/assets/deposit', {
+    promise: (client) => client.post('/deposit/deposit', {
       data: userid
     })
   };

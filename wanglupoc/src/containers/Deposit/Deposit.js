@@ -25,7 +25,8 @@ export default class Deposit extends Component {
     focusindex: React.PropTypes.number,
     setFocus: React.PropTypes.func,
     item: React.PropTypes.func,
-    sendTransaction: React.PropTypes.func
+    sendTransaction: React.PropTypes.func,
+    doDeposit: React.PropTypes.func
   };
 
   constructor(props) {
@@ -49,14 +50,20 @@ export default class Deposit extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+    console.log(this.props.focusindex);
     const youraddress = this.refs.youraddress;
     const transnumber = this.refs.transnumber;
     const theiraddress = this.refs.theiraddress;
-    this.props.sendTransaction({
-      youraddress: youraddress.value,
-      number: transnumber.value,
-      theiraddress: theiraddress.value
-    });
+    if ( this.props.focusindex === 0 ) {
+      this.props.sendTransaction({
+        contractAddress: youraddress.value,
+        number: parseInt(transnumber.value, 10),
+        receiverAddress: theiraddress.value
+      });
+    } else if ( this.props.focusindex === 1 ) {
+      const addcash = this.refs.addcash;
+      this.props.doDeposit({addcash: parseInt(addcash.value, 10)});
+    }
   }
 
   renderBank() {
@@ -77,7 +84,7 @@ export default class Deposit extends Component {
             <label className={styles.yuenumber}>￥209,999.00</label>
           </div>
           <div className="col-md-6">
-            <input className={styles.inputmoney} placeholder="请输入充值金额" />
+            <input className={styles.inputmoney} ref="addcash" placeholder="请输入充值金额" type="text"/>
           </div>
         </div>
       </div>

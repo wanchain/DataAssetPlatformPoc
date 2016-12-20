@@ -116,9 +116,16 @@ exports.transferCustomToken = function(contractAddress, senderEthAddress, sender
 	var serializedTx = tx.serialize();
 	web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash){
 	   if(!err){
-	      web3.eth.getTransactionReceipt(hash, function(error, result){
-          callback(error, result);
-        });
+	   	  var hash4Timeout = hash;
+	   	  var cb4TimeOut = callback;
+			  setTimeout(function() {
+			  	var receipt = web3.eth.getTransactionReceipt(hash4Timeout);
+			  	if(receipt){
+			  		cb4TimeOut(null, receipt);
+					} else {
+			  		cb4TimeOut('transfer failed', null);
+					}
+				}, 30000);
 	   } else {
 	      callback(err, null);
 	   }

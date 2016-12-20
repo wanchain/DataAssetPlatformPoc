@@ -8,15 +8,14 @@ const assetTransaction = new mongoose.Schema({
     fromUser: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
 
     toAddress: String,
-    toUser: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
 
-    assetContract: {type: mongoose.Schema.Types.ObjectId, ref: 'assetContract'},
+    assetContract: String,
 
     valuePerShare: {type: Number},
     transferQuantity: {type: Number},
 
     timestamp: {type: Date, default: Date.now},
-    status: {type: String, enum: ['validating', 'verified', 'failed']}
+    status: {type: String, enum: ['validating', 'failed', 'completed']}
 });
 
-export default mongoose.model('assetTransaction', assetTransaction);
+export default mongoose.model('AssetTransaction', assetTransaction);

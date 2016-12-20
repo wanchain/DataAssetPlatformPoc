@@ -2,6 +2,7 @@
  * Created by jishiwu on 12/6/16.
  */
 import Assets from '../../models/assetsmodel';
+import AssetTransaction from '../../models/assetTransaction';
 var ethereum = require('../../ethereum/ethereum');
 
 export default function add(req) {
@@ -131,5 +132,43 @@ export function modify(req) {
         });
       }
     })
+  });
+}
+
+export function customTokenTransfer(req) {
+  console.log('customTokenTransfer' + JSON.stringify(req.body, null, '$$$$'));
+  const sender = req.session.user;
+  console.log("session-user:" + JSON.stringify(sender));
+  const assetContractAddress = req.body.contractAddress;
+  const receiverAddress = req.body.receiverAddress;
+  const quantity = req.body.number;
+  return new Promise((resolve, reject) => {
+    // if save success
+
+    var tx = new AssetTransaction({
+      fromAddress: sender.ethAddress,
+      fromUser: sender,
+      toAddress: receiverAddress,
+      assetContract: assetContractAddress,
+      transferQuantity: quantity,
+      status: 'validating'
+    });
+    tx.save(function (err, data) {
+      if(err) {
+        console.log("add error: " + err);
+        reject(err);
+      } else {
+        console.log("add success!!");
+        resolve({data: data});
+        var dbTx = data;
+        console.log('quantity : ' + quantity);
+        ethereum.transferCustomToken(assetContractAddress, sender.ethAddress,
+             sender.so_privatekey, receiverAddress, quantity *100,
+             function (err, dummy) {
+                 dbTx.status = err ? 'failed' : 'completed';
+                 dbTx.save();
+             });
+      }
+    });
   });
 }
