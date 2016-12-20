@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import './localfile.scss';
-import alert from '../../img/ic_alert.png';
-import upload from '../../img/ic_upload.png';
-import icsubmit from '../../img/ic_submit.png';
 import {CryptoJS} from '../../../../local_modules/crypto'
 import {FileHash, CreateStandardReqParams, RequestShortCode, String2Unicode} from '../utils/utils'
 import sendHttpRequest from '../http/httpAjax'
@@ -13,6 +9,10 @@ import ActvionModal from '../dialog/actionModal'
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
 
 const REQ_SHORT_CODE_TIMES = 15;
+const styles = require('./localfile.scss');
+const alert = require('../img/ic_alert.png');
+const upload = require('../img/ic_upload');
+const icsubmit = require('../img/ic_submit.png');
 
 // const styles = {
 //   spanStyle : {
@@ -161,19 +161,19 @@ class LocalFile extends Component {
         <ActvionModal toggleType="action" shortCodeValue={this.state.short_code_link}
                       txhash={this.state.txhash} />;
       descContent = (
-        <div className="ele-layout">
-          <span className="text-title">文件名:</span>
-          <span id="file-info-name" className="text-content">&nbsp;&nbsp;{this.state.fileinfo.name}</span>
+        <div className={styles.ele-layout}>
+          <span className={styles.text-title}>文件名:</span>
+          <span id="file-info-name" className={styles.text-content}>&nbsp;&nbsp;{this.state.fileinfo.name}</span>
           <br/>
-          <span className="text-title">字节数:</span>
-          <span id="file-info-size" className="text-content">&nbsp;&nbsp;{this.state.fileinfo.size} BYTES</span>
+          <span className={styles.text-title}>字节数:</span>
+          <span id="file-info-size" className={styles.text-content}>&nbsp;&nbsp;{this.state.fileinfo.size} BYTES</span>
           <br/>
-          <span className="text-title">哈希值:</span>
-          <span id="file-info-hash" className="text-content">&nbsp;&nbsp;{this.state.fileinfo.hash}</span>
+          <span className={styles.text-title}>哈希值:</span>
+          <span id="file-info-hash" className={styles.text-content}>&nbsp;&nbsp;{this.state.fileinfo.hash}</span>
           <br/>
-          <div className="form-group">
-            <label className="text-title " >描述：</label>
-            <textarea id="file-info-description" className="form-control"
+          <div className={styles.form-group}>
+            <label className={styles.text-title} >描述：</label>
+            <textarea id="file-info-description" className={styles.form-control}
                       name="upload-file-info-description" rows="3" placeholder="请输入描述，字数请控制在500字以内"
                       ref="area_descriptor" maxLength="500" >
             </textarea>
@@ -187,16 +187,16 @@ class LocalFile extends Component {
 
     return(
       <form method="post">
-        <div className="local-file">
-          <div className="alert-content " >
+        <div className={styles.local-file}>
+          <div className={styles.alert-content} >
             <p>
               <img src={alert}/>&nbsp;&nbsp;
               提示：请选择本地文件，区块链将记录文件的哈希值，但并不存储源文件，源文件请妥善保存以便于验证
             </p>
           </div>
-          <div className="file-area">
-            <div className="upload-bg">
-              <a href="javascript:void(0)"  className="btn file upload-a">
+          <div className={styles.file-area}>
+            <div className={styles.upload-bg}>
+              <a href="javascript:void(0)"  className={'btn ' + styles.file + styles.upload-a}>
                 <input type="file" name="" id="" onDrop={this.handleDrop} onChange={this.handleChange}/>
                 <img  src={upload} />
                 <p>
@@ -210,8 +210,8 @@ class LocalFile extends Component {
 
           <div>
           </div>
-          <div className="submit-area">
-            <a  className="btn submit-button "  data-toggle="modal" data-target=".bs-example-modal-lg" onClick={this.handleSubmit}>
+          <div className={styles.submit-area}>
+            <a  className={'btn' + styles.submit-button}  data-toggle="modal" data-target=".bs-example-modal-lg" onClick={this.handleSubmit}>
               <span>
                   <img src={icsubmit}/>&nbsp;&nbsp;提交
               </span>

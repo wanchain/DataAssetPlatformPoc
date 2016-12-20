@@ -1,6 +1,9 @@
 .main {
   background: #fff;
 }
+.content{
+  height: 100%;
+}
 .mainleft {
   background: #fff;
   padding: 0px;
@@ -11,6 +14,7 @@
 }
 .mainright {
   background: #fff;
+  height: 100%;
 }
 a {
   border-bottom: none;

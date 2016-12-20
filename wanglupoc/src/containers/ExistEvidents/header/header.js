@@ -4,7 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import HeaderTitle from './header_title';
 import path from 'path';
 import Avatar from 'material-ui/Avatar';
-import logo from '../../img/logo_white_48x48.png';
+import logo from '../img/logo_white_48x48.png';
 import FlatButton from 'material-ui/FlatButton'
 
 const styles = {

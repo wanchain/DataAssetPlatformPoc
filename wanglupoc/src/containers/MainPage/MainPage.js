@@ -15,7 +15,7 @@ export default class MainPage extends Component {
 
     return (
       <div className={'container ' + styles.main} >
-        <div className="row">
+        <div className={'row' + styles.content}>
           <div className={'col-md-2 ' + styles.mainleft}>
             <h4>资产总额</h4>
             <h4>￥789,789</h4>

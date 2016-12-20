@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
-import './header.css';
-import existence from '../../img/ic_existence.png';
-import proof from '../../img/ic_proof.png';
+// import './header.css';
+// import existence from '../img/ic_existence.png';
+// import proof from '../img/ic_proof.png';
 import {Link} from 'react-router';
 import {LOCAL_FILE, LAYOUT_PROOF, PROOF} from '../constants';
 
+// const existence = require('../img/ic_existence.png');
+// const proof = require('../img/ic_proof.png');
 // const styles = {
 //   navbar: {
 //     height:127,
@@ -88,13 +90,13 @@ class NewHeader extends Component {
               <ul className="nav navbar-nav navbar-right navbar-right-item" >
                 <li className={(this.props.isproof === 'true') ? '' : 'active'} ref="exist_ref">
                   <Link to={LOCAL_FILE} className="header-nav-link" activeClassName="active">
-                    <img src={existence} /><br/>
+                    {/* <img src={existence} /><br/>*/}
                     <p>存入</p>
                   </Link>
                 </li>
                 <li className={(this.props.isproof === 'true') ? 'active' : ''} ref="proof_ref">
                   <Link to={LAYOUT_PROOF + '/' + PROOF} className="header-nav-link" activeClassName="active">
-                    <img src={proof}/><br/>
+                    {/* <img src={proof}/><br/>*/}
                     <p>验证</p>
                   </Link>
                 </li>
