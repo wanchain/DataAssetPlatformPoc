@@ -2,6 +2,7 @@
  * Created by jishiwu on 12/6/16.
  */
 import Assets from '../../models/assetsmodel';
+var ethereum = require('../../ethereum/ethereum');
 
 export default function add(req) {
   console.log("-----");
@@ -22,6 +23,9 @@ export default function add(req) {
   });
   return new Promise((resolve, reject) => {
     // if save success
+    const user = req.session.user;
+    console.log("session-user:" + JSON.stringify(user));
+    newAssets.creatorAddress = user.ethAddress;
     newAssets.save(function (err, data) {
       if(err) {
         console.log("add error: " + err);
@@ -29,11 +33,26 @@ export default function add(req) {
       } else {
         console.log("add success!!");
         resolve({data: data});
+        ethereum.issueAsset(user.ethAddress, user.so_privatekey, data, (err, receipt) => {
+          data.contractAddress = receipt.contractAddress;
+          data.save(function (err) {
+            console.log();
+            /*ethereum.transferCustomToken(data.contractAddress, user.ethAddress,
+              user.so_privatekey, '0x4f35bf8d8c703bec0f848744b2cac1ff7dd59aa3', 1000, function () {
+              });
+              var caddr = data.contractAddress;
+              setTimeout(function () {
+                var twoBalance = ethereum.getCustomTokenBalance(caddr, '0x4f35bf8d8c703bec0f848744b2cac1ff7dd59aa3');
+                console.log("user two balance:" + twoBalance);
+              }, 2000);*/
+          });
+        });
       }
     });
   });
 }
 
+//poc@imm:查找特定user的asset
 export function getall(req) {
   console.log("-----getall");
 
