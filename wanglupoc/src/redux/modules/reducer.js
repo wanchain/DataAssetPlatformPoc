@@ -10,6 +10,7 @@ import {reducer as form} from 'redux-form';
 import info from './info';
 import widgets from './widgets';
 import assets from './assets';
+import deposit from './deposit';
 // import assetsManager from './AssetsManagerRedux';
 
 export default combineReducers({
@@ -25,5 +26,6 @@ export default combineReducers({
   info,
   pagination,
   assets,
+  deposit,
   widgets
 });

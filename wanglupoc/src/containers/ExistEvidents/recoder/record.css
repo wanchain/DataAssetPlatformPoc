@@ -1,0 +1,36 @@
+.recorder-content{
+    margin-top: 30px;
+}
+.recorder-title{
+    color: #333333;
+    font-size: 24px;
+    margin-left: 30px;
+
+}
+
+.recorder-table{
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.table th{
+    text-align: center;
+    height: 50px;
+    font-size: 14px;
+    color: #474E5D;
+    background-color: #F6F6F6;
+}
+
+.table > tbody > tr > td{
+    vertical-align: middle;
+}
+.table td{
+    text-align: center;
+    height: 50px;
+    font-size: 14px;
+    color: #333333;
+    border-bottom: 1px solid #F6F6F6;
+
+
+
+}

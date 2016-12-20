@@ -12,13 +12,13 @@ import {
     AssetsCreate1,
     AssetsCreate2,
     AssetsCreate3,
-  MainPage,
-  OAssets,
-  Deposit,
-  Withdraw,
-  TRecords,
-  TMarket,
-  ExistEvidents,
+    MainPage,
+    OAssets,
+    Deposit,
+    Withdraw,
+    TRecords,
+    TMarket,
+    ExistEvidents,
     NotFound,
   } from 'containers';
 
@@ -73,6 +73,7 @@ export default (store) => {
         <Route path="/trecords" component={TRecords}/>
         <Route path="/tmarket" component={TMarket}/>
         <Route path="/ee" component={ExistEvidents}/>
+        {/* <Route path="/LFH" component={LocalFile}/>*/}
       </Route>
 
       { /* Catch all route */ }

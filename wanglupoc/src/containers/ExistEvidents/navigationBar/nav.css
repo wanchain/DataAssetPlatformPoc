@@ -1,0 +1,30 @@
+.wnav{
+    height: 50px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 14px;
+
+}
+
+.wnav-child > li{
+    height: 50px;
+}
+
+.wnav-child > li > a{
+    color:#999999;
+    height: 41px;
+    margin-top: 8px;
+    border-radius: 0;
+    background-color: #FFF;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus,
+.wnav-child > li > a:hover,
+.wnav-child > li > a:focus,
+.nav-link.active{
+    color:#474E5D;
+    border-bottom: 3px solid #008AFF;
+    background-color: transparent;
+}

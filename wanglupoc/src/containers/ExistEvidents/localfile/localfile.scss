@@ -1,0 +1,108 @@
+.local-file{
+
+}
+
+
+.alert-content{
+    vertical-align: middle;
+    padding-left: 15px;
+    padding-top: 10px;
+    height: 40px;
+    background-color: #E3F5FF;
+    border: 2px solid #9FDDFF;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.alert-content > p{
+    color: #666666;
+}
+
+.file-area{
+    height: 210px;
+    background-color: #FCFCFD;
+    margin-top: 25px;
+    border-radius: 5px;
+    border: 2px dashed #F6F6F6;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+
+
+
+
+
+.upload-bg p{
+    margin-top: 20px;
+    font-size: 18px;
+    color: #CCCCCC;
+}
+
+.submit-area{
+    height: 80px;
+    text-align: center;
+    border-bottom: 1px solid #F6F6F6;
+
+}
+
+.submit-button{
+    width: 180px;
+    height: 50px;
+    margin-top: 15px;
+    background-color: #51ad4e;
+    color: #FFF;
+    font-size: 22px;
+    vertical-align: middle;
+}
+
+.submit-button:focus,
+.submit-button:hover{
+    color: #FFF;
+    border-color: transparent;
+}
+
+.upload-a{
+    margin-top: 20px;
+}
+
+
+
+.file {
+    position: relative;
+    display: inline-block;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: transparent;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 120px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+    text-decoration: none;
+}
+
+.inline-div{
+    display: inline;
+}
+
+.progress-div{
+    margin-top: 3px;
+}

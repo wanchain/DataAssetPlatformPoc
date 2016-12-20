@@ -33,13 +33,13 @@ export default class MainPage extends Component {
               <LinkContainer to="/main">
                 <NavItem eventKey={3}>资产</NavItem>
               </LinkContainer>
+              <hr className={styles.divider}/>
             </Nav>
 
             <ul>
-              <hr className={styles.divider}/>
-              <li><h6>网录币（WLC)</h6><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5></li>
-              <li><h6>网录币（WLC)</h6><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5></li>
-              <li><h6>新海股份（XH）</h6><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5></li>
+              <li><h6>网录币（WLC)</h6></li><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5>
+              <li><h6>网录币（WLC)</h6></li><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5>
+              <li><h6>新海股份（XH）</h6></li><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5>
             </ul>
 
             <Nav>
@@ -50,7 +50,7 @@ export default class MainPage extends Component {
               <LinkContainer to="/trecords">
                 <NavItem eventKey={5}>交易记录</NavItem>
               </LinkContainer>
-              <LinkContainer to="/setting">
+              <LinkContainer to="/setting" disabled>
                 <NavItem eventKey={6}>设置</NavItem>
               </LinkContainer>
               <LinkContainer to="/ee">
