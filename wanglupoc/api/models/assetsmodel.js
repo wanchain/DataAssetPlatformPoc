@@ -32,7 +32,11 @@ const assetsSchema = new mongoose.Schema({
   totalValue: Number,
   exchangeState: Boolean,
   created_at: Date,
-  updated_at: Date
+  updated_at: Date,
+  contractAddress: {type: String, unique: true},
+  creatorAddress: String,
+  marketPrice: Number,
+  issueState: String
 });
 
 assetsSchema.pre('save', function addTime(next) {

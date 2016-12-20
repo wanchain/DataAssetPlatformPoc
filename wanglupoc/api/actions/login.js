@@ -18,6 +18,7 @@ export default function login(req) {
       .then(findUser => {
         if(findUser) {
           //TODO: trim user fields
+          req.session.user = findUser;
           resolve({'user': findUser});
         } else {
           reject({status: 401, code: 2, message:"User name or password invalid"});
