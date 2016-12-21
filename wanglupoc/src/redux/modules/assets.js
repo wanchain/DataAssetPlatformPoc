@@ -39,7 +39,9 @@ const initialState = {
   },
   word: '',
   isListActive: true,
-  createStep: 1
+  createStep: 1,
+
+  oassetsFocusIndex: 0,
 };
 
 function _search(items, word) {

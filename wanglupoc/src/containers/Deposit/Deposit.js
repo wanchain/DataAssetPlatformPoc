@@ -17,14 +17,14 @@ const styles = require('./Deposit.scss');
 @connect(
   (state) => ({
     focusindex: state.deposit.focusindex,
-    balances: state.deposit.balances,
+    userbalance: state.deposit.userbalance,
   }),
   depositActions
 )
 export default class Deposit extends Component {
   static propTypes = {
     focusindex: React.PropTypes.number,
-    balances: React.PropTypes.array,
+    userbalance: React.PropTypes.object,
     setFocus: React.PropTypes.func,
     item: React.PropTypes.func,
     sendTransaction: React.PropTypes.func,
@@ -88,7 +88,7 @@ export default class Deposit extends Component {
             <label className={styles.yue}>充值金额</label>
           </div>
           <div className="col-md-6">
-            <label className={styles.yuenumber}>￥{this.props.balances[0].amount}</label>
+            <label className={styles.yuenumber}>￥{this.props.userbalance.cash}</label>
           </div>
           <div className="col-md-6">
             <input className={styles.inputmoney} ref="addcash" placeholder="请输入充值金额" type="text"/>

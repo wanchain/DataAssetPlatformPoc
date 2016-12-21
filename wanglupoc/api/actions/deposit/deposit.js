@@ -54,6 +54,38 @@ export function getStockBalance(req) {
 }
 
 // get cash balance
+/*
+ {
+ "userbalance": {
+ "_id": "5859f7eb4c8a1e2bf023f90a",
+ "cash": 101,
+ "userid": "5853c9e91c26062227aeef14",
+ "__v": 0,
+ "assets": [
+ {
+ "_id": "5858ad03d123dd0e582084e7",
+ "created_at": "2016-12-20T04:01:07.507Z",
+ "updated_at": "2016-12-20T08:10:27.237Z",
+ "creatorAddress": "0x4d3e67e30a250b647b7ea5b1f684b03d6f8d5255",
+ "assetsName": "sss",
+ "assetsTitle": "s",
+ "assetsType": 0,
+ "publishType": 0,
+ "stockNumber": 9999999,
+ "unitType": 0,
+ "unitPrice": 1,
+ "members": "",
+ "publishTime": "2016-12-29T00:00:00.000Z",
+ "totalValue": 0,
+ "exchangeState": false,
+ "__v": 0,
+ "contractAddress": "0xc0b2c2f422bc90a8167f4c6a43a2629c7293ee01",
+ "hold": 999998000
+ }
+ ]
+ }
+ }
+* */
 export function getbalance(req) {
   console.log("-----getbalance");
   const user = req.session.user;

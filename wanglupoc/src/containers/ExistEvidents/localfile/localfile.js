@@ -10,9 +10,9 @@ const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
 
 const REQ_SHORT_CODE_TIMES = 15;
 const styles = require('./localfile.scss');
-const alert = require('../img/ic_alert.png');
-const upload = require('../img/ic_upload');
-const icsubmit = require('../img/ic_submit.png');
+const alert = require('.././ic_alert.png');
+const upload = require('.././ic_upload');
+const icsubmit = require('.././ic_submit.png');
 
 // const styles = {
 //   spanStyle : {
