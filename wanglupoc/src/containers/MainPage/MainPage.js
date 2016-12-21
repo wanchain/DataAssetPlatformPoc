@@ -5,23 +5,55 @@ import React, { Component } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
+import {connect} from 'react-redux';
+import * as depositActions from 'redux/modules/deposit';
 
+@connect(
+  (state) => ({
+    userbalance: state.deposit.userbalance,
+  }),
+  depositActions
+)
 export default class MainPage extends Component {
   static propTypes = {
     children: React.PropTypes.object.isRequired,
+    userbalance: React.PropTypes.object,
+    getbalance: React.PropTypes.func
   };
+
+  componentWillMount() {
+    // this.props.getbalance();
+  }
+
   render() {
     const styles = require('./MainPage.scss');
+    const totalcash = this.props.userbalance.cash;
+    let totalstockmoney = 0;
+    // const currentDate = new Date();
+
+    const assetslist = [];
+
+    if (this.props.userbalance && this.props.userbalance.assets && this.props.userbalance.assets.length > 0) {
+      this.props.userbalance.assets.map((item1) => {
+        const stockmoney = item1.unitPrice * item1.hold;
+        totalstockmoney = totalstockmoney + stockmoney;
+        assetslist.push(
+          <li><h6>{item1.assetsName + '(' + item1.assetsTitle + ')'}</h6></li>);
+        assetslist.push(
+          <h5>￥{stockmoney}&nbsp;&nbsp;|&nbsp;&nbsp;{item1.hold}股</h5>);
+      });
+    }
+    const totalmoney = totalcash + totalstockmoney;
 
     return (
       <div className={'container ' + styles.main} >
         <div className={'row' + styles.content}>
           <div className={'col-md-2 ' + styles.mainleft}>
             <h4>资产总额</h4>
-            <h4>￥789,789</h4>
+            <h4>￥{totalmoney}</h4>
             <h6>人民币</h6>
-            <h4>￥789,789</h4>
-            <h6><small>2016-12-23</small></h6>
+            <h4>￥{totalcash}</h4>
+            <h6><small>2016-12-21</small></h6>
             <Nav activeKey="1" >
               <hr className={styles.divider}/>
               <LinkContainer to="/deposit">
@@ -37,9 +69,9 @@ export default class MainPage extends Component {
             </Nav>
 
             <ul>
-              <li><h6>网录币（WLC)</h6></li><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5>
-              <li><h6>网录币（WLC)</h6></li><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5>
-              <li><h6>新海股份（XH）</h6></li><h5>Y438,999&nbsp;&nbsp;|&nbsp;&nbsp;1,700&nbsp;股</h5>
+              {/* {item && <li><h6>{item.assetsName + '(' + item.assetsTitle + ')'}</h6></li>}*/}
+              {/* {item && <h5>￥{stockmoney}&nbsp;&nbsp;|&nbsp;&nbsp;{item.hold}股</h5>};*/}
+              {assetslist}
             </ul>
 
             <Nav>

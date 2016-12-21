@@ -42,7 +42,7 @@ const initialState = {
         totalValue: 0,
         exchangeState: false,
         contractAddress: '0xc0b2c2f422bc90a8167f4c6a43a2629c7293ee01',
-        hold: 999998000
+        hold: 9999980
       }
     ]
   },

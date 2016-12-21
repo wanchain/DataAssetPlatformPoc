@@ -6,10 +6,6 @@
  */
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-// import { LinkContainer } from 'react-router-bootstrap';
-// import Nav from 'react-bootstrap/lib/Nav';
-// import NavItem from 'react-bootstrap/lib/NavItem';
-// import TabComponent from './Tab/TabComponent';
 import * as depositActions from 'redux/modules/deposit';
 
 const styles = require('./Deposit.scss');
@@ -73,7 +69,7 @@ export default class Deposit extends Component {
     }
   }
 
-  renderBank() {
+  renderBank(userbalance) {
     return (
       <div>
         <div className="row">
@@ -88,7 +84,7 @@ export default class Deposit extends Component {
             <label className={styles.yue}>充值金额</label>
           </div>
           <div className="col-md-6">
-            <label className={styles.yuenumber}>￥{this.props.userbalance.cash}</label>
+            <label className={styles.yuenumber}>￥{userbalance.cash}</label>
           </div>
           <div className="col-md-6">
             <input className={styles.inputmoney} ref="addcash" placeholder="请输入充值金额" type="text"/>
@@ -129,9 +125,10 @@ export default class Deposit extends Component {
   }
 
   render() {
+    const userbalance = this.props.userbalance;
     return (
       <div>
-        {this.props.focusindex === 1 && this.renderBank()}
+        {this.props.focusindex === 1 && this.renderBank(userbalance)}
         {this.props.focusindex !== 1 && this.renderTransfer()}
         <hr/>
         <div className="row">
