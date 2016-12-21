@@ -10,11 +10,16 @@ var ethereum = require('../../ethereum/ethereum');
 
 var _getUserAssets = function(user, callback){
   Assets.find({}, function(err, assetsFind){
+    console.log("findAssetContracts" + JSON.stringify(assetsFind, null, "    "));
     if(err){
       callback(err, null);
     } else {
-      for(var assetItem in assetsFind){
-        assetItem['hold'] = ethereum.getCustomTokenBalance(assetItem.contractAddress, user.ethAddress);
+      var cpAssetsFind = assetsFind;
+      console.log("cpAssetsFind" + JSON.stringify(assetsFind, null, "    "));
+      for(var i in assetsFind){
+        assetsFind[i] = assetsFind[i].toObject();
+        assetsFind[i]['hold'] = ethereum.getCustomTokenBalance(assetsFind[i].contractAddress, user.ethAddress);
+        console.log();
       }
       callback(null, assetsFind);
     }
@@ -51,14 +56,31 @@ export function getStockBalance(req) {
 // get cash balance
 export function getbalance(req) {
   console.log("-----getbalance");
+  const user = req.session.user;
+
   return new Promise((resolve, reject) => {
-    console.log("get success!!");
-    // id === 1, CNY：人民币
-    const balances = [
-      {id: 1, name: 'CNY', amount: 8990000},
-      {id: 2, name: 'USD', amount: 5990000}
-      ];
-    resolve({data: balances});
+    //var balance = new UserBalance();
+    UserBalance.findOne({'userid': user._id}, function (err, balance){
+      if(!balance) {
+        balance = new UserBalance();
+        balance['userid'] = user._id;
+        balance.cash = 0;
+      }
+      if(err){
+        reject({error: err});
+      } else {
+        _getUserAssets(user, function (error, findAssets){
+          console.log('findAssets' + JSON.stringify(findAssets, null, '     '));
+          var modifyAbleBalance = balance.toObject();
+          if(error){
+            //omited
+          } else {
+            modifyAbleBalance['assets'] = findAssets;
+          }
+          resolve({"userbalance": modifyAbleBalance});
+        });
+      }
+    });
   });
 }
 

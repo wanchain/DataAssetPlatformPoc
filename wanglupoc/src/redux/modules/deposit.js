@@ -149,10 +149,10 @@ export function getbalance() {
   };
 }
 
-export function doDeposit() {
+export function doDeposit(data) {
   return {
     types: [DEPOSIT, DEPOSIT_SUCCESS, DEPOSIT_FAIL],
-    promise: (client) => client.post('/deposit/deposit', {})
+    promise: (client) => client.post('/deposit/deposit', {data: data})
   };
 }
 
