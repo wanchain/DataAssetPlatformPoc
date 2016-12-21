@@ -54,11 +54,11 @@ export function getbalance(req) {
   return new Promise((resolve, reject) => {
     console.log("get success!!");
     // id === 1, CNY：人民币
-    const balance = [
+    const balances = [
       {id: 1, name: 'CNY', amount: 8990000},
       {id: 2, name: 'USD', amount: 5990000}
       ];
-    resolve({data: balance});
+    resolve({data: balances});
   });
 }
 
@@ -66,18 +66,18 @@ export function getbalance(req) {
 export function getTransactions(req) {
   console.log("-----getTransactions");
   const user = req.session.user;
-  /*return new Promise((resolve, reject) => {
-    console.log("get success!!");
-
-    // trade type: 0 买入, 1 卖出, state: 200 代表完成
-    const transactions = [
-      {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'},
-      {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'},
-      {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'},
-      {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'}
-    ];
-    resolve({data: transactions});
-  });*/
+  // return new Promise((resolve, reject) => {
+  //   console.log("get success!!");
+  //
+  //   // trade type: 0 买入, 1 卖出, state: 200 代表完成
+  //   const transactions = [
+  //    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
+  //    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
+  //    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
+  //    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'}
+  //   ];
+  //   resolve({data: transactions});
+  // });
   return new Promise((resolve, reject) => {
     AssetTransaction.find({fromAddress: user.ethAddress}, function(err, transactions){
       if(err){

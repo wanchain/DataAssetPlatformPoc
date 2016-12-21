@@ -16,17 +16,20 @@ const styles = require('./Deposit.scss');
 
 @connect(
   (state) => ({
-    focusindex: state.deposit.focusindex
+    focusindex: state.deposit.focusindex,
+    balances: state.deposit.balances,
   }),
   depositActions
 )
 export default class Deposit extends Component {
   static propTypes = {
     focusindex: React.PropTypes.number,
+    balances: React.PropTypes.array,
     setFocus: React.PropTypes.func,
     item: React.PropTypes.func,
     sendTransaction: React.PropTypes.func,
-    doDeposit: React.PropTypes.func
+    doDeposit: React.PropTypes.func,
+    getbalance: React.PropTypes.func
   };
 
   constructor(props) {
@@ -37,6 +40,10 @@ export default class Deposit extends Component {
     this.setFocus0 = this.setFocus0.bind(this);
     this.setFocus1 = this.setFocus1.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.getbalance();
   }
 
   setFocus0(event) {
@@ -51,10 +58,10 @@ export default class Deposit extends Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log(this.props.focusindex);
-    const youraddress = this.refs.youraddress;
-    const transnumber = this.refs.transnumber;
-    const theiraddress = this.refs.theiraddress;
     if ( this.props.focusindex === 0 ) {
+      const youraddress = this.refs.youraddress;
+      const transnumber = this.refs.transnumber;
+      const theiraddress = this.refs.theiraddress;
       this.props.sendTransaction({
         contractAddress: youraddress.value,
         number: parseInt(transnumber.value, 10),
@@ -81,7 +88,7 @@ export default class Deposit extends Component {
             <label className={styles.yue}>充值金额</label>
           </div>
           <div className="col-md-6">
-            <label className={styles.yuenumber}>￥209,999.00</label>
+            <label className={styles.yuenumber}>￥{this.props.balances[0].amount}</label>
           </div>
           <div className="col-md-6">
             <input className={styles.inputmoney} ref="addcash" placeholder="请输入充值金额" type="text"/>

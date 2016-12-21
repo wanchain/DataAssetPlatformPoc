@@ -15,7 +15,7 @@ export default class Login extends Component {
     loginError: PropTypes.object,
     login: PropTypes.func,
     logout: PropTypes.func,
-  }
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +23,7 @@ export default class Login extends Component {
     const pwd = this.refs.password;
     this.props.login(input.value, pwd.value);
     input.value = '';
-  }
+  };
 
   render() {
     const {user, logout, loginError} = this.props;

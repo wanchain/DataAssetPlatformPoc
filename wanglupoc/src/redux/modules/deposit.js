@@ -21,19 +21,19 @@ const DEPOSIT_FAIL = 'deposit/DEPOSIT_FAIL';
 const initialState = {
   focusindex: 0,
   transaction: {
-    youraddress: '',
-    number: '',
-    theiraddress: '',
+    contractAddress: '0xbbbbbbbbbbbbbb',
+    number: 50,
+    receiverAddress: '0xaaaaaaaaaaaaa',
   },
   balances: [
-    {id: 1, name: 'CNY', amount: 8990000},
+    {id: 1, name: 'CNY', amount: 7990000},
     {id: 2, name: 'USD', amount: 5990000}
   ],
   transactions: [
-    {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'},
-    {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'},
-    {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'},
-    {from: '0xbbbbbbbbbbbbbb', to: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: '0', totalPrice: 200, volume: 10, unitPrice: 20, fee: 0, state: 200, data: '2016-10-12'}
+    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
+    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
+    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
+    {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'}
   ],
   deposit: {
     userid: 'zhangying',
@@ -59,12 +59,9 @@ export default function(state = initialState, action = {}) {
     case DEPOSITSENDTRANSACTION_SUCCESS:
       {
         console.log('DEPOSITSENDTRANSACTION_SUCCESS');
-        // const items2show = _search(action.result.data, state.word);
-        // return {
-        //   ...state,
-        //   items: action.result.data,
-        //   items2show: items2show
-        // };
+        return {
+          ...state
+        };
       }
       break;
     case DEPOSITSENDTRANSACTION_FAIL:
@@ -87,11 +84,15 @@ export default function(state = initialState, action = {}) {
       };
     case DEPOSITGETTRANSACTIONS_FAIL:
       console.log('DEPOSITGETTRANSACTIONS_FAIL');
-      break;
+      return {
+        ...state
+      };
     // get balance
     case DEPOSITGETBALANCE:
       console.log('DEPOSITGETBALANCE');
-      break;
+      return {
+        ...state
+      };
     case DEPOSITGETBALANCE_SUCCESS:
       console.log('DEPOSITGETBALANCE_SUCCESS');
       return {
@@ -100,21 +101,26 @@ export default function(state = initialState, action = {}) {
       };
     case DEPOSITGETBALANCE_FAIL:
       console.log('DEPOSITGETBALANCE_FAIL');
-      break;
+      return {
+        ...state
+      };
     // deposit
     case DEPOSIT:
-      console.log('DEPOSITGETBALANCE');
-      return state;
-
+      console.log('DEPOSIT');
+      return {
+        ...state
+      };
     case DEPOSIT_SUCCESS:
-      console.log('DEPOSITGETBALANCE_SUCCESS');
+      console.log('DEPOSIT_SUCCESS');
       return {
         ...state,
         balances: action.result.data
       };
     case DEPOSIT_FAIL:
-      console.log('DEPOSITGETBALANCE_FAIL');
-      break;
+      console.log('DEPOSIT_FAIL');
+      return {
+        ...state
+      };
     default:
       return state;
   }
@@ -136,29 +142,23 @@ export function sendTransaction(transaction) {
   };
 }
 
-export function getbalance(userid) {
+export function getbalance() {
   return {
     types: [DEPOSITGETBALANCE, DEPOSITGETBALANCE_SUCCESS, DEPOSITGETBALANCE_FAIL],
-    promise: (client) => client.post('/assets/getbalance', {
-      data: userid
-    })
+    promise: (client) => client.post('/deposit/getbalance', {})
   };
 }
 
-export function doDeposit(userid) {
+export function doDeposit() {
   return {
     types: [DEPOSIT, DEPOSIT_SUCCESS, DEPOSIT_FAIL],
-    promise: (client) => client.post('/deposit/deposit', {
-      data: userid
-    })
+    promise: (client) => client.post('/deposit/deposit', {})
   };
 }
 
-export function getTransactions(userid) {
+export function getTransactions() {
   return {
     types: [DEPOSITGETTRANSACTIONS, DEPOSITGETTRANSACTIONS_SUCCESS, DEPOSITGETTRANSACTIONS_FAIL],
-    promise: (client) => client.post('/assets/getTransactions', {
-      data: userid
-    })
+    promise: (client) => client.post('/deposit/getTransactions', {})
   };
 }

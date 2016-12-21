@@ -1,4 +1,4 @@
 /**
  * Created by jishiwu on 12/20/16.
  */
-export {getbalance, deposit, withdraw, sendTransactions, getTransactions, getStockBalance} from './deposit';
+export {getbalance, deposit, withdraw, getTransactions, getStockBalance} from './deposit';

@@ -5,12 +5,26 @@ import React, { Component } from 'react';
 // import { LinkContainer } from 'react-router-bootstrap';
 // import Nav from 'react-bootstrap/lib/Nav';
 // import NavItem from 'react-bootstrap/lib/NavItem';
+import {connect} from 'react-redux';
+import * as depositActions from 'redux/modules/deposit';
 import TRecordsItem from './TRecordsItem';
 
+@connect(
+  (state) => ({
+    items: state.deposit.transactions
+  }),
+  depositActions
+)
 export default class TRecords extends Component {
   static propTypes = {
-    items: React.PropTypes.array
+    items: React.PropTypes.array,
+    user: React.PropTypes.object,
+    getTransactions: React.PropTypes.func,
   };
+
+  componentWillMount() {
+    this.props.getTransactions();
+  }
 
   render() {
     // const styles = require('./OAssets.scss');
