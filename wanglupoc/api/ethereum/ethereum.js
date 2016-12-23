@@ -27,9 +27,11 @@ var compiled_bytecode = '60a060405260096060527f546f6b656e20302e31000000000000000
 var myadvancedtokenContract = web3.eth.contract(JSON.parse(compiled_interface));
 
 exports.genEthereumAddress = function(){
+  console.log("111");
     var privKey = ethUtil.crypto.randomBytes(32);
+    //console.log("2222" + privKey);
     return {
-        'privateKey' : ethUtil.bufferToHex(privKey.substr(2)),
+        'privateKey' : ethUtil.bufferToHex(privKey).substr(2),
         'publicKey' : ethUtil.bufferToHex(ethUtil.privateToAddress(privKey))
     }
 };
@@ -41,7 +43,7 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
 	var tokenName = assetContract.assetsTitle;
 	var tokenSymbol = assetContract.assetsName;
 	var centralMinter = "";
-	
+
 	var constructorInputs = [initialSupply, tokenName, decimalUnits, tokenSymbol, centralMinter];
 
 	//constructorInputs.push({ data: compiled.contracts.MyAdvancedToken.bytecode});
@@ -55,9 +57,9 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
 	var hexValue = '0x' + bn.toString(16);
 	//TODO: replace with user address
 	var serial = '0x' + web3.eth.getTransactionCount(userEthAddress).toString(16);
-	var rawTx = { 
+	var rawTx = {
 	  nonce: serial,
-	  gasPrice: '0x43bb88745', 
+	  gasPrice: '0x43bb88745',
 	  gasLimit: '0x400000',
 	  to: '',
 	  value: hexValue,
@@ -88,7 +90,7 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
 	   } else {
 	       callback(err, null);
 	   }
-	});	
+	});
 };
 
 exports.utilTransferEther4Test = function(){
@@ -100,10 +102,10 @@ exports.transferCustomToken = function(contractAddress, senderEthAddress, sender
 	var myadvancedtoken = myadvancedtokenContract.at(contractAddress);
 	var privateKey = new Buffer(senderPrivateKey, 'hex');//from.so_privatekey
 	var serial = '0x' + web3.eth.getTransactionCount(senderEthAddress).toString(16);
-	var rawTx = { 
+	var rawTx = {
 	  nonce: serial,
-	  gasPrice: '0x43bb88745', 
-	  gasLimit: '0x400000',	  
+	  gasPrice: '0x43bb88745',
+	  gasLimit: '0x400000',
 	  to: contractAddress,//contract address
 	  value: '0x00',
 	  from: senderEthAddress,

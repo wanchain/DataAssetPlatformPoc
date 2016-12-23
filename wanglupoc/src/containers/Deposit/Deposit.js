@@ -128,8 +128,8 @@ export default class Deposit extends Component {
     const userbalance = this.props.userbalance;
     return (
       <div>
-        {this.props.focusindex === 1 && this.renderBank(userbalance)}
-        {this.props.focusindex !== 1 && this.renderTransfer()}
+        {userbalance && this.props.focusindex === 1 && this.renderBank(userbalance)}
+        {userbalance && this.props.focusindex !== 1 && this.renderTransfer()}
         <hr/>
         <div className="row">
           <div className="col-md-3">

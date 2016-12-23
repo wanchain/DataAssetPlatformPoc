@@ -18,34 +18,34 @@ const DEPOSIT = 'deposit/DEPOSIT';
 const DEPOSIT_SUCCESS = 'deposit/DEPOSIT_SUCCESS';
 const DEPOSIT_FAIL = 'deposit/DEPOSIT_FAIL';
 
+const DEPOSITSETRECEIPT = 'deposit/DEPOSITSETRECEIPT';
+
+const DEPOSITSETACTIVEASSETS = 'deposit/DEPOSITSETACTIVEASSETS';
+
+
+// userbalance: {
+//   cash: 0,
+//     assets: [
+//     {
+//       creatorAddress: '',
+//       assetsName: '',
+//       assetsTitle: '',
+//       assetsType: 0,
+//       publishType: 0,
+//       stockNumber: 9999999,
+//       unitType: 0,
+//       unitPrice: 1,
+//       members: '',
+//       publishTime: '',
+//       totalValue: 0,
+//       exchangeState: false,
+//       contractAddress: '',
+//       hold: 0
+//     }
+//   ]
+// },
 const initialState = {
   focusindex: 0,
-  transaction: {
-    contractAddress: '0xbbbbbbbbbbbbbb',
-    number: 50,
-    receiverAddress: '0xaaaaaaaaaaaaa',
-  },
-  userbalance: {
-    cash: 101,
-    assets: [
-      {
-        creatorAddress: '0x4d3e67e30a250b647b7ea5b1f684b03d6f8d5255',
-        assetsName: 'sss',
-        assetsTitle: 's',
-        assetsType: 0,
-        publishType: 0,
-        stockNumber: 9999999,
-        unitType: 0,
-        unitPrice: 1,
-        members: '',
-        publishTime: '2016-12-29T00:00:00.000Z',
-        totalValue: 0,
-        exchangeState: false,
-        contractAddress: '0xc0b2c2f422bc90a8167f4c6a43a2629c7293ee01',
-        hold: 9999980
-      }
-    ]
-  },
   transactions: [
     {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
     {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
@@ -125,12 +125,23 @@ export default function(state = initialState, action = {}) {
       console.log('DEPOSIT_SUCCESS');
       return {
         ...state,
-        balances: action.result.data
+        userbalance: action.result.userbalance
       };
     case DEPOSIT_FAIL:
       console.log('DEPOSIT_FAIL');
       return {
         ...state
+      };
+    case DEPOSITSETACTIVEASSETS:
+      console.log('DEPOSITSETACTIVEASSETS');
+      return {
+        ...state,
+        activeAssets: action.payload
+      };
+    case DEPOSITSETRECEIPT:
+      return {
+        ...state,
+        receipt: action.payload
       };
     default:
       return state;
@@ -141,6 +152,20 @@ export function setFocus(index) {
   return {
     type: DEPOSITSETFOCUS,
     payload: {focusindex: index}
+  };
+}
+
+export function setActiveAssets(asset) {
+  return {
+    type: DEPOSITSETACTIVEASSETS,
+    payload: asset
+  };
+}
+
+export function setReceipt(receipt) {
+  return {
+    type: DEPOSITSETRECEIPT,
+    payload: receipt
   };
 }
 

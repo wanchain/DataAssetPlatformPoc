@@ -7,54 +7,113 @@ import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import {connect} from 'react-redux';
 import * as depositActions from 'redux/modules/deposit';
+import { push } from 'react-router-redux';
+
+const styles = require('./MainPage.scss');
+
+@connect(
+  () => ({
+  }),
+  Object.assign({}, {pushState: push}, depositActions)
+)
+class NavAssetsList extends Component {
+  static propTypes = {
+    item: React.PropTypes.object,
+    setActiveAssets: React.PropTypes.func,
+    pushState: React.PropTypes.func.isRequired,
+  };
+
+  onActiveAssets(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.setActiveAssets(this.props.item);
+    this.props.pushState('/main');
+  }
+  render() {
+    const {item} = this.props;
+    const stockmoney = item.unitPrice * item.hold;
+    return (
+      <div >
+        <div className={styles.dot}> {item.assetsName + '(' + item.assetsTitle + ')'}</div>
+        <a onClick={this.onActiveAssets.bind(this)} className={styles.assets}>￥{stockmoney}&nbsp;|&nbsp;{item.hold}股</a>
+      </div>
+    );
+  }
+}
 
 @connect(
   (state) => ({
     userbalance: state.deposit.userbalance,
+    activeAssets: state.deposit.activeAssets,
   }),
-  depositActions
+  Object.assign({}, {pushState: push}, depositActions)
 )
 export default class MainPage extends Component {
   static propTypes = {
     children: React.PropTypes.object.isRequired,
     userbalance: React.PropTypes.object,
-    getbalance: React.PropTypes.func
+    getbalance: React.PropTypes.func,
+    params: React.PropTypes.object,
+    pushState: React.PropTypes.func.isRequired,
+    activeAssets: React.PropTypes.object,
+    setActiveAssets: React.PropTypes.func,
   };
 
+  constructor(props) {
+    super(props);
+    this.initActiveAssets = this.initActiveAssets.bind(this);
+  }
+
   componentWillMount() {
-    // this.props.getbalance();
+    this.props.getbalance();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.activeAssets && nextProps.userbalance) {
+      this.initActiveAssets(nextProps.userbalance);
+    }
+  }
+
+  initActiveAssets(userbalance) {
+    if (userbalance && userbalance.assets && userbalance.assets.length > 0) {
+      this.props.setActiveAssets(userbalance.assets[0]);
+    }
   }
 
   render() {
-    const styles = require('./MainPage.scss');
-    const totalcash = this.props.userbalance.cash;
+    const {userbalance} = this.props;
+
+    let totalcash = 0;
     let totalstockmoney = 0;
-    // const currentDate = new Date();
+    const currentDate = new Date();
 
     const assetslist = [];
-
-    if (this.props.userbalance && this.props.userbalance.assets && this.props.userbalance.assets.length > 0) {
-      this.props.userbalance.assets.map((item1) => {
-        const stockmoney = item1.unitPrice * item1.hold;
-        totalstockmoney = totalstockmoney + stockmoney;
-        assetslist.push(
-          <li><h6>{item1.assetsName + '(' + item1.assetsTitle + ')'}</h6></li>);
-        assetslist.push(
-          <h5>￥{stockmoney}&nbsp;&nbsp;|&nbsp;&nbsp;{item1.hold}股</h5>);
-      });
+    if (userbalance ) {
+      totalcash = userbalance.cash;
+      if (userbalance.assets && userbalance.assets.length > 0) {
+        userbalance.assets.map((item) => {
+          const stockmoney = item.unitPrice * item.hold;
+          totalstockmoney = totalstockmoney + stockmoney;
+          assetslist.push(<NavAssetsList key={item._id} item={item}/>);
+        });
+      }
     }
+
     const totalmoney = totalcash + totalstockmoney;
 
     return (
       <div className={'container ' + styles.main} >
+        {userbalance &&
         <div className={'row' + styles.content}>
           <div className={'col-md-2 ' + styles.mainleft}>
             <h4>资产总额</h4>
             <h4>￥{totalmoney}</h4>
             <h6>人民币</h6>
             <h4>￥{totalcash}</h4>
-            <h6><small>2016-12-21</small></h6>
-            <Nav activeKey="1" >
+            <h6>
+              <small>{currentDate.toLocaleDateString()}</small>
+            </h6>
+            <Nav activeKey="1">
               <hr className={styles.divider}/>
               <LinkContainer to="/deposit">
                 <NavItem eventKey={1}>充值</NavItem>
@@ -68,11 +127,11 @@ export default class MainPage extends Component {
               <hr className={styles.divider}/>
             </Nav>
 
-            <ul>
+            <Nav>
               {/* {item && <li><h6>{item.assetsName + '(' + item.assetsTitle + ')'}</h6></li>}*/}
               {/* {item && <h5>￥{stockmoney}&nbsp;&nbsp;|&nbsp;&nbsp;{item.hold}股</h5>};*/}
               {assetslist}
-            </ul>
+            </Nav>
 
             <Nav>
               <hr className={styles.divider}/>
@@ -97,6 +156,17 @@ export default class MainPage extends Component {
             {this.props.children}
           </div>
         </div>
+        }
+        {!userbalance &&
+        <div>
+          等待数据中....
+          <Nav>
+            <LinkContainer to="/am">
+              <NavItem eventKey={399}>资产发行</NavItem>
+            </LinkContainer>
+          </Nav>
+        </div>
+        }
       </div>
     );
   }

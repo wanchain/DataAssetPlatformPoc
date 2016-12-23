@@ -54,43 +54,14 @@ export function getStockBalance(req) {
 }
 
 // get cash balance
-/*
- {
- "userbalance": {
- "_id": "5859f7eb4c8a1e2bf023f90a",
- "cash": 101,
- "userid": "5853c9e91c26062227aeef14",
- "__v": 0,
- "assets": [
- {
- "_id": "5858ad03d123dd0e582084e7",
- "created_at": "2016-12-20T04:01:07.507Z",
- "updated_at": "2016-12-20T08:10:27.237Z",
- "creatorAddress": "0x4d3e67e30a250b647b7ea5b1f684b03d6f8d5255",
- "assetsName": "sss",
- "assetsTitle": "s",
- "assetsType": 0,
- "publishType": 0,
- "stockNumber": 9999999,
- "unitType": 0,
- "unitPrice": 1,
- "members": "",
- "publishTime": "2016-12-29T00:00:00.000Z",
- "totalValue": 0,
- "exchangeState": false,
- "__v": 0,
- "contractAddress": "0xc0b2c2f422bc90a8167f4c6a43a2629c7293ee01",
- "hold": 999998000
- }
- ]
- }
- }
-* */
 export function getbalance(req) {
   console.log("-----getbalance");
   const user = req.session.user;
-
   return new Promise((resolve, reject) => {
+    if (!user) {
+      reject({error: 408});
+      return undefined;
+    }
     //var balance = new UserBalance();
     UserBalance.findOne({'userid': user._id}, function (err, balance){
       if(!balance) {
@@ -102,7 +73,6 @@ export function getbalance(req) {
         reject({error: err});
       } else {
         _getUserAssets(user, function (error, findAssets){
-          console.log('findAssets' + JSON.stringify(findAssets, null, '     '));
           var modifyAbleBalance = balance.toObject();
           if(error){
             //omited
@@ -133,6 +103,10 @@ export function getTransactions(req) {
   //   resolve({data: transactions});
   // });
   return new Promise((resolve, reject) => {
+    if (!user) {
+      reject({error: 408});
+      return undefined;
+    }
     AssetTransaction.find({fromAddress: user.ethAddress}, function(err, transactions){
       if(err){
         reject({error: err});
@@ -142,13 +116,35 @@ export function getTransactions(req) {
     });
   });
 }
-
+// const userbalance = {
+//   cash: 101,
+//   assets: [
+//     {
+//       creatorAddress: '0x4d3e67e30a250b647b7ea5b1f684b03d6f8d5255',
+//       assetsName: 'sss',
+//       assetsTitle: 's',
+//       assetsType: 0,
+//       publishType: 0,
+//       stockNumber: 9999999,
+//       unitType: 0,
+//       unitPrice: 1,
+//       members: '',
+//       publishTime: '2016-12-29T00:00:00.000Z',
+//       totalValue: 0,
+//       exchangeState: false,
+//       contractAddress: '0xc0b2c2f422bc90a8167f4c6a43a2629c7293ee01',
+//       hold: 9999980
+//     }
+//   ]
+// };
 export function deposit(req) {
   console.log("-----deposit");
   console.log(" request" + JSON.stringify(req.body, null, '$$$$'));
   const user = req.session.user;
   return new Promise((resolve, reject) => {
-    //var balance = new UserBalance();
+
+    // userbalance.cash = userbalance.cash + req.body.addcash;
+    // resolve({userbalance: userbalance});
     UserBalance.findOne({'userid': user._id}, function (err, balance){
       console.log(typeof balance);
       console.log('user balance: ' + JSON.stringify(balance, null, '$$$$'));
@@ -196,7 +192,7 @@ export function withdraw(req) {
       {id: 2, name: 'USD', amount: 5990000}
     ];
     const index = balance.findIndex((item) => {
-      return (item.name === req.body.name) !== -1;
+      return (item.name === req.body.name);
     });
 
     if (index >= 0) {

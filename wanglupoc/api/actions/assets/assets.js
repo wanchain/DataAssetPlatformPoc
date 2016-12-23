@@ -20,7 +20,8 @@ export default function add(req) {
     members: req.body.members ? req.body.members : '',
     publishTime: req.body.publishTime ? req.body.publishTime : new Date(),
     totalValue: req.body.totalValue ? req.body.totalValue : 0,
-    exchangeState: req.body.exchangeState ? req.body.exchangeState : false
+    exchangeState: req.body.exchangeState ? req.body.exchangeState : false,
+    receipt: req.body.receipt ? req.body.receipt : {}
   });
   return new Promise((resolve, reject) => {
     // if save success
@@ -36,6 +37,7 @@ export default function add(req) {
         resolve({data: data});
         ethereum.issueAsset(user.ethAddress, user.so_privatekey, data, (err, receipt) => {
           data.contractAddress = receipt.contractAddress;
+          data['receipt'] = receipt;
           data.save(function (err) {
             console.log();
             /*ethereum.transferCustomToken(data.contractAddress, user.ethAddress,
@@ -122,6 +124,7 @@ export function modify(req) {
         aAsset.publishTime = item.publishTime;
         aAsset.totalValue = item.totalValue;
         aAsset.exchangeState = item.exchangeState;
+        aAsset.receipt = item.receipt;
 
         aAsset.save(function (err, data) {
           if (err) {
@@ -151,7 +154,8 @@ export function customTokenTransfer(req) {
       toAddress: receiverAddress,
       assetContract: assetContractAddress,
       transferQuantity: quantity,
-      status: 'validating'
+      status: 'validating',
+      receipt: {}
     });
     tx.save(function (err, data) {
       if(err) {
@@ -166,6 +170,7 @@ export function customTokenTransfer(req) {
              sender.so_privatekey, receiverAddress, quantity *100,
              function (err, dummy) {
                  dbTx.status = err ? 'failed' : 'completed';
+                 dbTx['receipt'] = dummy;
                  dbTx.save();
              });
       }

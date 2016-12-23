@@ -19,6 +19,8 @@ import {
     TRecords,
     TMarket,
     ExistEvidents,
+    Signup,
+    OAssetTransfer,
     NotFound,
   } from 'containers';
 
@@ -52,6 +54,7 @@ export default (store) => {
       <Route onEnter={requireLogin}>
         <Route path="loginSuccess" component={LoginSuccess}/>
       </Route>
+      <Route path="/signup" component={Signup}/>
 
       { /* Routes */ }
       <Route path="about" component={About}/>
@@ -73,6 +76,7 @@ export default (store) => {
         <Route path="/trecords" component={TRecords}/>
         <Route path="/tmarket" component={TMarket}/>
         <Route path="/ee" component={ExistEvidents}/>
+        <Route path="/OAtransfer" component={OAssetTransfer}/>
         {/* <Route path="/LFH" component={LocalFile}/>*/}
       </Route>
 

@@ -21,4 +21,6 @@ export Withdraw from './Withdraw/Withdraw';
 export TMarket from './TMarket/TMarket';
 export TRecords from './TRecords/TRecords';
 export ExistEvidents from './ExistEvidents/ExistEvidents';
+export Signup from './Signup/Signup';
+export OAssetTransfer from './OAssets/OAssetTransfer';
 // export LocalFile from './ExistEvidents/localfile/localfile';

@@ -15,7 +15,8 @@ const assetTransaction = new mongoose.Schema({
     transferQuantity: {type: Number},
 
     timestamp: {type: Date, default: Date.now},
-    status: {type: String, enum: ['validating', 'failed', 'completed']}
+    status: {type: String, enum: ['validating', 'failed', 'completed']},
+    receipt: Object
 });
 
 export default mongoose.model('AssetTransaction', assetTransaction);

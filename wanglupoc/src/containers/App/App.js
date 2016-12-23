@@ -44,7 +44,7 @@ export default class App extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.user && nextProps.user) {
+    if ((!this.props.user && nextProps.user) || (this.props.user && nextProps.user && (this.props.user.email !== nextProps.user.email))) {
       // login
       // this.props.pushState('/loginSuccess');
       this.props.pushState('/main');
@@ -53,6 +53,16 @@ export default class App extends Component {
       this.props.pushState('/');
     }
   }
+
+  onSignup = (event) => {
+    event.preventDefault();
+    this.props.pushState('/signup');
+  };
+
+  onLogin = (event) => {
+    event.preventDefault();
+    this.props.pushState('/');
+  };
 
   handleLogout = (event) => {
     event.preventDefault();
@@ -135,14 +145,6 @@ export default class App extends Component {
   //   );
   // }
 
-  renderHeader() {
-    return (
-      <header>
-        test
-      </header>
-    );
-  }
-
   render() {
     // const {user} = this.props;
     const logopng = require('../AssetsManager/icon/logo.png');
@@ -156,9 +158,10 @@ export default class App extends Component {
             <div className="row">
               <img className={styles.logo} src={logopng}/>
               <ul className="nav nav-pills navbar-right">
-                <li><button className={styles.topbutton}>登陆</button></li>
-                <li><button className={styles.topbutton}>注册</button></li>
-                <li><button className={styles.topbutton}><img className={styles.aboutpng} src={aboutpng}/>&nbsp;关于</button></li>
+                {this.props.user && <li><div className={styles.topText}>欢迎：{this.props.user.name}</div></li> }
+                <li><button onClick={this.onLogin} type="button" className={styles.topbutton}>登陆</button></li>
+                <li><button onClick={this.onSignup} type="button" className={styles.topbutton}>注册</button></li>
+                <li><button type="button" className={styles.topbutton}><img className={styles.aboutpng} src={aboutpng}/>&nbsp;关于</button></li>
               </ul>
             </div>
           </div>
