@@ -1,6 +1,9 @@
 import React from 'react';
 
 class AlertDialog extends React.Component {
+  static propTypes = {
+    content: React.PropTypes.object
+  };
   render() {
     return (
       <div className="modal-content">

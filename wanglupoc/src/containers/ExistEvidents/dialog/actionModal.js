@@ -3,43 +3,43 @@ import AlertDialog from './alert';
 import CProgress from '../progress/circularprogress';
 import {LAYOUT_PROOF} from '../constants';
 
-class ActionModal extends React.Component{
-  constructor(props){
+class ActionModal extends React.Component {
+  constructor(props) {
     super(props);
   }
 
-  copyShortCodeClick(shortCode){
-    if (DEBUG) console.log('copyShortCodeClick');
+  copyShortCodeClick(shortCode) {
+    if (__DEVELOPMENT__) console.log('copyShortCodeClick');
     const link = '/#' + LAYOUT_PROOF + '/' + shortCode;
     window.location.href = link;
-    if (DEBUG) console.log('link=' + link);
+    if (__DEVELOPMENT__) console.log('link=' + link);
 
     return false;
   }
 
   render() {
     let txHashContent;
-    const tx_hash = this.props.txhash;
-    if (tx_hash === 'undefined' || tx_hash === '') {
-      txHashContent = <CProgress/>
+    const txHash = this.props.txhash;
+    if (txHash === 'undefined' || txHash === '') {
+      txHashContent = <CProgress/>;
     } else {
-      txHashContent = tx_hash;
+      txHashContent = txHash;
     }
 
     let shortCodeContent;
     const shortCode = this.props.shortCodeValue;
     if (shortCode === 'undefined' || shortCode === '') {
-      shortCodeContent = <CProgress/>
+      shortCodeContent = <CProgress/>;
     } else {
       shortCodeContent = (
-        <a href="javascript:void(0)" onClick={this.copyShortCodeClick.bind(this,shortCode)}  data-dismiss="modal" >
+        <a onClick={this.copyShortCodeClick.bind(this, shortCode)} data-dismiss="modal" >
           {shortCode}
         </a>
-      )
+      );
     }
 
     if (this.props.toggleType === 'action') {
-      return(
+      return (
         <div className="modal-content">
           <div className="modal-header">
             <button type="button" className="close" data-dismiss="modal">

@@ -65,7 +65,14 @@ module.exports = {
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: false,
-      __DEVTOOLS__: false
+      __DEVTOOLS__: false,
+      __RELAY_URL__: '"http://localhost:8344"'
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      'global.jQuery': 'jquery',
     }),
 
     // ignore dev config
@@ -79,7 +86,6 @@ module.exports = {
         warnings: false
       }
     }),
-
     webpackIsomorphicToolsPlugin
   ]
 };

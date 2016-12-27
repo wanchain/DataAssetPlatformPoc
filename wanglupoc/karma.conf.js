@@ -50,6 +50,7 @@ module.exports = function (config) {
         new webpack.IgnorePlugin(/\.json$/),
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
+          __RELAY_URL__: '"http://localhost:8344"',
           __CLIENT__: true,
           __SERVER__: false,
           __DEVELOPMENT__: true,

@@ -4,7 +4,7 @@
 const METHOD_GET = 1;
 const METHOD_POST = 2;
 
-export default function sendHttpRequest(args,method,result,errorResult,delay,url) {
+export default function sendHttpRequest(args, method, result, errorResult, delay, url) {
   // const XHR = createXHR();
   let sendMethod = 'GET';
   switch (method) {
@@ -18,44 +18,49 @@ export default function sendHttpRequest(args,method,result,errorResult,delay,url
       return null;
   }
 
-  let relayUrl = RELAY_URL;
+  let relayUrl = '"http://localhost:8344"'; // __RELAY_URL__;
   if (typeof (url) !== 'undefined') {
     relayUrl = url;
   }
 
-  const promise = new Promise(function(resolve, reject) {
-
+  const promise = new Promise(function NoName(resolve, reject) {
     setTimeout(() => {
-      if (DEBUG) console.log("Promise delay to " + delay);
+      if (__DEVELOPMENT__) console.log('Promise delay to ' + delay);
 
-      var XHR = new XMLHttpRequest();
+      const XHR = new XMLHttpRequest();
       XHR.open(sendMethod, relayUrl, true);
       XHR.send(args);
-      XHR.addEventListener('readystatechange', function () {
+      XHR.addEventListener('readystatechange', function NoName2() {
         switch (XHR.readyState) {
-          case 0://alert("请求未初始化");
+          // alert('请求未初始化');
+          case 0:
             break;
-          case 1://alert("请求启动，尚未发送");
+          // alert('请求启动，尚未发送');
+          case 1:
             break;
-          case 2://alert("请求发送，尚未得到响应");
+          // alert('请求发送，尚未得到响应');
+          case 2:
             break;
-          case 3://alert("请求开始响应，收到部分数据");
+          // alert('请求开始响应，收到部分数据');
+          case 3:
             break;
-          case 4://alert("请求响应完成得到全部数据");
+          // alert('请求响应完成得到全部数据');
+          case 4:
             if (XHR.status === 200) {
               try {
-                if(DEBUG)console.log("XHR.responseText="+XHR.responseText);
+                if (__DEVELOPMENT__) console.log('XHR.responseText=' + XHR.responseText);
                 const data = JSON.parse(XHR.responseText);
                 resolve(data);
-              } catch (e) {
-                reject(e);
+              } catch (err) {
+                reject(err);
               }
-
             }
+            break;
+          default:
             break;
         }
       });
-      XHR.addEventListener('error', function (error) {
+      XHR.addEventListener('error', function NoName3(error) {
         reject(error);
       });
     }, delay);

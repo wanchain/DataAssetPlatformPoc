@@ -21,6 +21,10 @@ import {
     ExistEvidents,
     Signup,
     OAssetTransfer,
+  LocalFile,
+  RemoteFile,
+  UploadFile,
+  TextInfo,
     NotFound,
   } from 'containers';
 
@@ -77,7 +81,11 @@ export default (store) => {
         <Route path="/tmarket" component={TMarket}/>
         <Route path="/ee" component={ExistEvidents}/>
         <Route path="/OAtransfer" component={OAssetTransfer}/>
-        {/* <Route path="/LFH" component={LocalFile}/>*/}
+        <Route path="/LFH" component={LocalFile}/>
+        <Route path="/RFH" component={RemoteFile}/>
+        <Route path="/FC" component={UploadFile}/>
+        <Route path="/TU" component={TextInfo}/>
+        {/* <Route path={'/pf'+'/:proof_page'} component={Proof}/>*/}
       </Route>
 
       { /* Catch all route */ }
