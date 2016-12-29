@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "jquery": true
   },
   "rules": {
     "new-cap": [2, { "capIsNewExceptions": ["List", "Map", "Set"] }],
@@ -33,6 +34,7 @@
     "__SERVER__": true,
     "__DISABLE_SSR__": true,
     "__DEVTOOLS__": true,
+    "__RELAY_URL__": true,
     "socket": true,
     "webpackIsomorphicTools": true
   }

@@ -49,8 +49,14 @@ module.exports = function (config) {
       plugins: [
         new webpack.IgnorePlugin(/\.json$/),
         new webpack.NoErrorsPlugin(),
+        new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          'window.jQuery': 'jquery',
+          'global.jQuery': 'jquery',
+        }),
         new webpack.DefinePlugin({
-          __RELAY_URL__: '"http://localhost:8344"',
+          __RELAY_URL__: 'http://localhost:8344',
           __CLIENT__: true,
           __SERVER__: false,
           __DEVELOPMENT__: true,

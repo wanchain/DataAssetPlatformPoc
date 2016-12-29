@@ -80,7 +80,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.jsx?$/, exclude: /(node_modules|local_modules)/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']},
+      { test: /\.jsx?$/, exclude: /(node_modules)|(local_modules)/, loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']},
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.(less|css)$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap' },
       { test: /\.scss$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap' },
@@ -103,20 +103,20 @@ module.exports = {
   plugins: [
     // hot reload
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.IgnorePlugin(/webpack-stats\.json$/),
-    new webpack.DefinePlugin({
-      __CLIENT__: true,
-      __SERVER__: false,
-      __DEVELOPMENT__: true,
-      __DEVTOOLS__: true,  // <-------- DISABLE redux-devtools HERE
-      __RELAY_URL__: '"http://localhost:8344"'
-    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       'global.jQuery': 'jquery',
     }),
+    new webpack.DefinePlugin({
+      __CLIENT__: true,
+      __SERVER__: false,
+      __DEVELOPMENT__: true,
+      __DEVTOOLS__: true,  // <-------- DISABLE redux-devtools HERE
+      __RELAY_URL__: 'http://localhost:8344'
+    }),
+    new webpack.IgnorePlugin(/webpack-stats\.json$/),
     webpackIsomorphicToolsPlugin.development()
   ]
 };

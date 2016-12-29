@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
-import CryptoJS from '../../../../local_modules/crypto';
+// import CryptoJS from '../../../../local_modules/crypto';
 import sendHttpRequest from '../http/httpAjax';
 import ActvionModal from '../dialog/actionModal';
 
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
+const crypto = require('crypto');
 
 class TextInfo extends Component {
   static propTypes = {
@@ -26,7 +27,7 @@ class TextInfo extends Component {
     this.props.onChildChange(380);
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     if (__DEVELOPMENT__) console.log('textinfo-componentDidUpdate');
     const txHash = this.state.txhash;
     if (__DEVELOPMENT__) console.log('txHash=' + txHash);
@@ -37,8 +38,9 @@ class TextInfo extends Component {
         // doesn't shortCode
         // this.reqShortCode(REQ_SHORT_CODE_TIMES, txHash);
         const reqTimes = 15;
-        requestShortCode(reqTimes, txHash, (sc)=>{
-          this.setState({
+        const self = this;
+        requestShortCode(reqTimes, txHash, (sc) => {
+          self.setState({
             short_code_link: sc,
           });
         });
@@ -59,10 +61,15 @@ class TextInfo extends Component {
       short_code_link: '',
     });
 
-    const sha256 = CryptoJS.algo.SHA256.create();
-    const text = CryptoJS.enc.Utf8.parse(description);
-    sha256.update(text);
-    const hashedText = sha256.finalize().toString();
+    const secret = 'abcdefg';
+    const hashedText = crypto.createHmac('sha256', secret)
+      .update(description)
+      .digest('hex');
+    console.log('--------' + hashedText);
+    // const sha256 = CryptoJS.algo.SHA256.create();
+    // const text = CryptoJS.enc.Utf8.parse(description);
+    // sha256.update(text);
+    // const hashedText = sha256.finalize().toString();
 
     const txFileInfo = {
       hash: hashedText,

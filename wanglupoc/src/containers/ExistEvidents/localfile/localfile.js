@@ -39,7 +39,7 @@ class LocalFile extends Component {
     this.props.onChildChange(420);
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     if (__DEVELOPMENT__) console.log('localfile-componentWillUpdate');
     const txHash = this.state.txhash;
 
@@ -49,8 +49,9 @@ class LocalFile extends Component {
       if (shortCode === 'undefined' || shortCode === '' || shortCode === null) {
         // doesn't shortCode
         // this.reqShortCode(REQ_SHORT_CODE_TIMES, txHash);
+        const self = this;
         requestShortCode(REQ_SHORT_CODE_TIMES, txHash, (shrtCd)=>{
-          this.setState({
+          self.setState({
             short_code_link: shrtCd,
           });
         });

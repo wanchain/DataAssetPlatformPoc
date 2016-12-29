@@ -43,7 +43,7 @@ class UploadFile extends Component {
     this.props.onChildChange(420);
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     if (__DEVELOPMENT__) console.log('uploadfile-componentDidUpdate');
     const txHash = this.state.txhash;
 
@@ -54,8 +54,9 @@ class UploadFile extends Component {
         // doesn't shortCode
         // this.reqShortCode(REQ_SHORT_CODE_TIMES, txHash);
         const reqTimes = 15;
+        const self = this;
         requestShortCode(reqTimes, txHash, (sc)=>{
-          this.setState({
+          self.setState({
             short_code_link: sc,
           });
         });

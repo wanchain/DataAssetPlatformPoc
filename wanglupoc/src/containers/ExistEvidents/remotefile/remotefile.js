@@ -32,7 +32,7 @@ class RemoteFile extends Component {
   componentDidMount() {
   }
 
-  componentWillUpdate() {
+  componentDidUpdate() {
     if (__DEVELOPMENT__) console.log('remote_file-componentDidUpdate');
     const txHash = this.state.txHash;
 
@@ -43,8 +43,9 @@ class RemoteFile extends Component {
         // doesn't shortCode
         // this.reqShortCode(REQ_SHORT_CODE_TIMES, txHash);
         const reqTimes = 15;
+        const self = this;
         requestShortCode(reqTimes, txHash, (sc)=>{
-          this.setState({
+          self.setState({
             short_code_link: sc,
           });
         });

@@ -32,7 +32,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.jsx?$/, exclude: /(node_modules|local_modules)/, loaders: [strip.loader('debug'), 'babel']},
+      { test: /\.jsx?$/, exclude: /(node_modules)|(local_modules)/, loaders: [strip.loader('debug'), 'babel']},
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.(less|css)$/, loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
       { test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
@@ -57,24 +57,22 @@ module.exports = {
 
     // css files from the extract-text-plugin loader
     new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      },
-
-      __CLIENT__: true,
-      __SERVER__: false,
-      __DEVELOPMENT__: false,
-      __DEVTOOLS__: false,
-      __RELAY_URL__: '"http://localhost:8344"'
-    }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
       'global.jQuery': 'jquery',
     }),
-
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      },
+      __CLIENT__: true,
+      __SERVER__: false,
+      __DEVELOPMENT__: false,
+      __DEVTOOLS__: false,
+      __RELAY_URL__: '"http://localhost:8344"'
+    }),
     // ignore dev config
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
 

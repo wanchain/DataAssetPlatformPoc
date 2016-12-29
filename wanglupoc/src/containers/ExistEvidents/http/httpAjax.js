@@ -18,7 +18,7 @@ export default function sendHttpRequest(args, method, result, errorResult, delay
       return null;
   }
 
-  let relayUrl = '"http://localhost:8344"'; // __RELAY_URL__;
+  let relayUrl = 'http://localhost:8344'; // __RELAY_URL__;
   if (typeof (url) !== 'undefined') {
     relayUrl = url;
   }
@@ -30,6 +30,8 @@ export default function sendHttpRequest(args, method, result, errorResult, delay
       const XHR = new XMLHttpRequest();
       XHR.open(sendMethod, relayUrl, true);
       XHR.send(args);
+      console.log('relayUrl:' + relayUrl);
+      console.log('args' + JSON.stringify(args));
       XHR.addEventListener('readystatechange', function NoName2() {
         switch (XHR.readyState) {
           // alert('请求未初始化');

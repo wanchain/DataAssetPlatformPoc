@@ -2,7 +2,7 @@ import React from 'react';
 
 class AlertDialog extends React.Component {
   static propTypes = {
-    content: React.PropTypes.object
+    content: React.PropTypes.string
   };
   render() {
     return (

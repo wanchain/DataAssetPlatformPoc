@@ -27,4 +27,5 @@ export LocalFile from './ExistEvidents/localfile/localfile';
 export RemoteFile from './ExistEvidents/remotefile/remotefile';
 export UploadFile from './ExistEvidents/uploadfile/uploadfile';
 export TextInfo from './ExistEvidents/textinfo/textinfo';
+export Proof from './ExistEvidents/proof/proof';
 // export LocalFile1 from './ExistEvidents/localfile/localfile1';

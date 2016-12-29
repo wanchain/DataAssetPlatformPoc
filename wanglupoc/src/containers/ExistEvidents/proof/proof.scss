@@ -1,0 +1,107 @@
+.proof-content-table{
+    width: 890px;
+    margin-top: 15px;
+}
+
+.proof-text-title{
+    font-size: 18px;
+    color: #333333;
+}
+
+.proof-text-content{
+    font-size: 14px;
+    color: #333333;
+    margin-top: 15px;
+}
+
+.text-td{
+    width: 630px;
+}
+
+.text-td td{
+    height: 80px;
+    width: 630px;
+    border-bottom: 1px solid #F6F6F6;
+}
+
+.file-area-td{
+    width: 260px;
+    height: 100%;
+    padding-left: 20px;
+}
+
+
+
+.proof-title{
+    font-size: 30px;
+    color: #333333;
+    font-weight: lighter;
+}
+
+.short-code-input{
+    display: block;
+    width: 780px;
+    height: 50px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.short-code-input:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.proof-btn{
+    position: relative;
+    margin-left: -1px;
+    margin-right: -1px;
+    width: 110px;
+    height: 50px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    background-image: url('../../img/ic_search_normal.png');
+    border: 0;
+}
+
+.short-code-input-group{
+    margin-top: 30px;
+}
+
+.proof-btn:hover{
+    background-image: url('../../img/ic_search_hover.png');
+}
+.proof-btn:focus{
+    z-index: 2;
+    border: 0;
+}
+.proof-btn:active{
+    z-index: 2;
+    background-image: url('../../img/ic_search_pressed.png');
+}
+
+.proof-file-area{
+    height: 540px;
+    background-color: #FCFCFD;
+    margin-top: 25px;
+    border-radius: 5px;
+    border: 2px dashed #F6F6F6;
+    text-align: center;
+}
+
+.proof-upload-bg{
+    margin-top: 140px;
+}

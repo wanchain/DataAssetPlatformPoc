@@ -25,6 +25,7 @@ import {
   RemoteFile,
   UploadFile,
   TextInfo,
+  Proof,
     NotFound,
   } from 'containers';
 
@@ -79,13 +80,15 @@ export default (store) => {
         <Route path="/withdraw" component={Withdraw}/>
         <Route path="/trecords" component={TRecords}/>
         <Route path="/tmarket" component={TMarket}/>
-        <Route path="/ee" component={ExistEvidents}/>
+        <Route path="/LFH" component={ExistEvidents}>
+          <IndexRoute component={LocalFile}/>
+          <Route path="/RFH" component={RemoteFile}/>
+          <Route path="/FC" component={UploadFile}/>
+          <Route path="/TU" component={TextInfo}/>
+          <Route path="/TU" component={TextInfo}/>
+          <Route path={'/pf' + '/:proof_page'} component={Proof}/>
+        </Route>
         <Route path="/OAtransfer" component={OAssetTransfer}/>
-        <Route path="/LFH" component={LocalFile}/>
-        <Route path="/RFH" component={RemoteFile}/>
-        <Route path="/FC" component={UploadFile}/>
-        <Route path="/TU" component={TextInfo}/>
-        {/* <Route path={'/pf'+'/:proof_page'} component={Proof}/>*/}
       </Route>
 
       { /* Catch all route */ }

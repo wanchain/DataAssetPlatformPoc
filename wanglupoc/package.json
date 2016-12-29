@@ -115,6 +115,7 @@
     "body-parser": "^1.14.1",
     "clipboard": "^1.5.16",
     "compression": "^1.6.0",
+    "crypto": "0.0.3",
     "ethereumjs-tx": "^1.1.4",
     "ethereumjs-util": "^5.0.1",
     "express": "^4.13.3",
