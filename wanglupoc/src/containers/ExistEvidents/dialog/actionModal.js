@@ -10,7 +10,8 @@ class ActionModal extends React.Component {
 
   copyShortCodeClick(shortCode) {
     if (__DEVELOPMENT__) console.log('copyShortCodeClick');
-    const link = '/#' + LAYOUT_PROOF + '/' + shortCode;
+    // const link = '/#' + LAYOUT_PROOF + '/' + shortCode;
+    const link = LAYOUT_PROOF + '/' + shortCode;
     window.location.href = link;
     if (__DEVELOPMENT__) console.log('link=' + link);
 

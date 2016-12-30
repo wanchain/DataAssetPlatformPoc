@@ -52,11 +52,9 @@ module.exports = function (config) {
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
-          'window.jQuery': 'jquery',
-          'global.jQuery': 'jquery',
+          'window.jQuery': 'jquery'
         }),
         new webpack.DefinePlugin({
-          __RELAY_URL__: 'http://localhost:8344',
           __CLIENT__: true,
           __SERVER__: false,
           __DEVELOPMENT__: true,

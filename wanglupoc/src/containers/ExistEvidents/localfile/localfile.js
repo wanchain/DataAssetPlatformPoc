@@ -58,24 +58,6 @@ class LocalFile extends Component {
       }
     }
   }
-  componentDidUpdate() {
-    if (__DEVELOPMENT__) console.log('localfile-componentDidUpdate');
-    // const txHash = this.state.txhash;
-    //
-    // if (txHash !== 'undefined' && txHash !== '') {
-    //   // exsited txHash
-    //   const shortCode = this.state.short_code_link;
-    //   if (shortCode === 'undefined' || shortCode === '' || shortCode === null) {
-    //     //doesn't shortCode
-    //     // this.reqShortCode(REQ_SHORT_CODE_TIMES, txHash);
-    //     RequestShortCode(REQ_SHORT_CODE_TIMES, txHash, (shrtCd)=>{
-    //       this.setState({
-    //         short_code_link: shrtCd,
-    //       });
-    //     });
-    //   }
-    // }
-  }
 
   handleDrop() {
     console.log('handleDrop');

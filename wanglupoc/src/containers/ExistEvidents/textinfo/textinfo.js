@@ -143,12 +143,12 @@ class TextInfo extends Component {
             </a>
 
           </div>
-          <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div className="modal-dialog modal-lg">
-              {modalDalog}
-            </div>
-          </div>
         </form>
+        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div className="modal-dialog modal-lg">
+            {modalDalog}
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 
-import './record.css';
 class Recorder extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
+    const styles = require('./record.scss');
     return (
-      <div className="recorder-content">
-        <span className="recorder-title">存证记录</span>
-        <div className="recorder-table">
-          <table className="table  table-hover">
+      <div className={styles['recorder-content']}>
+        <span className={styles['recorder-title']}>存证记录</span>
+        <div className={styles['recorder-table']}>
+          <table className={styles.table + styles['table-hover']}>
             <thead>
             <tr>
               <th>存证时间</th>

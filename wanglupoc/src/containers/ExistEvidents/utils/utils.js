@@ -26,23 +26,21 @@ const IMAGE = ['jpg', 'jpeg', 'gif', 'png', 'bmp', 'psd', 'tiff', 'ico', 'pic', 
 
 const REQ_SHORT_CODE_TIMES = 15;
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
-function _strictInArray(arr, elem, it) {
-  return arr === null ? -1 : arr.indexOf(elem, it );
-}
+
 const getFileType = (filename) => {
   let filetype = FILE_TYPE_UNKNOWN;
   const arr = filename.split('.');
   const fileExt = arr[arr.length - 1];
-  if (_strictInArray(fileExt, PDF) !== -1) {
+  if ($.inArray(fileExt, PDF) !== -1) {
     filetype = FILE_TYPE_PDF;
   }
-  if (_strictInArray(fileExt, ARCHIVE) !== -1) {
+  if ($.inArray(fileExt, ARCHIVE) !== -1) {
     filetype = FILE_TYPE_ARCHIVE;
   }
-  if (_strictInArray(fileExt, TEXT) !== -1) {
+  if ($.inArray(fileExt, TEXT) !== -1) {
     filetype = FILE_TYPE_TEXT;
   }
-  if (_strictInArray(fileExt, IMAGE) !== -1) {
+  if ($.inArray(fileExt, IMAGE) !== -1) {
     filetype = FILE_TYPE_IMAGE;
   }
 

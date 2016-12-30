@@ -6,7 +6,7 @@ import {PROOF, LAYOUT_PROOF} from '../constants';
 import AlertDialog from '../dialog/alert';
 
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
-// const browserPrfix = 'localhost:8000/#/';
+const browserPrfix = 'localhost:8000/#/';
 
 let shortCode = '';
 let alert = false;
@@ -229,7 +229,7 @@ class Proof extends Component {
                       <span className={styles['proof-text-title']}>交易ID：</span>
                       <br/>
                       <div className={styles['proof-text-content']}>
-                        <a href={browserPrfix + 'transaction/' + this.state.txHash} id="transaction-id">
+                         <a href={browserPrfix + 'transaction/' + this.state.txHash} id="transaction-id">
                           {this.state.txHash}
                         </a>
                       </div>
@@ -239,9 +239,9 @@ class Proof extends Component {
                 <tr>
                   <td>
                     <div className="">
-                      <span className="proof-text-title">发送方：</span>
+                      <span className={styles['proof-text-title']}>发送方：</span>
                       <br/>
-                      <div className="proof-text-content">
+                      <div className={styles['proof-text-content']}>
                         <a href={browserPrfix + 'address/' + this.state.sender} id="send-address">
                           {this.state.sender}
                         </a>
@@ -260,9 +260,9 @@ class Proof extends Component {
                       <tr>
                         <td>
                           <div className="">
-                            <span className="proof-text-title">无中心分布式存储链接：</span>
+                            <span className={styles['proof-text-title']}>无中心分布式存储链接：</span>
                             <br/>
-                            <div className="proof-text-content">
+                            <div className={styles['proof-text-content']}>
                               <a href={'https://ipfs.io/ipfs/' + this.state.data.ipfsid} id="storage-code">
                                 {this.state.data.ipfsid}
                               </a>
@@ -276,9 +276,9 @@ class Proof extends Component {
                 <tr>
                   <td>
                     <div className="">
-                      <span className="proof-text-title">描述信息：</span>
+                      <span className={styles['proof-text-title']}>描述信息：</span>
                       <br/>
-                      <div className="proof-text-content">
+                      <div className={styles['proof-text-content']}>
                         <p href="#" id="description">
                           {this.state.data.description}
                         </p>

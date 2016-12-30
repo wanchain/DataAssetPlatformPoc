@@ -5,7 +5,6 @@ var rootDir = path.resolve(__dirname, '..');
 /**
  * Define isomorphic constants.
  */
-global.__RELAY_URL__ = 'http://localhost:8344';
 global.__CLIENT__ = false;
 global.__SERVER__ = true;
 global.__DISABLE_SSR__ = false;  // <----- DISABLES SERVER SIDE RENDERING FOR ERROR DEBUGGING
