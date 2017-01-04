@@ -19,9 +19,9 @@ class NavigationBar extends Component {
   render() {
     const styles = require('./nav.scss');
     return (
-      <nav className={'navbar' + styles.wnav} >
+      <nav className={'navbar ' + styles.wnav} >
         <div className="container-fluid">
-          <ul className={'nav' + 'nav-pills' + styles['wnav-child']} role="tablist">
+          <ul className={'nav ' + 'nav-pills ' + styles['wnav-child']} role="tablist">
             <li role="" ref="default_selector">
               <Link to={LOCAL_FILE} className={styles['nav-link']} activeClassName="active">本地文件</Link>
             </li>

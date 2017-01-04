@@ -1,5 +1,6 @@
 import sendHttpRequest from '../http/httpAjax';
-import CryptoJS from '../../../../local_modules/crypto';
+// import CryptoJS from '../../../../local_modules/crypto';
+const CryptoJS = require('../../../../local_modules/crypto');
 /**
  * Transaction types
  */

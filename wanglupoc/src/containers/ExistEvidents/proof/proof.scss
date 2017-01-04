@@ -24,6 +24,37 @@
     border-bottom: 1px solid #F6F6F6;
 }
 
+.upload-a{
+  margin-top: 20px;
+}
+
+.file {
+  position: relative;
+  display: inline-block;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 4px 12px;
+  overflow: hidden;
+  color: transparent;
+  text-decoration: none;
+  text-indent: 0;
+  line-height: 20px;
+}
+.file input {
+  position: absolute;
+  font-size: 120px;
+  right: 0;
+  top: 0;
+  opacity: 0;
+}
+.file:hover {
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+  text-decoration: none;
+}
+
 .file-area-td{
     width: 260px;
     height: 100%;

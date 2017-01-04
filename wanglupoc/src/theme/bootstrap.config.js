@@ -22,7 +22,7 @@ module.exports = {
     carousel: false,
     collapse: false,
     dropdown: false,
-    modal: false,
+    modal: true,
     tooltip: false,
     popover: false,
     scrollspy: false,

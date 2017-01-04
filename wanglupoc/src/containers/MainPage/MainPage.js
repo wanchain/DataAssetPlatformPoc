@@ -65,7 +65,9 @@ export default class MainPage extends Component {
   }
 
   componentWillMount() {
-    this.props.getbalance();
+    if (!this.props.userbalance) {
+      this.props.getbalance();
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -103,7 +105,6 @@ export default class MainPage extends Component {
 
     return (
       <div className={'container ' + styles.main} >
-        {userbalance &&
         <div className={'row' + styles.content}>
           <div className={'col-md-2 ' + styles.mainleft}>
             <h4>资产总额</h4>
@@ -128,8 +129,6 @@ export default class MainPage extends Component {
             </Nav>
 
             <Nav>
-              {/* {item && <li><h6>{item.assetsName + '(' + item.assetsTitle + ')'}</h6></li>}*/}
-              {/* {item && <h5>￥{stockmoney}&nbsp;&nbsp;|&nbsp;&nbsp;{item.hold}股</h5>};*/}
               {assetslist}
             </Nav>
 
@@ -156,17 +155,6 @@ export default class MainPage extends Component {
             {this.props.children}
           </div>
         </div>
-        }
-        {!userbalance &&
-        <div>
-          等待数据中....
-          <Nav>
-            <LinkContainer to="/am">
-              <NavItem eventKey={399}>资产发行</NavItem>
-            </LinkContainer>
-          </Nav>
-        </div>
-        }
       </div>
     );
   }

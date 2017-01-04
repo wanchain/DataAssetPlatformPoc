@@ -78,7 +78,7 @@ export default class OAssets extends Component {
     const stockMoney = activeAssets ? activeAssets.hold * activeAssets.unitPrice : 0;
 
     const activeTransactionItems = [];
-    if (transactionItems) {
+    if (transactionItems && activeAssets) {
       if (transactionItems.length !== 0) {
         transactionItems.map(
           item => {

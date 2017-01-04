@@ -108,6 +108,7 @@ class Proof extends Component {
       const createMethod = {
         'name': 'get',
       };
+      const self = this;
       const params = createStandardReqParams(inputShortCode, senderAddr, createMethod);
       sendHttpRequest(params, 2, function NoName1(result) {
         console.log('result:' + result);
@@ -137,7 +138,7 @@ class Proof extends Component {
             fName = unicode2String(fName);
           }
 
-          this.setState({
+          self.setState({
             timestamp: time,
             sender: jsonObjGet.sender,
             txHash: jsonObjGetTx.hash,
@@ -189,9 +190,9 @@ class Proof extends Component {
                 <tr>
                   <td>
                     <div className="">
-                      <span className="proof-text-title">对应的区块链数据：</span>
+                      <span className={styles['proof-text-title']}>对应的区块链数据：</span>
                       <br/>
-                      <div className="proof-text-content">
+                      <div className={styles['proof-text-content']}>
                         <span>交易时间：</span><span id="trasaction-time">{this.state.timestamp}</span>
                       </div>
                     </div>
@@ -200,9 +201,9 @@ class Proof extends Component {
                 <tr>
                   <td>
                     <div className="">
-                      <span className="proof-text-title">提示：</span>
+                      <span className={styles['proof-text-title']}>提示：</span>
                       <br/>
-                      <div className="proof-text-content">
+                      <div className={styles['proof-text-content']}>
                         <span >
                             当前页面包含嵌入到网录区块链的数字签名文件的信息，因为交易已经被确认，所以是被永远存证的。
                         </span>
@@ -213,9 +214,9 @@ class Proof extends Component {
                 <tr>
                   <td>
                     <div className="">
-                      <span className="proof-text-title">SHA256哈希值：</span>
+                      <span className={styles['proof-text-title']}>SHA256哈希值：</span>
                       <br/>
-                      <div className="proof-text-content">
+                      <div className={styles['proof-text-content']}>
                         <span id="sha256hash">
                             {this.state.data.msgHash}
                         </span>
@@ -290,10 +291,10 @@ class Proof extends Component {
                 </tbody>
                 </table>
               </td>
-              <td className="file-area-td">
-                <div className=" proof-file-area">
-                  <div className="upload-bg proof-upload-bg">
-                    <a className="btn file upload-a">
+              <td className={styles['file-area-td']}>
+                <div className={styles['proof-file-area']}>
+                  <div className={'upload-bg ' + styles['proof-upload-bg'] }>
+                    <a className={'btn ' + styles.file + ' ' + styles['upload-a']}>
                       <input type="file" name="" id="" onDrop={this.handleDrop} onChange={this.handleChange}/>
                       <img src={upload} />
                       <p>

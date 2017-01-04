@@ -3,14 +3,12 @@ import ReactDOM from 'react-dom';
 // import {CryptoJS} from '../../../modules/crypto/crypto'
 import {fileHash, createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
 import sendHttpRequest from '../http/httpAjax';
-// import Clipboard from 'clipboard'
+// import Clipboard from 'clipboard';
 import ActvionModal from '../dialog/actionModal';
 
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
 
 const REQ_SHORT_CODE_TIMES = 15;
-
-// new Clipboard('.btn');
 
 class LocalFile extends Component {
   static propTypes = {
@@ -33,12 +31,37 @@ class LocalFile extends Component {
         hash: '',
       }
     };
+
+    // this._clipboard = null;
   }
+
+  // get clipboard() {
+  //   return this._clipboard;
+  // }
+  // set clipboard(clb) {
+  //   this._clipboard = clb;
+  // }
 
   componentWillMount() {
     this.props.onChildChange(420);
   }
 
+  componentDidMount() {
+    // console.log(Clipboard);
+    const Clipboard = require('clipboard');
+    console.log(new Clipboard('.btn'));
+    // this.clipboad = this.clipboad || new Clipboard('.btn');
+    // clipboard.on('success', function(e) {
+    //   console.log(e);
+    // });
+    // clipboard.on('error', function (e) {
+    //   console.log(e);
+    // });
+  }
+
+  componentWillUpdate() {
+    if (__DEVELOPMENT__) console.log('localfile-componentWillUpdate');
+  }
   componentDidUpdate() {
     if (__DEVELOPMENT__) console.log('localfile-componentWillUpdate');
     const txHash = this.state.txhash;
@@ -190,14 +213,14 @@ class LocalFile extends Component {
         <div className={styles['local-file']}>
           <div className={styles['alert-content']} >
             <p>
-              <img src={alert}/>&nbsp;&nbsp;
+              <img src={alert} className={styles.nomargin}/>&nbsp;&nbsp;
               提示：请选择本地文件，区块链将记录文件的哈希值，但并不存储源文件，源文件请妥善保存以便于验证
             </p>
           </div>
           <div className={styles['file-area']}>
 
             <div className={styles['upload-bg']}>
-              <a className={'btn' + styles.file + styles['upload-a']}>
+              <a className={'btn ' + styles.file + ' ' + styles['upload-a']}>
                 <input type="file" name="" id="" onDrop={this.handleDrop} onChange={this.handleChange}/>
                 <img src={upload} />
                 <p>
@@ -209,11 +232,11 @@ class LocalFile extends Component {
           {descContent}
           <div />
           <div className={styles['submit-area']}>
-            <a className={'btn' + styles['submit-button']} data-toggle="modal" data-target=".bs-example-modal-lg"
+            <a className={'btn ' + styles['submit-button']} data-toggle="modal" data-target=".bs-example-modal-lg"
                 onClick={this.handleSubmit}>
-                        <span>
-                            <img src={icsubmit}/>&nbsp;&nbsp;提交
-                        </span>
+                <span>
+                    <img src={icsubmit}/>&nbsp;&nbsp;提交
+                </span>
             </a>
 
           </div>

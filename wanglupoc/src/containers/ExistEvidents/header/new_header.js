@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 // import './header.css';
 // import existence from '../img/ic_existence.png';
@@ -9,17 +9,6 @@ import {LOCAL_FILE, LAYOUT_PROOF, PROOF} from '../constants';
 
 // const existence = require('../img/ic_existence.png');
 // const proof = require('../img/ic_proof.png');
-// const styles = {
-//   navbar: {
-//     height:127,
-//     background:0x000000
-//   },
-//   leftLabel: {
-//     height:127,
-//     width:250,
-//     background:0xff0000
-//   }
-// };
 
 class NewHeader extends Component {
   constructor(props) {
@@ -29,42 +18,46 @@ class NewHeader extends Component {
   }
 
   componentDidMount() {
-    console.log('newheader-componentDidMount');
-    const existClassName = ReactDOM.findDOMNode(this.refs.exist_ref).className;
-    const proofClassName = ReactDOM.findDOMNode(this.refs.proof_ref).className;
-
-    console.log('newheader-existClassName=' + existClassName);
-    console.log('newheader-proofClassName=' + proofClassName);
+    // console.log('newheader-componentDidMount');
+    // const existClassName = ReactDOM.findDOMNode(this.refs.exist_ref).className;
+    // const proofClassName = ReactDOM.findDOMNode(this.refs.proof_ref).className;
+    //
+    // console.log('newheader-existClassName=' + existClassName);
+    // console.log('newheader-proofClassName=' + proofClassName);
   }
 
   // componentWillReceiveProps(nextProps) {
   // }
 
   componentWillUpdate() {
-    console.log('newheader-componentWillUpdate');
-
-    console.log('this.props.isproof=' + this.props.isproof);
-    if (this.props.isproof === 'true') {
-      console.log('newHeader-isProof=true');
-    } else {
-      console.log('newHeader-isProof=false');
-    }
+    // console.log('newheader-componentWillUpdate');
+    //
+    // console.log('this.props.isproof=' + this.props.isproof);
+    // if (this.props.isproof === 'true') {
+    //   console.log('newHeader-isProof=true');
+    // } else {
+    //   console.log('newHeader-isProof=false');
+    // }
   }
 
   componentDidUpdate() {
-    console.log('newheader-componentDidUpdate');
-    const existClassName = ReactDOM.findDOMNode(this.refs.exist_ref).className;
-    const proofClassName = ReactDOM.findDOMNode(this.refs.proof_ref).className;
-
-    console.log('newheader-existClassName=' + existClassName);
-    console.log('newheader-proofClassName=' + proofClassName);
+    // console.log('newheader-componentDidUpdate');
+    // const existClassName = ReactDOM.findDOMNode(this.refs.exist_ref).className;
+    // const proofClassName = ReactDOM.findDOMNode(this.refs.proof_ref).className;
+    //
+    // console.log('newheader-existClassName=' + existClassName);
+    // console.log('newheader-proofClassName=' + proofClassName);
   }
 
   render() {
-    console.log('render');
+    // console.log('render');
+    const existence = require('../../img/ic_existence.png');
+    const proof = require('../../img/ic_proof.png');
+    // const styles = require('./header.scss');
+    const styles = {};
     return (
       <div>
-        <nav className="navbar " role="navigation">
+        <nav className={styles.navbar} role="navigation">
           <div className="container-fluid">
             <div className="navbar-header">
               <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -73,7 +66,7 @@ class NewHeader extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <span className="navbar-brand ">存证</span>
+              <span className={styles['navbar-brand']}>存证</span>
 
             </div>
 
@@ -90,13 +83,13 @@ class NewHeader extends Component {
               <ul className="nav navbar-nav navbar-right navbar-right-item" >
                 <li className={(this.props.isproof === 'true') ? '' : 'active'} ref="exist_ref">
                   <Link to={LOCAL_FILE} className="header-nav-link" activeClassName="active">
-                    {/* <img src={existence} /><br/>*/}
+                    <img src={existence} /><br/>
                     <p>存入</p>
                   </Link>
                 </li>
                 <li className={(this.props.isproof === 'true') ? 'active' : ''} ref="proof_ref">
                   <Link to={LAYOUT_PROOF + '/' + PROOF} className="header-nav-link" activeClassName="active">
-                    {/* <img src={proof}/><br/>*/}
+                    <img src={proof}/><br/>
                     <p>验证</p>
                   </Link>
                 </li>

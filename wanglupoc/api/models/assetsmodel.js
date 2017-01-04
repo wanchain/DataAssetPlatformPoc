@@ -33,7 +33,8 @@ const assetsSchema = new mongoose.Schema({
   exchangeState: Boolean,
   created_at: Date,
   updated_at: Date,
-  contractAddress: {type: String, unique: true},
+  // bellow items is filled by the block chain
+  contractAddress: String,
   creatorAddress: String,
   marketPrice: Number,
   issueState: String,

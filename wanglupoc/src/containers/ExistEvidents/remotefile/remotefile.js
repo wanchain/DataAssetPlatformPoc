@@ -183,6 +183,7 @@ class RemoteFile extends Component {
     const styles = require('../localfile/localfile.scss');
     const tagUrl = this.state.targetUrl;
     const icsubmit = require('../../img/ic_submit.png');
+    const alert = require('../../img/ic_alert.png');
 
     if (tagUrl !== 'undefined' && tagUrl !== '') {
       modalDalog = (
@@ -197,23 +198,23 @@ class RemoteFile extends Component {
       <div className={'remote-file'}>
         <div className={styles['alert-content']}>
           <p>
-            <img src={alert}/>&nbsp;&nbsp;
+            <img src={alert} className={styles.nomargin}/>&nbsp;&nbsp;
             提示：请选择远程文件，区块链将记录文件的哈希值，但并不存储源文件，源文件请妥善保存以便于验证
           </p>
         </div>
         <form name="form" className="" action="" method="post" role="form">
-          <div className={styles['ele-layout'] + 'form-group'}>
+          <div className={styles['ele-layout'] + ' form-group'}>
             <label className={styles['text-title']}>URL：</label>
             <input ref="input_url" name="net-addr" type="text" className="form-control" id="remote-file-address" placeholder="请输入网址"/>
           </div>
-          <div className={styles['ele-layout'] + 'form-group'}>
+          <div className={styles['ele-layout'] + ' form-group'}>
             <label className={styles['text-title']}>描述：</label>
             <textarea ref="ta_desc" id="remote-file-description" className="form-control"
                       name="net-description" rows="3" placeholder="请输入描述，字数500字以内"/>
           </div>
 
           <div className={styles['submit-area']}>
-            <a className={'btn' + styles['submit-button']} data-toggle="modal" data-target=".popup-dialog" onClick={this.handleSubmit}>
+            <a className={'btn ' + styles['submit-button']} data-toggle="modal" data-target=".popup-dialog" onClick={this.handleSubmit}>
               <span>
                   <img src={icsubmit}/>&nbsp;&nbsp;提交
               </span>

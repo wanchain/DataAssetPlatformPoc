@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import {createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
-// import CryptoJS from '../../../../local_modules/crypto';
+import CryptoJS from '../../../../local_modules/crypto';
 import sendHttpRequest from '../http/httpAjax';
 import ActvionModal from '../dialog/actionModal';
 
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
-const crypto = require('crypto');
+// const crypto = require('crypto');
 
 class TextInfo extends Component {
   static propTypes = {
@@ -61,15 +61,16 @@ class TextInfo extends Component {
       short_code_link: '',
     });
 
-    const secret = 'abcdefg';
-    const hashedText = crypto.createHmac('sha256', secret)
-      .update(description)
-      .digest('hex');
+    // const secret = 'abcdefg';
+    // const hashedText = crypto.createHmac('sha256', secret)
+    //   .update(description)
+    //   .digest('hex');
+    // console.log('--------' + hashedText);
+    const sha256 = CryptoJS.algo.SHA256.create();
+    const text = CryptoJS.enc.Utf8.parse(description);
+    sha256.update(text);
+    const hashedText = sha256.finalize().toString();
     console.log('--------' + hashedText);
-    // const sha256 = CryptoJS.algo.SHA256.create();
-    // const text = CryptoJS.enc.Utf8.parse(description);
-    // sha256.update(text);
-    // const hashedText = sha256.finalize().toString();
 
     const txFileInfo = {
       hash: hashedText,
@@ -106,6 +107,7 @@ class TextInfo extends Component {
   }
 
   render() {
+    const styles = require('../localfile/localfile.scss');
     const alert = require('../../img/ic_alert.png');
     const icsubmit = require('../../img/ic_submit.png');
     const dec = this.state.desc;
@@ -120,22 +122,22 @@ class TextInfo extends Component {
 
     return (
       <div>
-        <div className="alert-content " >
+        <div className={styles['alert-content']} >
           <p>
-            <img src={alert}/>&nbsp;&nbsp;
+            <img src={alert} className={styles.nomargin}/>&nbsp;&nbsp;
             提示：请输入您要存储的文本，文本内容和文本的哈希值都将被记录与区块链中
           </p>
         </div>
         <form name="textinfo_form" className="" action="" method="post" role="form">
-          <div className="ele-layout form-group">
-            <label className="text-title" >文本：</label>
+          <div className={styles['ele-layout'] + ' form-group'}>
+            <label className={styles['text-title']} >文本：</label>
             <textarea id="text-info-description" className="form-control" ref="text_area"
                       name="text-info-description" rows="5" placeholder="请输入输入文本数据">
 
                         </textarea>
           </div>
-          <div className="submit-area">
-            <a className="btn submit-button " data-toggle="modal" data-target=".bs-example-modal-lg"
+          <div className={styles['submit-area']}>
+            <a className={'btn ' + styles['submit-button']} data-toggle="modal" data-target=".bs-example-modal-lg"
                 onClick={this.handleSubmit}>
               <span>
                   <img src={icsubmit}/>&nbsp;&nbsp;提交
