@@ -12,13 +12,15 @@ import { push } from 'react-router-redux';
 const styles = require('./MainPage.scss');
 
 @connect(
-  () => ({
+  (state) => ({
+    user: state.auth.user
   }),
   Object.assign({}, {pushState: push}, depositActions)
 )
 class NavAssetsList extends Component {
   static propTypes = {
     item: React.PropTypes.object,
+    user: React.PropTypes.object,
     setActiveAssets: React.PropTypes.func,
     pushState: React.PropTypes.func.isRequired,
   };
@@ -64,10 +66,11 @@ export default class MainPage extends Component {
     this.initActiveAssets = this.initActiveAssets.bind(this);
   }
 
-  componentWillMount() {
-    if (!this.props.userbalance) {
-      this.props.getbalance();
-    }
+  componentDidMount() {
+    // if (!this.props.userbalance) {
+    console.log('.............MainPage willMount');
+    this.props.getbalance();
+    // }
   }
 
   componentWillReceiveProps(nextProps) {

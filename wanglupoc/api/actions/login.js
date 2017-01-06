@@ -9,6 +9,7 @@ export default function login(req) {
     name: req.body.name,
     password: req.body.password
   };
+  console.log('##########login .....');
   return new Promise((resolve, reject) => {
     if(!user.name){
       reject({status: 400, code: 1, message:"Must provide email and password"});

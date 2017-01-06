@@ -1,5 +1,6 @@
 import React from 'react';
 import AlertDialog from './alert';
+import {browserHistory} from 'react-router';
 import CProgress from '../progress/circularprogress';
 import {LAYOUT_PROOF} from '../constants';
 
@@ -12,7 +13,8 @@ class ActionModal extends React.Component {
     if (__DEVELOPMENT__) console.log('copyShortCodeClick');
     // const link = '/#' + LAYOUT_PROOF + '/' + shortCode;
     const link = LAYOUT_PROOF + '/' + shortCode;
-    window.location.href = link;
+    // window.location.href = link;
+    browserHistory.push(link);
     if (__DEVELOPMENT__) console.log('link=' + link);
 
     return false;

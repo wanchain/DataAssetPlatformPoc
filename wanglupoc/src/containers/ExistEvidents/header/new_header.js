@@ -53,8 +53,7 @@ class NewHeader extends Component {
     // console.log('render');
     const existence = require('../../img/ic_existence.png');
     const proof = require('../../img/ic_proof.png');
-    // const styles = require('./header.scss');
-    const styles = {};
+    const styles = require('./header.scss');
     return (
       <div>
         <nav className={styles.navbar} role="navigation">
@@ -73,9 +72,9 @@ class NewHeader extends Component {
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav ">
                 <li>
-                  <p className="navbar-alert-text">
-                    您把重要的文件、法律文书、资产证明存储于分布式的区块链上，
-                    这些电子文档将无法被篡改，并伴有同样无法篡改的时间证明。
+                  <p className={styles['navbar-alert-text']}>
+                      您把重要的文件、法律文书、资产证明存储于分布式的区块链上，<br/>
+                      这些电子文档将无法被篡改，并伴有同样无法篡改的时间证明。
                   </p>
                 </li>
               </ul>

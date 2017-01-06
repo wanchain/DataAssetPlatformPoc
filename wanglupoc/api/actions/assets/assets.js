@@ -3,43 +3,44 @@
  */
 import Assets from '../../models/assetsmodel';
 import AssetTransaction from '../../models/assetTransaction';
+import {assignAssetsModelObject} from '../helper/assignModels';
 var ethereum = require('../../ethereum/ethereum');
 
 export default function add(req) {
-  console.log("-----");
-  console.log(req.body);
+  console.log("-----asset-add" + req.body);
 
-  var newAssets = Assets({
-    assetsName: req.body.assetsName ? req.body.assetsName : '',
-    assetsTitle: req.body.assetsTitle ? req.body.assetsTitle : '',
-    assetsType: req.body.assetsType ? req.body.assetsType : 0,
-    publishType: req.body.publishType ? req.body.publishType : 0,
-    stockNumber: req.body.stockNumber ? req.body.stockNumber : 0,
-    unitType: req.body.unitType ? req.body.unitType : 0,
-    unitPrice: req.body.unitPrice ? req.body.unitPrice : 0,
-    members: req.body.members ? req.body.members : '',
-    publishTime: req.body.publishTime ? req.body.publishTime : new Date(),
-    totalValue: req.body.totalValue ? req.body.totalValue : 0,
-    exchangeState: req.body.exchangeState ? req.body.exchangeState : false,
-    receipt: req.body.receipt ? req.body.receipt : {}
-  });
+  const des = {};
+  assignAssetsModelObject(des, req.body);
+  var newAssets = new Assets(des);
   return new Promise((resolve, reject) => {
     // if save success
     const user = req.session.user;
-    console.log("session-user:" + JSON.stringify(user));
+    if (!user) {
+      console.error("session-user is none");
+      reject();
+    } else {
+      console.log("session-user:" + JSON.stringify(user));
+    }
     newAssets.creatorAddress = user.ethAddress;
+    newAssets.issueState = "validating";
     newAssets.save(function (err, data) {
       if(err) {
-        console.log("add error: " + err);
+        console.log("add 1 error: " + err);
         reject(err);
       } else {
         console.log("add success!!");
         resolve({data: data});
         ethereum.issueAsset(user.ethAddress, user.so_privatekey, data, (err, receipt) => {
-          data.contractAddress = receipt.contractAddress;
-          data['receipt'] = receipt;
+          if(err) {
+            console.log("add 2 error: " + err);
+            data.issueState = "failed";
+          } else {
+            data.issueState = "completed";
+            data.contractAddress = receipt.contractAddress;
+            data['receipt'] = receipt;
+          }
           data.save(function (err) {
-            console.log();
+            console.log("add 3 error: " + err);
             /*ethereum.transferCustomToken(data.contractAddress, user.ethAddress,
               user.so_privatekey, '0x4f35bf8d8c703bec0f848744b2cac1ff7dd59aa3', 1000, function () {
               });
@@ -113,18 +114,7 @@ export function modify(req) {
         var aAsset = asset[0];
 
         // modify its attributes
-        aAsset.assetsName = item.assetsName;
-        aAsset.assetsTitle = item.assetsTitle;
-        aAsset.assetsType = item.assetsType;
-        aAsset.publishType = item.publishType;
-        aAsset.stockNumber = item.stockNumber;
-        aAsset.unitType = item.unitType;
-        aAsset.unitPrice = item.unitPrice;
-        aAsset.members = item.members;
-        aAsset.publishTime = item.publishTime;
-        aAsset.totalValue = item.totalValue;
-        aAsset.exchangeState = item.exchangeState;
-        aAsset.receipt = item.receipt;
+        assignAssetsModelObject(aAsset, item);
 
         aAsset.save(function (err, data) {
           if (err) {
@@ -160,6 +150,7 @@ export function customTokenTransfer(req) {
     tx.save(function (err, data) {
       if(err) {
         console.log("add error: " + err);
+        tx.status = err ? 'failed' : 'completed';
         reject(err);
       } else {
         console.log("add success!!");

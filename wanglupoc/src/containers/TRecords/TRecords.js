@@ -1,5 +1,6 @@
 /**
  * Created by jishiwu on 12/19/16.
+ * All Trade Records
  */
 import React, { Component } from 'react';
 // import { LinkContainer } from 'react-router-bootstrap';
@@ -22,8 +23,8 @@ export default class TRecords extends Component {
     getTransactions: React.PropTypes.func,
   };
 
-  componentWillMount() {
-    this.props.getTransactions();
+  componentDidMount() {
+    // this.props.getTransactions();
   }
 
   render() {

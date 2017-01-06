@@ -10,15 +10,12 @@ var ethereum = require('../../ethereum/ethereum');
 
 var _getUserAssets = function(user, callback){
   Assets.find({}, function(err, assetsFind){
-    console.log("findAssetContracts" + JSON.stringify(assetsFind, null, "    "));
     if(err){
       callback(err, null);
     } else {
-      var cpAssetsFind = assetsFind;
-      console.log("cpAssetsFind" + JSON.stringify(assetsFind, null, "    "));
       for(var i in assetsFind){
         assetsFind[i] = assetsFind[i].toObject();
-        assetsFind[i]['hold'] = ethereum.getCustomTokenBalance(assetsFind[i].contractAddress, user.ethAddress);
+        assetsFind[i]['hold'] = ethereum.getCustomTokenBalance(assetsFind[i].contractAddress, user.ethAddress) / 100;
         console.log();
       }
       callback(null, assetsFind);
@@ -52,10 +49,12 @@ export function getStockBalance(req) {
     });
   });
 }
-
+let getbalancenum = 0;
 // get cash balance
 export function getbalance(req) {
-  console.log("-----getbalance");
+  getbalancenum = getbalancenum + 1;
+  // console.trace();
+  console.log("-----getbalance:" + getbalancenum);
   const user = req.session.user;
   return new Promise((resolve, reject) => {
     if (!user) {

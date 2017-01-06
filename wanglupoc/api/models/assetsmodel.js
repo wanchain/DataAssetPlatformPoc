@@ -19,6 +19,7 @@ import mongoose from 'mongoose';
 //   console.log('Mongoose disconnected');
 // });
 
+//
 const assetsSchema = new mongoose.Schema({
   assetsName: { type: String, required: true, unique: true },
   assetsTitle: String,
@@ -37,7 +38,7 @@ const assetsSchema = new mongoose.Schema({
   contractAddress: String,
   creatorAddress: String,
   marketPrice: Number,
-  issueState: String,
+  issueState: {type: String, enum: ['validating', 'failed', 'completed']},
   receipt: Object
 });
 

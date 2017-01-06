@@ -85,7 +85,7 @@ app.use((req, res) => {
     if (redirectLocation) {
       res.redirect(redirectLocation.pathname + redirectLocation.search);
     } else if (error) {
-      console.error('ROUTER ERROR:', pretty.render(error));
+      console.error('ROUTER ERROR:', pretXMLty.render(error));
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {

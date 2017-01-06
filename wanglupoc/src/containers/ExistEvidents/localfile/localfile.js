@@ -49,21 +49,20 @@ class LocalFile extends Component {
   componentDidMount() {
     // console.log(Clipboard);
     const Clipboard = require('clipboard');
-    console.log(new Clipboard('.btn'));
-    // this.clipboad = this.clipboad || new Clipboard('.btn');
-    // clipboard.on('success', function(e) {
-    //   console.log(e);
-    // });
-    // clipboard.on('error', function (e) {
-    //   console.log(e);
-    // });
+    const clipboard = new Clipboard('.btn');
+    clipboard.on('success', function NoName(info) {
+      console.log(info);
+    });
+    clipboard.on('error', function NoName1(err) {
+      console.log(err);
+    });
   }
 
   componentWillUpdate() {
     if (__DEVELOPMENT__) console.log('localfile-componentWillUpdate');
   }
   componentDidUpdate() {
-    if (__DEVELOPMENT__) console.log('localfile-componentWillUpdate');
+    if (__DEVELOPMENT__) console.log('localfile-componentDidUpdate');
     const txHash = this.state.txhash;
 
     if (txHash !== 'undefined' && txHash !== '') {

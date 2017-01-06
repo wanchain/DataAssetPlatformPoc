@@ -1,5 +1,6 @@
 /**
  * Created by jishiwu on 12/19/16.
+ * All Trade Markets
  */
 import React, { Component } from 'react';
 // import { LinkContainer } from 'react-router-bootstrap';

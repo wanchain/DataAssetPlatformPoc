@@ -27,9 +27,7 @@ var compiled_bytecode = '60a060405260096060527f546f6b656e20302e31000000000000000
 var myadvancedtokenContract = web3.eth.contract(JSON.parse(compiled_interface));
 
 exports.genEthereumAddress = function(){
-  console.log("111");
     var privKey = ethUtil.crypto.randomBytes(32);
-    //console.log("2222" + privKey);
     return {
         'privateKey' : ethUtil.bufferToHex(privKey).substr(2),
         'publicKey' : ethUtil.bufferToHex(ethUtil.privateToAddress(privKey))
@@ -46,7 +44,6 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
 
 	var constructorInputs = [initialSupply, tokenName, decimalUnits, tokenSymbol, centralMinter];
 
-	//constructorInputs.push({ data: compiled.contracts.MyAdvancedToken.bytecode});
   constructorInputs.push({ data: compiled_bytecode});
 	var txData = myadvancedtokenContract.new.getData.apply(null, constructorInputs);
 
@@ -86,7 +83,7 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
          } else {
            delayExecContext.cb({error: 'fetch receipt failed'}, null);
          }
-       }, 30000);
+       }, 60000);
 	   } else {
 	       callback(err, null);
 	   }
@@ -127,7 +124,7 @@ exports.transferCustomToken = function(contractAddress, senderEthAddress, sender
 					} else {
 			  		cb4TimeOut('transfer failed', null);
 					}
-				}, 30000);
+				}, 60000);
 	   } else {
 	      callback(err, null);
 	   }

@@ -39,6 +39,7 @@ export default class Deposit extends Component {
   }
 
   componentWillMount() {
+    console.log('.............Deposit willMount');
     this.props.getbalance();
   }
 

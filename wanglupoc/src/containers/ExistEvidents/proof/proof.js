@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {createStandardReqParams, fileHash, unicode2String} from '../utils/utils';
 import sendHttpRequest from '../http/httpAjax';
 import {PROOF, LAYOUT_PROOF} from '../constants';
+import {browserHistory} from 'react-router';
 import AlertDialog from '../dialog/alert';
 
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
@@ -10,6 +11,7 @@ const browserPrfix = 'localhost:8000/#/';
 
 let shortCode = '';
 let alert = false;
+const styles = require('./proof.scss');
 class Proof extends Component {
   static propTypes = {
     params: React.PropTypes.object
@@ -39,12 +41,12 @@ class Proof extends Component {
   }
 
   componentWillMount() {
-    this.search();
   }
 
   componentDidMount() {
     // const ele = ReactDOM.findDOMNode(this.refs.display_text_td);
     // console.log('ele=' + ele);
+    this.search();
   }
 
   componentWillUpdate() {
@@ -96,7 +98,8 @@ class Proof extends Component {
   inputSubmit() {
     const shortCodeTmp = ReactDOM.findDOMNode(this.refs.input_short_code).value.trim();
     const link = LAYOUT_PROOF + '/' + shortCodeTmp;
-    window.location.href = link;
+    // window.location.href = link;
+    browserHistory.push(link);
     this.toggleSearch(shortCodeTmp);
   }
 
@@ -161,7 +164,6 @@ class Proof extends Component {
   }
 
   render() {
-    const styles = require('./proof.scss');
     const upload = require('../../img/ic_upload.png');
     return (
       <div className="">

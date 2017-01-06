@@ -38,8 +38,8 @@ class ActiveTransactionItem extends Component {
       <tr>
         <td>{item.timestamp}</td>
         <td>{assetsName}</td>
-        <td>转入</td>
-        <td>+{item.transferQuantity}</td>
+        <td>转出</td>
+        <td>-{item.transferQuantity}</td>
         <td>{item.status}</td>
         <td><a onClick={this.onReceipt}>查证</a></td>
       </tr>
@@ -65,7 +65,8 @@ export default class OAssets extends Component {
     receipt: React.PropTypes.object,
     setReceipt: React.PropTypes.func
   };
-  componentWillMount() {
+  componentDidMount() {
+    console.log('.............OAssets willMount');
     this.props.getTransactions();
   }
 

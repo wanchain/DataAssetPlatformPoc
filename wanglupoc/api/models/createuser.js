@@ -3,7 +3,7 @@
  */
 require('../../server.babel');
 
- mongoose =require('mongoose');
+mongoose =require('mongoose');
 mongoose.Promise = global.Promise;
 const mongoDB = 'mongodb://127.0.0.1/wanglutech';
 mongoose.connect(mongoDB);

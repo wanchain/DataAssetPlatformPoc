@@ -179,6 +179,7 @@ export function sendTransaction(transaction) {
 }
 
 export function getbalance() {
+  console.log('---redux getbalance');
   return {
     types: [DEPOSITGETBALANCE, DEPOSITGETBALANCE_SUCCESS, DEPOSITGETBALANCE_FAIL],
     promise: (client) => client.post('/deposit/getbalance', {})
