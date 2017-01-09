@@ -12,6 +12,7 @@ import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ReduxAsyncConnect } from 'redux-async-connect';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
+import { EventEmitter } from 'events';
 
 import getRoutes from './routes';
 
@@ -23,6 +24,10 @@ const history = syncHistoryWithStore(_browserHistory, store);
 
 function initSocket() {
   const socket = io('', {path: '/ws'});
+  socket.on('connect', () => {
+    console.log('connection established');
+  });
+
   socket.on('news', (data) => {
     console.log(data);
     socket.emit('my other event', { my: 'data from client' });
@@ -31,10 +36,15 @@ function initSocket() {
     console.log(data);
   });
 
+  socket.on('newBlockGen', () => {
+    global.dataRefreshNotifier.emit('updateData');
+  });
+
   return socket;
 }
 
 global.socket = initSocket();
+global.dataRefreshNotifier = new EventEmitter();
 
 const component = (
   <Router render={(props) =>

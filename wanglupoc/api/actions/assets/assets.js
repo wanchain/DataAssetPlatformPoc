@@ -5,6 +5,8 @@ import Assets from '../../models/assetsmodel';
 import AssetTransaction from '../../models/assetTransaction';
 import {assignAssetsModelObject} from '../helper/assignModels';
 var ethereum = require('../../ethereum/ethereum');
+var redis = require('redis');
+var redisClient = redis.createClient();
 
 export default function add(req) {
   console.log("-----asset-add" + req.body);
@@ -131,7 +133,8 @@ export function modify(req) {
     })
   });
 }
-
+var cidPrefix = new Date().getTime().toString() + '_';
+var cachedTxid = 1;
 export function customTokenTransfer(req) {
   console.log('customTokenTransfer' + JSON.stringify(req.body, null, '$$$$'));
   const sender = req.session.user;
@@ -141,34 +144,19 @@ export function customTokenTransfer(req) {
   const quantity = req.body.number;
   return new Promise((resolve, reject) => {
     // if save success
-
-    var tx = new AssetTransaction({
+    var tx = {
       fromAddress: sender.ethAddress,
       fromUser: sender,
       toAddress: receiverAddress,
       assetContract: assetContractAddress,
       transferQuantity: quantity,
       status: 'validating',
+      ctxid: cidPrefix + cachedTxid++,
       receipt: {}
-    });
-    tx.save(function (err, data) {
-      if(err) {
-        console.log("add error: " + err);
-        tx.status = err ? 'failed' : 'completed';
-        reject(err);
-      } else {
-        console.log("add success!!");
-        resolve({data: data});
-        var dbTx = data;
-        console.log('quantity : ' + quantity);
-        ethereum.transferCustomToken(assetContractAddress, sender.ethAddress,
-             sender.so_privatekey, receiverAddress, quantity *100,
-             function (err, dummy) {
-                 dbTx.status = err ? 'failed' : 'completed';
-                 dbTx['receipt'] = dummy;
-                 dbTx.save();
-             });
-      }
-    });
+    };
+
+    resolve({data: tx});
+    console.log('sendedCachedTx: \n' + JSON.stringify(tx, '    '));
+    redisClient.rpush('CacheTx', JSON.stringify(tx));
   });
 }

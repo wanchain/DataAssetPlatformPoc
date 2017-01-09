@@ -10,6 +10,7 @@
  */
 var path = require('path');
 var Web3 = require('web3');
+var events = require('events');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var Tx = require('ethereumjs-tx');
 var ethUtil = require('ethereumjs-util');
@@ -34,6 +35,9 @@ exports.genEthereumAddress = function(){
     }
 };
 
+var unackedAssetsHash = [];
+var dispatcher = new events.EventEmitter();
+var maxBlockReceiptUnavailable = 3;
 exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, callback){
 	//TODO: validate assetContract info
   var decimalUnits = 2;
@@ -68,40 +72,30 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
 	var serializedTx = tx.serialize();
 	web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash){
 	   if(!err){
-	      console.log("tx hash:" + hash);
-	      //because the getTransactionReceipt interface get result immidiately,so delay temporary
-	      //web3.eth.getTransactionReceipt(hash, function(error, result){
-        //  console.log("issue asset result:" + JSON.stringify(result));
-	      //  callback(error, result);
-        //});
-       var delayExecContext = {cb: callback, hash: hash};
-
-       var count = 0;
-       var loopid = setInterval(function() {
-         var receipt = web3.eth.getTransactionReceipt(delayExecContext.hash);
-         count ++;
-         if (receipt) {
-           delayExecContext.cb(null, receipt);
-           clearInterval(loopid);
-         } else if(count > 20){
-           delayExecContext.cb({error: 'fetch receipt failed'}, null);
-           clearInterval(loopid);
-           return;
-         }
-       }, 5000);
-       // setTimeout(function() {
-       //   var receipt = web3.eth.getTransactionReceipt(delayExecContext.hash);
-       //   console.log(JSON.stringify(receipt));
-       //   if (receipt) {
-       //     delayExecContext.cb(null, receipt);
-       //   } else {
-       //     delayExecContext.cb({error: 'fetch receipt failed'}, null);
-       //   }
-       // }, 5000);
+	     unackedAssetsHash.push({hash: hash, blockOffset: 0});
+	     dispatcher.on(hash, function (err, receipt) {
+	       callback(err, receipt);
+       });
+	     // console.log("tx hash:" + hash);
+	     // //because the getTransactionReceipt interface get result immidiately,so delay temporary
+	     // //web3.eth.getTransactionReceipt(hash, function(error, result){
+       // //  console.log("issue asset result:" + JSON.stringify(result));
+	     // //  callback(error, result);
+       // //});
+       //var delayExecContext = {cb: callback, hash: hash};
+       //setTimeout(function() {
+       //  var receipt = web3.eth.getTransactionReceipt(delayExecContext.hash);
+       //  console.log(JSON.stringify(receipt));
+       //  if (receipt) {
+       //    delayExecContext.cb(null, receipt);
+       //  } else {
+       //    delayExecContext.cb({error: 'fetch receipt failed'}, null);
+       //  }
+       //}, 30000);
 	   } else {
 	       callback(err, null);
 	   }
-	});
+	});	
 };
 
 exports.utilTransferEther4Test = function(){
@@ -145,7 +139,63 @@ exports.transferCustomToken = function(contractAddress, senderEthAddress, sender
 	});
 };
 
+exports.transferCustomTokenEx = function(contractAddress, senderEthAddress, senderPrivateKey, receiverEthAddress, quantity, callback){
+  //TODO:change parameter
+  var myadvancedtoken = myadvancedtokenContract.at(contractAddress);
+  var privateKey = new Buffer(senderPrivateKey, 'hex');//from.so_privatekey
+  var serial = '0x' + web3.eth.getTransactionCount(senderEthAddress).toString(16);
+  var rawTx = {
+    nonce: serial,
+    gasPrice: '0x43bb88745',
+    gasLimit: '0x400000',
+    to: contractAddress,//contract address
+    value: '0x00',
+    from: senderEthAddress,
+    data: myadvancedtoken.transfer.getData(receiverEthAddress, quantity)
+  };
+
+  var tx = new Tx(rawTx);
+  console.log(JSON.stringify(tx, null, '    '));
+  tx.sign(privateKey);
+  var serializedTx = tx.serialize();
+  web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'), function(err, hash){
+  	callback(err, hash);
+  });
+};
+
+
 exports.getCustomTokenBalance = function(contractAddress, userAddress){
 	var customToken = myadvancedtokenContract.at(contractAddress);
 	return customToken.balanceOf(userAddress).toNumber();
 };
+var newBlockCB = null;
+exports.setNewBlockGenCB = function(cb){
+  newBlockCB = cb;
+};
+
+exports.monitorIssueAssets = function () {
+  web3.eth.filter('latest').watch(function (err, blockHash) {
+    if (!err) {
+      for (var i = unackedAssetsHash.length - 1; i >= 0; i--) {
+        var item = unackedAssetsHash[i];
+        var receipt = web3.eth.getTransactionReceipt(item.hash);
+        if (receipt) {
+          dispatcher.emit(item.hash, null, receipt);
+          unackedAssetsHash.splice(i, 1);
+        } else {
+          if (item.blockOffset < maxBlockReceiptUnavailable) {
+            unackedAssetsHash[i].blockOffset = item.blockOffset + 1;
+          } else {
+            unackedAssetsHash.splice(i, 1);
+            dispatcher.emit(item.hash, 'retrive receipt failed', null);
+          }
+        }
+      }
+
+      if (newBlockCB)
+        newBlockCB();
+    } else {
+      console.log('monitor new block failed');
+    }
+  });
+}

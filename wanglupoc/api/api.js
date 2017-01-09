@@ -8,7 +8,7 @@ import PrettyError from 'pretty-error';
 import http from 'http';
 import SocketIo from 'socket.io';
 import mongoose from 'mongoose';
-
+import { setNewBlockGenCB } from './ethereum/ethereum';
 
 console.log(mongoose.Promise);
 mongoose.Promise = global.Promise;
@@ -71,6 +71,10 @@ if (config.apiPort) {
     }
     console.info('----\n==> 🌎  API is running on port %s', config.apiPort);
     console.info('==> 💻  Send requests to http://%s:%s', config.apiHost, config.apiPort);
+  });
+
+  setNewBlockGenCB(function () {
+    io.emit('newBlockGen');
   });
 
   io.on('connection', (socket) => {

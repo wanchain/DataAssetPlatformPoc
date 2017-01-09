@@ -16,6 +16,7 @@ const assetTransaction = new mongoose.Schema({
 
     timestamp: {type: Date, default: Date.now},
     status: {type: String, enum: ['validating', 'failed', 'completed']},
+    ctxid: String,
     receipt: Object
 });
 
