@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-// import {CryptoJS} from '../../../modules/crypto/crypto'
 import {fileHash, createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
 import sendHttpRequest from '../http/httpAjax';
-// import Clipboard from 'clipboard';
 import ActvionModal from '../dialog/actionModal';
 
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';

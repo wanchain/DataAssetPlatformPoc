@@ -84,7 +84,7 @@ export default class OAssets extends Component {
         transactionItems.map(
           item => {
             if (item.assetContract === activeAssets.contractAddress) {
-              activeTransactionItems.push(<ActiveTransactionItem item={item} assetsName={activeAssets.assetsName}/>);
+              activeTransactionItems.push(<ActiveTransactionItem key={item._id} item={item} assetsName={activeAssets.assetsName}/>);
             }
           }
         );

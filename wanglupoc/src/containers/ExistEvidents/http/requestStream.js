@@ -1,6 +1,3 @@
-/**
- * Created by sea on 16-11-20.
- */
 import Request from 'request'
 
 export default function requestRemoteFile(url) {

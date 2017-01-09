@@ -75,15 +75,29 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
 	      //  callback(error, result);
         //});
        var delayExecContext = {cb: callback, hash: hash};
-       setTimeout(function() {
+
+       var count = 0;
+       var loopid = setInterval(function() {
          var receipt = web3.eth.getTransactionReceipt(delayExecContext.hash);
-         console.log(JSON.stringify(receipt));
+         count ++;
          if (receipt) {
            delayExecContext.cb(null, receipt);
-         } else {
+           clearInterval(loopid);
+         } else if(count > 20){
            delayExecContext.cb({error: 'fetch receipt failed'}, null);
+           clearInterval(loopid);
+           return;
          }
-       }, 60000);
+       }, 5000);
+       // setTimeout(function() {
+       //   var receipt = web3.eth.getTransactionReceipt(delayExecContext.hash);
+       //   console.log(JSON.stringify(receipt));
+       //   if (receipt) {
+       //     delayExecContext.cb(null, receipt);
+       //   } else {
+       //     delayExecContext.cb({error: 'fetch receipt failed'}, null);
+       //   }
+       // }, 5000);
 	   } else {
 	       callback(err, null);
 	   }
@@ -124,7 +138,7 @@ exports.transferCustomToken = function(contractAddress, senderEthAddress, sender
 					} else {
 			  		cb4TimeOut('transfer failed', null);
 					}
-				}, 60000);
+				}, 5000);
 	   } else {
 	      callback(err, null);
 	   }

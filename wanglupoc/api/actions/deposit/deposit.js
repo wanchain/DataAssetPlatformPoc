@@ -16,7 +16,6 @@ var _getUserAssets = function(user, callback){
       for(var i in assetsFind){
         assetsFind[i] = assetsFind[i].toObject();
         assetsFind[i]['hold'] = ethereum.getCustomTokenBalance(assetsFind[i].contractAddress, user.ethAddress) / 100;
-        console.log();
       }
       callback(null, assetsFind);
     }
@@ -52,9 +51,8 @@ export function getStockBalance(req) {
 let getbalancenum = 0;
 // get cash balance
 export function getbalance(req) {
-  getbalancenum = getbalancenum + 1;
   // console.trace();
-  console.log("-----getbalance:" + getbalancenum);
+  console.log("-----getbalance:" + new Date().getTime());
   const user = req.session.user;
   return new Promise((resolve, reject) => {
     if (!user) {
@@ -78,6 +76,7 @@ export function getbalance(req) {
           } else {
             modifyAbleBalance['assets'] = findAssets;
           }
+          console.log("-----userbalance:" + new Date().getTime());
           resolve({"userbalance": modifyAbleBalance});
         });
       }

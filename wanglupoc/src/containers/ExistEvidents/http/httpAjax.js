@@ -1,6 +1,3 @@
-/**
- * Created by sea on 16-11-19.
- */
 const METHOD_GET = 1;
 const METHOD_POST = 2;
 

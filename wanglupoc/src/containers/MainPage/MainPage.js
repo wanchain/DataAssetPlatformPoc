@@ -64,19 +64,34 @@ export default class MainPage extends Component {
   constructor(props) {
     super(props);
     this.initActiveAssets = this.initActiveAssets.bind(this);
+    console.log('.............constructor' + new Date().getTime());
+    this.props.getbalance();
+  }
+
+  componentWillMount() {
+    // if (!this.props.userbalance) {
+    console.log('.............MainPage WillMount' + new Date().getTime());
+    // }
   }
 
   componentDidMount() {
     // if (!this.props.userbalance) {
-    console.log('.............MainPage willMount');
-    this.props.getbalance();
+    console.log('.............MainPage DidMount' + new Date().getTime());
     // }
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('.............componentWillReceiveProps' + new Date().getTime());
     if (!this.props.activeAssets && nextProps.userbalance) {
       this.initActiveAssets(nextProps.userbalance);
     }
+  }
+  componentWillUpdate() {
+    console.log('.............componentWillUpdate' + new Date().getTime());
+  }
+
+  componentDidUpdate() {
+    console.log('.............componentDidUpdate' + new Date().getTime());
   }
 
   initActiveAssets(userbalance) {

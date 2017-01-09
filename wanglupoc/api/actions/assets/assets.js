@@ -16,8 +16,8 @@ export default function add(req) {
     // if save success
     const user = req.session.user;
     if (!user) {
-      console.error("session-user is none");
-      reject();
+      reject({Error: 'session-user is none'});
+      return;
     } else {
       console.log("session-user:" + JSON.stringify(user));
     }
@@ -32,7 +32,7 @@ export default function add(req) {
         resolve({data: data});
         ethereum.issueAsset(user.ethAddress, user.so_privatekey, data, (err, receipt) => {
           if(err) {
-            console.log("add 2 error: " + err);
+            console.log("add 2 error: " + JSON.stringify(err));
             data.issueState = "failed";
           } else {
             data.issueState = "completed";
@@ -40,7 +40,11 @@ export default function add(req) {
             data['receipt'] = receipt;
           }
           data.save(function (err) {
-            console.log("add 3 error: " + err);
+            if (err) {
+              console.log("add 3 error: " + err);
+            } else {
+              console.log("save success");
+            }
             /*ethereum.transferCustomToken(data.contractAddress, user.ethAddress,
               user.so_privatekey, '0x4f35bf8d8c703bec0f848744b2cac1ff7dd59aa3', 1000, function () {
               });
