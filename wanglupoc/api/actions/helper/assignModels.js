@@ -17,29 +17,29 @@ export function assignAssetsModelObject(des, src) {
   //   exchangeState: req.body.exchangeState ? req.body.exchangeState : false,
   //   receipt: req.body.receipt ? req.body.receipt : {}
 
-  // des.assetsName = src.assetsName;
-  // des.assetsTitle = src.assetsTitle;
-  // des.assetsType = src.assetsType;
-  // des.publishType = src.publishType;
-  // des.stockNumber = src.stockNumber;
-  // des.unitType = src.unitType;
-  // des.unitPrice = src.unitPrice;
-  // des.members = src.members;
-  // des.publishTime = src.publishTime;
-  // des.totalValue = src.totalValue;
-  // des.exchangeState = src.exchangeState;
-  //
-  // des.contractAddress = src.contractAddress;
-  // des.creatorAddress = src.creatorAddress;
-  // des.marketPrice = src.marketPrice;
-  // des.issueState = src.issueState;
-  // des.receipt = src.receipt;
+  des.assetsName = src.assetsName;
+  des.assetsTitle = src.assetsTitle;
+  des.assetsType = src.assetsType;
+  des.publishType = src.publishType;
+  des.stockNumber = src.stockNumber;
+  des.unitType = src.unitType;
+  des.unitPrice = src.unitPrice;
+  des.members = src.members;
+  des.publishTime = src.publishTime;
+  des.totalValue = src.totalValue;
+  des.exchangeState = src.exchangeState;
 
-  //// !!!!infact we should ignore created_at, updated_at,
+  des.contractAddress = src.contractAddress;
+  des.creatorAddress = src.creatorAddress;
+  des.marketPrice = src.marketPrice;
+  des.issueState = src.issueState;
+  des.receipt = src.receipt;
 
-  for (const key in src) {
-    if (src.hasOwnProperty(key)) {
-      des[key] = src[key];
-    }
-  }
+  //// !!!!infact we should ignore created_at, updated_at, _v, _id, and so on.
+
+  // for (const key in src) {
+  //   if (src.hasOwnProperty(key)) {
+  //     des[key] = src[key];
+  //   }
+  // }
 }

@@ -5,6 +5,7 @@ import Assets from '../../models/assetsmodel';
 import AssetTransaction from '../../models/assetTransaction';
 import {assignAssetsModelObject} from '../helper/assignModels';
 var ethereum = require('../../ethereum/ethereum');
+ethereum.monitorIssueAssets();
 var redis = require('redis');
 var redisClient = redis.createClient();
 
@@ -31,7 +32,6 @@ export default function add(req) {
         reject(err);
       } else {
         console.log("add success!!");
-        resolve({data: data});
         ethereum.issueAsset(user.ethAddress, user.so_privatekey, data, (err, receipt) => {
           if(err) {
             console.log("add 2 error: " + JSON.stringify(err));
@@ -41,11 +41,13 @@ export default function add(req) {
             data.contractAddress = receipt.contractAddress;
             data['receipt'] = receipt;
           }
+          console.log("add 4 begin save");
           data.save(function (err) {
             if (err) {
               console.log("add 3 error: " + err);
             } else {
-              console.log("save success");
+              console.log("*****save success:");
+              resolve({data: data});
             }
             /*ethereum.transferCustomToken(data.contractAddress, user.ethAddress,
               user.so_privatekey, '0x4f35bf8d8c703bec0f848744b2cac1ff7dd59aa3', 1000, function () {
