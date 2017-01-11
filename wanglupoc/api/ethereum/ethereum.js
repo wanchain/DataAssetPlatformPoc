@@ -93,9 +93,10 @@ exports.issueAsset = function(userEthAddress, userPrivateKey, assetContract, cal
        //  }
        //}, 30000);
 	   } else {
+       console.log("err");
 	       callback(err, null);
 	   }
-	});	
+	});
 };
 
 exports.utilTransferEther4Test = function(){

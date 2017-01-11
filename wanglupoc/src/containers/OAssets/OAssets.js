@@ -66,8 +66,13 @@ export default class OAssets extends Component {
     setReceipt: React.PropTypes.func
   };
   componentDidMount() {
-    console.log('.............OAssets willMount');
+    // console.log('.............OAssets willMount');
     this.props.getTransactions();
+    const self = this;
+    global.dataRefreshNotifier.on('updateData', function NoName() {
+      // console.log('***OAssets updateData');
+      self.props.getTransactions();
+    });
   }
 
   // getdata from current active item

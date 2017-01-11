@@ -25,6 +25,11 @@ export default class TRecords extends Component {
 
   componentDidMount() {
     // this.props.getTransactions();
+    const self = this;
+    global.dataRefreshNotifier.on('updateData', function NoName() {
+      // console.log('***TRecords updateData');
+      self.props.getTransactions();
+    });
   }
 
   render() {

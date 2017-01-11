@@ -64,34 +64,38 @@ export default class MainPage extends Component {
   constructor(props) {
     super(props);
     this.initActiveAssets = this.initActiveAssets.bind(this);
-    console.log('.............constructor' + new Date().getTime());
+    // console.log('.............constructor' + new Date().getTime());
     this.props.getbalance();
   }
 
   componentWillMount() {
     // if (!this.props.userbalance) {
-    console.log('.............MainPage WillMount' + new Date().getTime());
+    // console.log('.............MainPage WillMount' + new Date().getTime());
     // }
   }
 
   componentDidMount() {
     // if (!this.props.userbalance) {
-    console.log('.............MainPage DidMount' + new Date().getTime());
+    // console.log('.............MainPage DidMount' + new Date().getTime());
+    const self = this;
+    global.dataRefreshNotifier.on('updateData', function NoName() {
+      self.props.getbalance();
+    });
     // }
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('.............componentWillReceiveProps' + new Date().getTime());
+    // console.log('.............componentWillReceiveProps' + new Date().getTime());
     if (!this.props.activeAssets && nextProps.userbalance) {
       this.initActiveAssets(nextProps.userbalance);
     }
   }
   componentWillUpdate() {
-    console.log('.............componentWillUpdate' + new Date().getTime());
+    // console.log('.............componentWillUpdate' + new Date().getTime());
   }
 
   componentDidUpdate() {
-    console.log('.............componentDidUpdate' + new Date().getTime());
+    // console.log('.............componentDidUpdate' + new Date().getTime());
   }
 
   initActiveAssets(userbalance) {
