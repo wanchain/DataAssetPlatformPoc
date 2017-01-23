@@ -8,3 +8,6 @@ wanglupoc/webpack-assets.json
 wanglupoc/webpack-stats.json
 wanglupoc/npm-debug.log*
 wanglupoc/*.swp
+PoAE/node_modules
+*.ip
+*.log

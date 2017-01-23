@@ -51,26 +51,18 @@ class TextInfo extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const description = ReactDOM.findDOMNode(this.refs.text_area).value.trim();
-
     const uDec = string2Unicode(description);
-
-    if (__DEVELOPMENT__) console.log('uDec=' + uDec);
+    // if (__DEVELOPMENT__) console.log('uDec=' + uDec)
     this.setState({
       desc: uDec,
       txhash: '',
       short_code_link: '',
     });
-
-    // const secret = 'abcdefg';
-    // const hashedText = crypto.createHmac('sha256', secret)
-    //   .update(description)
-    //   .digest('hex');
-    // console.log('--------' + hashedText);
     const sha256 = CryptoJS.algo.SHA256.create();
     const text = CryptoJS.enc.Utf8.parse(description);
     sha256.update(text);
     const hashedText = sha256.finalize().toString();
-    console.log('--------' + hashedText);
+    // console.log('--------' + hashedText);
 
     const txFileInfo = {
       hash: hashedText,

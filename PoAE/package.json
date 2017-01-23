@@ -1,0 +1,23 @@
+{
+  "name": "cunzheng",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "cunzheng": "metest.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/metest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "es6-shim": "^0.35.2",
+    "ethereumjs-tx": "^1.2.2",
+    "json-rpc2": "^1.0.2",
+    "request": "^2.79.0",
+    "web3": "^0.18.2"
+  }
+}

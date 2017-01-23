@@ -27,7 +27,7 @@ export default class ApiClient {
           request.set('cookie', req.get('cookie'));
         }
 
-        console.log('request url' + formatUrl(path));
+        // console.log('request url' + formatUrl(path));
         if (data) {
           request.send(data);
         }

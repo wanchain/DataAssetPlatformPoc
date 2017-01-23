@@ -85,7 +85,6 @@ export default (store) => {
           <Route path="/RFH" component={RemoteFile}/>
           <Route path="/FC" component={UploadFile}/>
           <Route path="/TU" component={TextInfo}/>
-          <Route path="/TU" component={TextInfo}/>
           <Route path={'/pf' + '/:proof_page'} component={Proof}/>
         </Route>
         <Route path="/OAtransfer" component={OAssetTransfer}/>

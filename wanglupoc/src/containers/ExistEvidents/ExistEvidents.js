@@ -2,6 +2,7 @@
  * Created by jishiwu on 12/19/16.
  */
 import React, { Component } from 'react';
+// import { connect } from 'react-redux';
 import NewHeader from './header/new_header';
 import Recorder from './recoder/record';
 import NavBar from './navigationBar/navbar';
@@ -28,9 +29,9 @@ export default class ExistEvidents extends Component {
     ExistEvidents.navBar = (<div></div>);
     ExistEvidents.newHeader = (<NewHeader isproof="true"/>);
     ExistEvidents.recorder = <Recorder/>;
-    const isProof = this.props.params.proof_page;
-    console.log('isProof=' + isProof);
-    console.log('typeof isProof=' + typeof isProof );
+    // const isProof = this.props.params.proof_page;
+    // console.log('isProof=' + isProof);
+    // console.log('typeof isProof=' + typeof isProof );
     if (typeof(isProof) === 'undefined') {
       ExistEvidents.navBar = <NavBar/>;
       ExistEvidents.newHeader = <NewHeader isproof="false"/>;
@@ -58,16 +59,16 @@ export default class ExistEvidents extends Component {
       ExistEvidents.newHeader = <NewHeader isproof="true"/>;
       ExistEvidents.recorder = <div></div>;
     }
-    console.log('navBar=' + ExistEvidents.navBar);
+    // console.log('navBar=' + ExistEvidents.navBar);
   }
 
   componentWillUpdate() {
-    console.log('main-layout-componentWillUpdate');
+    // console.log('main-layout-componentWillUpdate');
   }
 
   componentDidUpdate() {
-    console.log('main-layout-componentDidUpdate');
-    console.log('*********');
+    // console.log('main-layout-componentDidUpdate');
+    // console.log('*********');
   }
 
   setHeight(height) {
@@ -79,6 +80,7 @@ export default class ExistEvidents extends Component {
   }
 
   render() {
+    console.log('children-----', this.props.children);
     return (
       <div >
         {ExistEvidents.newHeader}
