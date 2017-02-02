@@ -59,13 +59,13 @@ export default (store) => {
       <Route onEnter={requireLogin}>
         <Route path="loginSuccess" component={LoginSuccess}/>
       </Route>
-      <Route path="/signup" component={Signup}/>
+      <Route path="signup" component={Signup}/>
 
       { /* Routes */ }
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
 
-      <Route path="/am" component={AssetsManager}>
+      <Route path="am" component={AssetsManager}>
         <IndexRoute component={AssetsList}/>
         <Route path="/am/create" component={AssetsCreate}>
           <IndexRoute component={AssetsCreate1}/>
@@ -74,17 +74,17 @@ export default (store) => {
         </Route>
       </Route>
 
-      <Route path="/main" component={MainPage} >
+      <Route path="main" component={MainPage} >
         <IndexRoute component={OAssets}/>
         <Route path="/deposit" component={Deposit}/>
         <Route path="/withdraw" component={Withdraw}/>
         <Route path="/trecords" component={TRecords}/>
         <Route path="/tmarket" component={TMarket}/>
-        <Route path="/LFH" component={ExistEvidents}>
+        <Route path="LFH" component={ExistEvidents}>
           <IndexRoute component={LocalFile}/>
-          <Route path="/RFH" component={RemoteFile}/>
-          <Route path="/FC" component={UploadFile}/>
-          <Route path="/TU" component={TextInfo}/>
+          <Route path="/main/LFH/RFH" component={RemoteFile}/>
+          <Route path="/main/LFH/FC" component={UploadFile}/>
+          <Route path="/main/LFH/TU" component={TextInfo}/>
           <Route path={'/pf' + '/:proof_page'} component={Proof}/>
         </Route>
         <Route path="/OAtransfer" component={OAssetTransfer}/>

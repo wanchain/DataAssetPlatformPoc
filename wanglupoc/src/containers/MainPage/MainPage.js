@@ -165,7 +165,7 @@ export default class MainPage extends Component {
               <LinkContainer to="/setting" disabled>
                 <NavItem eventKey={6}>设置</NavItem>
               </LinkContainer>
-              <LinkContainer to="/LFH">
+              <LinkContainer to="/main/LFH">
                 <NavItem eventKey={7}>存证</NavItem>
               </LinkContainer>
               <LinkContainer to="/am">
