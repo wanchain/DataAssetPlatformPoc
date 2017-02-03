@@ -1,4 +1,9 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
 body{
+  margin-bottom: 60px;
   padding: 0px;
 }
 .app {
@@ -38,14 +43,17 @@ body{
   border-width: 15px 0px 0px 0px;
   border-style: solid;
   border-color: #ddd;
-  background: #222;
+  background-color: #222;
   color: #eee;
   height: 68px;
+  // keep footer bottom but not fixed
+  position: absolute;
+  bottom: 0;
 }
 .footer p{
   margin: 5px;
   text-align: center;
-  background-color: #1c1e22;
+  // background-color: #1c1e22;
   color: #fff
 }
 .logo{

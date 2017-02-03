@@ -31,25 +31,25 @@ export default class Login extends Component {
     return (
       <div className={styles.loginPage + ' container'}>
         <Helmet title="Login"/>
-        <h1>Login yeah</h1>
+        <h1>系统登陆</h1>
         {!user &&
         <div>
-          <form className="login-form form-inline" onSubmit={this.handleSubmit}>
+          <form onSubmit={this.handleSubmit}>
             <div className={styles.errormessage}>
               {!user && loginError && <div>{loginError}</div>}
             </div>
             <div className="form-group" >
               <label>用户名:</label>
-              <input type="text" ref="username" placeholder="Enter your username" className="form-control"/>
+              <input type="text" ref="username" placeholder="请输入用户名" className="form-control" />
             </div>
             <div className="form-group">
               <label>密码:</label>
-              <input type="text" ref="password" placeholder="Enter your password" className="form-control"/>
+              <input type="text" ref="password" placeholder="请输入密码" className="form-control" />
             </div>
-            <button className="btn btn-success" onClick={this.handleSubmit}><i className="fa fa-sign-in"/>{' '}Log In
+            <button className={'btn btn-success btn-lg ' + styles.loginBtn} onClick={this.handleSubmit}><i className="fa fa-sign-in"/>{' '}登陆
             </button>
           </form>
-          <p>This will "log you in" as this user, storing the username in the session of the API server.</p>
+          {/* <p>This will "log you in" as this user, storing the username in the session of the API server.</p> */}
         </div>
         }
         {user &&
