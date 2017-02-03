@@ -11,6 +11,8 @@ import info from './info';
 import widgets from './widgets';
 import assets from './assets';
 import deposit from './deposit';
+import textInfo from './textInfo';
+
 // import assetsManager from './AssetsManagerRedux';
 
 export default combineReducers({
@@ -27,5 +29,6 @@ export default combineReducers({
   pagination,
   assets,
   deposit,
-  widgets
+  widgets,
+  textInfo
 });

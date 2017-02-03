@@ -70,7 +70,6 @@ export default class App extends Component {
   };
 
   render() {
-    // const {user} = this.props;
     const logopng = require('../AssetsManager/icon/logo.png');
     const aboutpng = require('../AssetsManager/icon/-.png');
     const styles = require('./App.scss');

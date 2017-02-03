@@ -25,13 +25,9 @@ export default class ExistEvidents extends Component {
   }
 
   componentWillMount() {
-    console.log('main-layout-componentWillMount');
     ExistEvidents.navBar = (<div></div>);
     ExistEvidents.newHeader = (<NewHeader isproof="true"/>);
     ExistEvidents.recorder = <Recorder/>;
-    // const isProof = this.props.params.proof_page;
-    // console.log('isProof=' + isProof);
-    // console.log('typeof isProof=' + typeof isProof );
     if (typeof(isProof) === 'undefined') {
       ExistEvidents.navBar = <NavBar/>;
       ExistEvidents.newHeader = <NewHeader isproof="false"/>;
@@ -44,12 +40,7 @@ export default class ExistEvidents extends Component {
     console.log('navBar=' + ExistEvidents.navBar);
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('main-layout-componentWillReceiveProps');
-    const isProof = nextProps.params.proof_page;
-    // var isProof = this.props.params.proof_page;
-    console.log('isProof=' + isProof);
-    console.log('typeof isProof=' + typeof isProof );
+  componentWillReceiveProps() {
     if (typeof(isProof) === 'undefined') {
       ExistEvidents.navBar = <NavBar/>;
       ExistEvidents.newHeader = <NewHeader isproof="false"/>;
@@ -70,7 +61,6 @@ export default class ExistEvidents extends Component {
   }
 
   render() {
-    console.log('children-----', this.props.children);
     return (
       <div >
         {ExistEvidents.newHeader}

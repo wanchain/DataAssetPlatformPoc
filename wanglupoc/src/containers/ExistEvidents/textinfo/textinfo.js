@@ -1,116 +1,76 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
-import CryptoJS from '../../../../local_modules/crypto';
-import sendHttpRequest from '../http/httpAjax';
-import ActvionModal from '../dialog/actionModal';
+import React, { Component, PropTypes } from 'react';
+// import ReactDOM from 'react-dom';
+import { connect } from 'react-redux';
+// import {createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
+import { setDesc } from 'redux/modules/textInfo';
+// import CryptoJS from '../../../../local_modules/crypto';
+// import sendHttpRequest from '../http/httpAjax';
+// import ActvionModal from '../dialog/actionModal';
 
-const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
-// const crypto = require('crypto');
+// const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
 
 class TextInfo extends Component {
+
   static propTypes = {
-    onChildChange: React.PropTypes.func
-  };
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
-    this.state = {
-      desc: '',
-      txhash: '',
-      short_code_link: '',
-    };
+    setDesc: PropTypes.func.isRequired,
+    desc: PropTypes.string.isRequired,
+    txhash: PropTypes.string.isRequired,
+    short_code_link: PropTypes.string.isRequired
   }
 
-  componentWillMount() {
-    this.props.onChildChange(380);
-  }
-
-  componentDidUpdate() {
-    if (__DEVELOPMENT__) console.log('textinfo-componentDidUpdate');
-    const txHash = this.state.txhash;
-    if (__DEVELOPMENT__) console.log('txHash=' + txHash);
-    if (txHash !== 'undefined' && txHash !== '') {
-      // exsited txHash
-      const shortCode = this.state.short_code_link;
-      if (shortCode === 'undefined' || shortCode === '' || shortCode === null) {
-        // doesn't shortCode
-        // this.reqShortCode(REQ_SHORT_CODE_TIMES, txHash);
-        const reqTimes = 15;
-        const self = this;
-        requestShortCode(reqTimes, txHash, (sc) => {
-          self.setState({
-            short_code_link: sc,
-          });
-        });
-      }
-    }
-  }
-
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
-    const description = ReactDOM.findDOMNode(this.refs.text_area).value.trim();
-    const uDec = string2Unicode(description);
-    // if (__DEVELOPMENT__) console.log('uDec=' + uDec)
-    this.setState({
-      desc: uDec,
-      txhash: '',
-      short_code_link: '',
-    });
-    const sha256 = CryptoJS.algo.SHA256.create();
-    const text = CryptoJS.enc.Utf8.parse(description);
-    sha256.update(text);
-    const hashedText = sha256.finalize().toString();
-    // console.log('--------' + hashedText);
+    console.log(this.props.setDesc);
+    this.props.setDesc(this.refs.text_area.value);
+    // let { desc, txhash, short_code_link } = this.props;
+    // const description = ReactDOM.findDOMNode(this.refs.text_area).value.trim();
+    // const uDec = string2Unicode(description);
+    // this.setState({
+    //   desc: uDec,
+    //   txhash: '',
+    //   short_code_link: '',
+    // });
+    // const sha256 = CryptoJS.algo.SHA256.create();
+    // const text = CryptoJS.enc.Utf8.parse(description);
+    // sha256.update(text);
+    // const hashedText = sha256.finalize().toString();
+    // const txFileInfo = {
+    //   hash: hashedText,
+    //   desc: uDec
+    // };
+    // const createMethod = {
+    //   'name': 'add',
+    //   'type': 'text'
+    // };
 
-    const txFileInfo = {
-      hash: hashedText,
-      desc: uDec
-    };
-    const createMethod = {
-      'name': 'add',
-      'type': 'text'
-    };
+    // const addTxParams = createStandardReqParams(txFileInfo, senderAddr, createMethod);
 
-    const addTxParams = createStandardReqParams(txFileInfo, senderAddr, createMethod);
+    // if (addTxParams === null) {
+    //   console.log('Add-Params is null');
+    //   return;
+    // }
 
-    if (__DEVELOPMENT__) console.log('addTxParams=' + addTxParams);
-
-    if (addTxParams === null) {
-      console.log('Add-Params is null');
-      return;
-    }
-
-    sendHttpRequest(addTxParams, 2, (result)=>{
-      if (__DEVELOPMENT__) {
-        console.log('result=' + result);
-        console.log('result-json=' + JSON.stringify(result));
-        console.log('id=' + result.id);
-        console.log('tx_hash=' + result.result);
-        console.log('add-typeof(result)=' + typeof (result));
-      }
-      this.setState({
-        txhash: result.result,
-      });
-    }, (error)=>{
-      console.log('addtx-error=' + error);
-    }, 0);
+    // sendHttpRequest(addTxParams, 2, (result)=>{
+    //   this.setState({
+    //     txhash: result.result,
+    //   });
+    // }, (error)=>{
+    //   console.log('addtx-error=' + error);
+    // }, 0);
   }
 
   render() {
     const styles = require('../localfile/localfile.scss');
     const alert = require('../../img/ic_alert.png');
-    const icsubmit = require('../../img/ic_submit.png');
-    const dec = this.state.desc;
+    // const { desc, txhash, short_code_link } = this.props;
     let modalDalog;
-    if (dec !== 'undefined' && dec !== '') {
-      modalDalog = (
-        <ActvionModal toggleType="action" shortCodeValue={this.state.short_code_link}
-                      txhash={this.state.txhash} />);
-    } else {
-      modalDalog = <ActvionModal toggleType="alert" content="请输入文本后再提交"/>;
-    }
+    // if (dec !== 'undefined' && dec !== '') {
+    //   modalDalog = (
+    //     <ActvionModal toggleType="action" shortCodeValue={short_code_link}
+    //                   txhash={txhash} />);
+    // } else {
+    //   modalDalog = <ActvionModal toggleType="alert" content="请输入文本后再提交"/>;
+    // }
 
     return (
       <div>
@@ -123,19 +83,14 @@ class TextInfo extends Component {
         <form name="textinfo_form" className="" action="" method="post" role="form">
           <div className={styles['ele-layout'] + ' form-group'}>
             <label className={styles['text-title']} >文本：</label>
-            <textarea id="text-info-description" className="form-control" ref="text_area"
-                      name="text-info-description" rows="5" placeholder="请输入输入文本数据">
-
-                        </textarea>
+            <textarea id="text-info-description" className="form-control" ref="text_area" name="text-info-description" rows="5" placeholder="请输入文本数据"></textarea>
           </div>
-          <div className={styles['submit-area']}>
-            <a className={'btn ' + styles['submit-button']} data-toggle="modal" data-target=".bs-example-modal-lg"
-                onClick={this.handleSubmit}>
-              <span>
-                  <img src={icsubmit}/>&nbsp;&nbsp;提交
-              </span>
+          {/* <div className={styles['submit-area']}> */}
+          <div className="text-center">
+            <a className="btn btn-lg btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"
+                onClick={(event) => this.handleSubmit(event)}>
+              <i className="fa fa-sign-in"/>{' '}提交
             </a>
-
           </div>
         </form>
         <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -148,4 +103,20 @@ class TextInfo extends Component {
   }
 }
 
-export default TextInfo;
+const mapStateToProps = (state) => {
+  return {
+    desc: state.textInfo.desc,
+    txhash: state.textInfo.txhash,
+    short_code_link: state.textInfo.short_code_link
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setDesc: (val) => {
+      dispatch(setDesc(val));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TextInfo);

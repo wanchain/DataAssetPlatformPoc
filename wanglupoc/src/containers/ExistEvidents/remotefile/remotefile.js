@@ -10,9 +10,7 @@ const fileServerGet = 'http://localhost:8090/fs?fn=';
 const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
 
 class RemoteFile extends Component {
-  static propTypes = {
-    onChildChange: React.PropTypes.func
-  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,9 +23,9 @@ class RemoteFile extends Component {
     this.modifyState = this.modifyState.bind(this);
   }
 
-  componentWillMount() {
-    this.props.onChildChange(440);
-  }
+  // componentWillMount() {
+  //   this.props.onChildChange(440);
+  // }
 
   componentDidMount() {
   }

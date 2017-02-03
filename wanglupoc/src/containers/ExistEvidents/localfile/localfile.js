@@ -9,9 +9,6 @@ const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
 const REQ_SHORT_CODE_TIMES = 15;
 
 class LocalFile extends Component {
-  static propTypes = {
-    onChange: React.PropTypes.func
-  };
 
   constructor(props) {
     super(props);
@@ -33,16 +30,6 @@ class LocalFile extends Component {
     // this._clipboard = null;
   }
 
-  // get clipboard() {
-  //   return this._clipboard;
-  // }
-  // set clipboard(clb) {
-  //   this._clipboard = clb;
-  // }
-
-  componentWillMount() {
-    this.props.onChildChange(420);
-  }
 
   componentDidMount() {
     // console.log(Clipboard);
@@ -100,10 +87,10 @@ class LocalFile extends Component {
       });
     }.bind(this));
 
-    this.props.onChildChange(650);
+    // this.props.onChildChange(650);
 
     // original
-    if (this.props.onChange) this.props.onChange(event);
+    // if (this.props.onChange) this.props.onChange(event);
 
     console.log('filename=' + this.state.fileinfo.name);
   }
@@ -248,9 +235,9 @@ class LocalFile extends Component {
   }
 }
 
-LocalFile.propTypes = {
-  onChildChange: React.PropTypes.func,
-};
+// LocalFile.propTypes = {
+//   onChildChange: React.PropTypes.func,
+// };
 
 export default LocalFile;
 
