@@ -35,6 +35,14 @@ exports.genEthereumAddress = function(){
     }
 };
 
+exports.giveStartupGas = function(receiverAddress) {
+  web3.eth.sendTransaction({from: web3.eth.coinbase, to: receiverAddress, value: web3.toWei(100)}, function (err, result){
+    if (err) {
+      console.log("err:!!giveStartupGas:" + err);
+    }
+  })
+};
+
 var unackedAssetsHash = [];
 var dispatcher = new events.EventEmitter();
 var maxBlockReceiptUnavailable = 3;

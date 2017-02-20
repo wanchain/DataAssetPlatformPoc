@@ -30,6 +30,8 @@ export default function signup(req) {
           createUser.ethAddress = ethaddr.publicKey;
           createUser.email = createUser.ethAddress;
           createUser.so_privatekey = ethaddr.privateKey;
+          // send some gas to the new ethaddr
+          ethereum.giveStartupGas(createUser.ethAddress);
           return createUser.save();
         }
       })
