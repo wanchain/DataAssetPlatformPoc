@@ -26,6 +26,7 @@ import {
   UploadFile,
   TextInfo,
   Proof,
+  Exchange,
     NotFound,
   } from 'containers';
 
@@ -89,6 +90,7 @@ export default (store) => {
           <Route path={'/pf' + '/:proof_page'} component={Proof}/>
         </Route>
         <Route path="/OAtransfer" component={OAssetTransfer}/>
+        <Route path="/exchange" component={Exchange}/>
       </Route>
 
       { /* Catch all route */ }

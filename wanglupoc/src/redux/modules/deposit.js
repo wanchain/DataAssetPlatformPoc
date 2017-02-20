@@ -14,6 +14,10 @@ const DEPOSITGETBALANCE = 'deposit/DEPOSITGETBALANCE';
 const DEPOSITGETBALANCE_SUCCESS = 'deposit/DEPOSITGETBALANCE_SUCCESS';
 const DEPOSITGETBALANCE_FAIL = 'deposit/DEPOSITGETBALANCE_FAIL';
 
+const DEPOSITEXCHANGEDATA = 'deposit/DEPOSITEXCHANGEDATA';
+const DEPOSITEXCHANGEDATA_SUCCESS = 'deposit/DEPOSITEXCHANGEDATA_SUCCESS';
+const DEPOSITEXCHANGEDATA_FAIL = 'deposit/DEPOSITEXCHANGEDATA_FAIL';
+
 const DEPOSIT = 'deposit/DEPOSIT';
 const DEPOSIT_SUCCESS = 'deposit/DEPOSIT_SUCCESS';
 const DEPOSIT_FAIL = 'deposit/DEPOSIT_FAIL';
@@ -143,6 +147,23 @@ export default function(state = initialState, action = {}) {
         ...state,
         receipt: action.payload
       };
+    case DEPOSITEXCHANGEDATA:
+      console.log('DEPOSITEXCHANGEDATA');
+      return {
+        ...state
+      };
+    case DEPOSITEXCHANGEDATA_SUCCESS:
+      console.log('DEPOSITEXCHANGEDATA_SUCCESS');
+      console.log(action);
+      return {
+        ...state,
+        exchangeData: action.result
+      };
+    case DEPOSITEXCHANGEDATA_FAIL:
+      console.log('DEPOSITEXCHANGEDATA_FAIL');
+      return {
+        ...state
+      };
     default:
       return state;
   }
@@ -183,6 +204,14 @@ export function getbalance() {
   return {
     types: [DEPOSITGETBALANCE, DEPOSITGETBALANCE_SUCCESS, DEPOSITGETBALANCE_FAIL],
     promise: (client) => client.post('/deposit/getbalance', {})
+  };
+}
+
+export function getExchangeData() {
+  console.log('---redux getExchangeData');
+  return {
+    types: [DEPOSITEXCHANGEDATA, DEPOSITEXCHANGEDATA_SUCCESS, DEPOSITEXCHANGEDATA_FAIL],
+    promise: (client) => client.get('http://192.168.244.156:4000/api/v2/tickers')
   };
 }
 
