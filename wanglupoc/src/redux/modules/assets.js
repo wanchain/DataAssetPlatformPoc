@@ -1,11 +1,6 @@
-/**
- * Created by jishiwu on 12/6/16.
- */
-// import AssetsData from '../../containers/AssetsManager/AssetsData';
-
-const ASSETSADD = 'assets/ASSETSADD';
-const ASSETSADD_SUCCESS = 'assets/ASSETSADD_SUCCESS';
-const ASSETSADD_FAIL = 'assets/ASSETSADD_FAIL';
+const ASSETS_ADD = 'assets/ASSETSADD';
+const ASSETS_ADD_SUCCESS = 'assets/ASSETSADD_SUCCESS';
+const ASSETS_ADD_FAIL = 'assets/ASSETSADD_FAIL';
 const ASSETSMOD = 'assets/MOD';
 const ASSETSMOD_SUCCESS = 'assets/ASSETSMOD_SUCCESS';
 const ASSETSMOD_FAIL = 'assets/ASSETSMOD_FAIL';
@@ -57,17 +52,13 @@ function _search(items, word) {
 }
 
 export default function(state = initialState, action = {}) {
-  // console.log(state);
-  // console.log(action.type);
   switch (action.type) {
-    case ASSETSADD:
-      console.log('assetsadd: begin');
+    case ASSETS_ADD:
       return {
         ...state,
       };
-    case ASSETSADD_SUCCESS:
+    case ASSETS_ADD_SUCCESS:
       {
-        console.log('assetsadd: receive success');
         const newitems = state.items.filter(()=>{return true;});
         newitems.push(action.result.data);
         const items2show = _search(newitems, state.word);
@@ -77,19 +68,16 @@ export default function(state = initialState, action = {}) {
           items2show: items2show
         };
       }
-    case ASSETSADD_FAIL:
-      console.log('assetsadd: receive failed');
+    case ASSETS_ADD_FAIL:
       return {
         ...state,
         error: action.error
       };
     case ASSETSMOD:
-      console.log('ASSETSMOD');
       return {
         ...state
       };
     case ASSETSMOD_SUCCESS:
-      console.log('ASSETSMOD_SUCCESS');
       {
         const newitems = state.items.filter(()=>{return true;});
         for (let tmp = 0; tmp < newitems.length; tmp++) {
@@ -107,18 +95,15 @@ export default function(state = initialState, action = {}) {
       }
       break;
     case ASSETSMOD_FAIL:
-      console.log('ASSETSMOD_FAIL');
       return {
         ...state,
         error: action.error
       };
     case ASSETSDEL:
-      console.log('ASSETSDEL');
       return {
         ...state
       };
     case ASSETSDEL_SUCCESS:
-      console.log('ASSETSDEL_SUCCESS');
       {
         const del = action.result.data;
         const newitems = state.items.filter(item => {
@@ -133,19 +118,16 @@ export default function(state = initialState, action = {}) {
       }
       break;
     case ASSETSDEL_FAIL:
-      console.log('ASSETSDEL_FAIL');
       return {
         ...state,
         error: action.error
       };
     case ASSETSALL:
-      console.log('ASSETSALL: begin');
       return {
         ...state
       };
     case ASSETSALL_SUCCESS:
       {
-        console.log('ASSETSALL_SUCCESS: receive success');
         const items2show = _search(action.result.data, state.word);
         return {
           ...state,
@@ -155,7 +137,6 @@ export default function(state = initialState, action = {}) {
       }
       break;
     case ASSETSALL_FAIL:
-      console.log('ASSETSALL_FAIL: receive failed');
       return {
         ...state,
         error: action.error
@@ -163,7 +144,6 @@ export default function(state = initialState, action = {}) {
 
       // it seams like
     case ASSETSET:
-      console.log('ASSETSET');
       return {
         ...state,
         item: action.payload.item
@@ -171,7 +151,6 @@ export default function(state = initialState, action = {}) {
 
     case ASSETSEARCH:
       {
-        console.log('ASSETSEARCH');
         const word = action.payload.word;
         const items2show = _search(state.items, word);
 
@@ -184,7 +163,6 @@ export default function(state = initialState, action = {}) {
       break;
     case ASSETSLISTACTIVE:
       {
-        console.log('ASSETSLISTACTIVE');
         return {
           ...state,
           isListActive: action.payload.isListActive
@@ -193,7 +171,6 @@ export default function(state = initialState, action = {}) {
       break;
     case ASSETSCREATESTEP:
       {
-        console.log('ASSETSCREATESTEP');
         return {
           ...state,
           createStep: action.payload.createStep
@@ -202,7 +179,6 @@ export default function(state = initialState, action = {}) {
       break;
     case ASSETSRESETCREATE:
       {
-        console.log('ASSETSRESETCREATE');
         return {
           ...state,
           item: action.payload.item,
@@ -217,7 +193,7 @@ export default function(state = initialState, action = {}) {
 
 export function addOneAssets(obj) {
   return {
-    types: [ASSETSADD, ASSETSADD_SUCCESS, ASSETSADD_FAIL],
+    types: [ASSETS_ADD, ASSETS_ADD_SUCCESS, ASSETS_ADD_FAIL],
     promise: (client) => client.post('/assets/add', {
       data: obj
     })
@@ -227,7 +203,7 @@ export function addOneAssets(obj) {
 export function getAll() {
   return {
     types: [ASSETSALL, ASSETSALL_SUCCESS, ASSETSALL_FAIL],
-    promise: (client) => client.post('/assets/getall')
+    promise: (client) => client.get('/assets/getall')
   };
 }
 

@@ -98,7 +98,6 @@ class Proof extends Component {
   inputSubmit() {
     const shortCodeTmp = ReactDOM.findDOMNode(this.refs.input_short_code).value.trim();
     const link = LAYOUT_PROOF + '/' + shortCodeTmp;
-    // window.location.href = link;
     browserHistory.push(link);
     this.toggleSearch(shortCodeTmp);
   }

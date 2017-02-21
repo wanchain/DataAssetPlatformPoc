@@ -4,13 +4,14 @@ import bcrypt from 'bcrypt-nodejs';
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    unique: true,
     lowercase: true
   },
 
-  password: String,
+  password: {
+    type: String
+  },
 
-  name: {
+  username: {
     type: String,
     unique: true
   },
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema({
     lowercase:true
   },
 
-  so_privatekey: {
+  ethPrK: {
     type: String
   }
 });

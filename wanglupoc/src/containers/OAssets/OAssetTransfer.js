@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import * as depositAction from 'redux/modules/deposit';
+import * as depositAction from '../../redux/modules/deposit';
 
 const styles = require('./OAssetTransfer.scss');
 @connect(

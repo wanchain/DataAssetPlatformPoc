@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
 import uploadFileAction from '../http/fileUploadAjax';
 import {fileHash, createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
 import ActvionModal from '../dialog/actionModal';
 import sendHttpRequest from '../http/httpAjax';
 
 let willUploadFile = null;
-// var self ;
 
 const TAG = 'upload-file:';
 
@@ -23,7 +21,6 @@ class UploadFile extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
-    this.handleTexareaChange = this.handleTexareaChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
@@ -39,12 +36,8 @@ class UploadFile extends Component {
     };
   }
 
-  componentWillMount() {
-    this.props.onChildChange(420);
-  }
 
   componentDidUpdate() {
-    if (__DEVELOPMENT__) console.log('uploadfile-componentDidUpdate');
     const txHash = this.state.txhash;
 
     if (txHash !== 'undefined' && txHash !== '') {
@@ -70,21 +63,16 @@ class UploadFile extends Component {
 
   createFormData() {
     if (willUploadFile !== null && willUploadFile !== 'undefined') {
-      if (__DEVELOPMENT__) {
-        console.log(TAG + 'typeof willUploadFile=' + typeof willUploadFile);
-        console.log(TAG + 'size=' + willUploadFile.size);
-      }
       const formData = new FormData();
-      // formData.append('upload-file', willUploadFile);
       formData.set('upload-file', willUploadFile, willUploadFile.name);
-      return formData;
+      console.log('formData----------', formData['upload-file']);
+      // return formData;
+      return willUploadFile;
     }
     return null;
   }
 
   handleSubmit() {
-    if (__DEVELOPMENT__) console.log('upload-file-handleSubmit');
-
     this.setState({
       short_code_link: '',
       txhash: '',
@@ -92,14 +80,17 @@ class UploadFile extends Component {
 
     const formData = this.createFormData();
 
-    const description = ReactDOM.findDOMNode(this.refs.area_descriptor).value.trim();
+    const description = this.refs.area_descriptor.value.trim();
 
     const uDec = string2Unicode(description);
     const uFilename = string2Unicode(this.state.fileinfo.name);
 
     if (formData !== null) {
+      console.log('formData---------------------------\n');
+      console.log(JSON.stringify(formData));
       uploadFileAction(formData, (result)=> {
-        if (__DEVELOPMENT__) console.log(TAG + 'handleSubmit-result:' + result.result);
+        console.log('result-------', result);
+        // if (__DEVELOPMENT__) console.log(TAG + 'handleSubmit-result:' + result.result);
 
         const txFileInfo = {
           name: uFilename,
@@ -144,19 +135,11 @@ class UploadFile extends Component {
     }
   }
 
-  handleTexareaChange() {
-    console.log('upload-file-handleTexareaChange');
-  }
-
   handleChange(event) {
     willUploadFile = event.target.files[0];
     const filename = willUploadFile.name;
-    // const pop = e.target.value.split(/(\\|\/)/g).pop();
-
-    console.log('Selected file:', willUploadFile);
-    console.log('event=' + filename);
-
     fileHash(willUploadFile, function NONAME(hash) {
+      console.log('file hash------', hash);
       this.setState({
         fileinfo: {
           name: filename,
@@ -166,12 +149,8 @@ class UploadFile extends Component {
       });
     }.bind(this));
 
-    this.props.onChildChange(650);
-
     // original
     if (this.props.onChange) this.props.onChange(event);
-
-    console.log('filename=' + this.state.fileinfo.name);
   }
 
   render() {
@@ -180,11 +159,10 @@ class UploadFile extends Component {
     const upload = require('../../img/ic_upload.png');
     const icsubmit = require('../../img/ic_submit.png');
     const filename = this.state.fileinfo.name;
-    console.log('filename=' + filename);
     let descContent;
     let modalDalog;
     if (filename !== 'undefined' && filename !== '') {
-      console.log('if-existedFile=' + filename);
+      // console.log('if-existedFile=' + filename);
       modalDalog = (
         <ActvionModal toggleType="action" shortCodeValue={this.state.short_code_link}
                       txhash={this.state.txhash} />);

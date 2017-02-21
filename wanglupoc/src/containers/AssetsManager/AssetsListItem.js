@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {connect} from 'react-redux';
-import * as assetsActions from 'redux/modules/assets';
+import * as assetsActions from '../../redux/modules/assets';
 
 @connect(
   () => ({}),

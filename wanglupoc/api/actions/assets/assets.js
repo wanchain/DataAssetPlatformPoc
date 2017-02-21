@@ -1,62 +1,53 @@
-/**
- * Created by jishiwu on 12/6/16.
- */
-import Assets from '../../models/assetsmodel';
+import Asset from '../../models/assetsmodel';
 import AssetTransaction from '../../models/assetTransaction';
 import {assignAssetsModelObject} from '../helper/assignModels';
+
 var ethereum = require('../../ethereum/ethereum');
 ethereum.monitorIssueAssets();
 var redis = require('redis');
 var redisClient = redis.createClient();
 
-export default function add(req) {
-  console.log("-----asset-add" + req.body);
-
+export function add(req) {
   const des = {};
   assignAssetsModelObject(des, req.body);
-  var newAssets = new Assets(des);
+  var asset = new Asset(des);
   return new Promise((resolve, reject) => {
-    // if save success
-    const user = req.session.user;
+    const { user } = req.session;
     if (!user) {
-      reject({Error: 'session-user is none'});
+      reject({Error: 'login then issue assets'});
       return;
-    } else {
-      console.log("session-user:" + JSON.stringify(user));
-    }
-    newAssets.creatorAddress = user.ethAddress;
-    newAssets.issueState = "validating";
-    newAssets.save(function (err, data) {
+    } 
+    asset.creatorAddress = user.ethAddress;
+    asset.issueState = "validating";
+    asset.save(function (err, res) {
       if(err) {
-        console.log("add 1 error: " + err);
+        console.log("add new asset error: " + err);
         reject(err);
       } else {
-        console.log("add success!!");
-        ethereum.issueAsset(user.ethAddress, user.so_privatekey, data, (err, receipt) => {
-          if(err) {
+        ethereum.issueAsset(user.ethAddress, user.ethPrK, res, (err, receipt) => {
+          if (err) {
             console.log("add 2 error: " + JSON.stringify(err));
-            data.issueState = "failed";
+            res.issueState = "failed";
+          }  
+
+          if (receipt) {
+            console.log('TX RECEIPT RETRIEVED');
+            res.issueState = "completed";
+            res.contractAddress = receipt.contractAddress;
+            res.receipt = receipt;
           } else {
-            data.issueState = "completed";
-            data.contractAddress = receipt.contractAddress;
-            data['receipt'] = receipt;
+            console.log('TX RECEIPT RETRIEVMENT FAILED!!!!');
           }
+
           console.log("add 4 begin save");
-          data.save(function (err) {
+          res.save(function (err, result) {
             if (err) {
               console.log("add 3 error: " + err);
+              reject(err);
             } else {
               console.log("*****save success:");
-              resolve({data: data});
+              resolve({ data:  result});
             }
-            /*ethereum.transferCustomToken(data.contractAddress, user.ethAddress,
-              user.so_privatekey, '0x4f35bf8d8c703bec0f848744b2cac1ff7dd59aa3', 1000, function () {
-              });
-              var caddr = data.contractAddress;
-              setTimeout(function () {
-                var twoBalance = ethereum.getCustomTokenBalance(caddr, '0x4f35bf8d8c703bec0f848744b2cac1ff7dd59aa3');
-                console.log("user two balance:" + twoBalance);
-              }, 2000);*/
           });
         });
       }
@@ -66,10 +57,8 @@ export default function add(req) {
 
 //poc@imm:查找特定user的asset
 export function getall(req) {
-  console.log("-----getall");
-
   return new Promise((resolve, reject) => {
-    Assets.find({}, function (err, assetslist) {
+    Asset.find({}, function (err, assetslist) {
       if (err) {
         console.log("getall error: " + err);
         reject(err);
@@ -85,7 +74,7 @@ export function delone(req) {
   console.log(req.body);
   var id = req.body.id;
   return new Promise((resolve, reject) => {
-    Assets.find({assetsName: id}, function (err, asset) {
+    Asset.find({assetsName: id}, function (err, asset) {
       if (err) {
         console.log("delOne:" + err);
         reject(err);
@@ -110,18 +99,14 @@ export function delone(req) {
 }
 
 export function modify(req) {
-  console.log("-----modify");
-  console.log(req.body);
   const item = req.body.item;
   var id = item._id;
   return new Promise((resolve, reject) => {
-    Assets.find({_id: id}, function (err, asset) {
+    Asset.find({_id: id}, function (err, asset) {
       if(err) {
         reject({ message: 'error'});
       } else {
         var aAsset = asset[0];
-
-        // modify its attributes
         assignAssetsModelObject(aAsset, item);
 
         aAsset.save(function (err, data) {
@@ -133,7 +118,7 @@ export function modify(req) {
         });
       }
     })
-  });
+  }); 
 }
 var cidPrefix = new Date().getTime().toString() + '_';
 var cachedTxid = 1;

@@ -7,3 +7,4 @@ export * as widget from './widget/index';
 export * as survey from './survey/index';
 export * as assets from './assets/index';
 export * as deposit from './deposit/index';
+export * as poe from './poe/index';

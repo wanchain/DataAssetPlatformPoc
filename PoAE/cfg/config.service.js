@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2016 Everex https://everex.io
  *
@@ -21,21 +20,22 @@
  * Copy this file to config.service.js before making any changes.
  */
 
-chainyConfig = {
+module.exports = {
+    
     server: {
-        address: 'localhost',
+        address: '127.0.0.1',
         port: 8344
     },
     ethereum: {
         url: 'http://127.0.0.1:8545',
         testnet: false
     },
-    // Contract address
-    contract: '0xa6f68cee34a1b6a3625b3e25b299ed8ffccd6ec2',    
+    // Contract address 
+    contract: '0xdeddf1db8c799c46a9cde3b3d98a2f56f62270ba',
     // Contract ABI
     ABI: [
-        {constant:true,inputs:[{name:"code",type:"string"}],name:"getChainyData",outputs:[{name:"",type:"string"}],type:"function"},
-        {constant:true,inputs:[{name:"code",type:"string"}],name:"getChainyTimestamp",outputs:[{name:"",type:"uint256"}],type:"function"},
+        {constant:true, inputs:[{name:"code",type:"string"}], name:"getChainyData", outputs:[{name:"",type:"string"}], type:"function"},
+        {constant:true, inputs:[{name:"code",type:"string"}], name:"getChainyTimestamp", outputs:[{name:"",type:"uint256"}],type:"function"},
         { "constant": true, "inputs": [ { "name": "code", "type": "string" } ], "name": "getChainySender", "outputs": [ { "name": "", "type": "address", "value": "0x0000000000000000000000000000000000000000" } ], "type": "function" }
     ],
     // Gas limit (4.5M is near block limit)
@@ -49,8 +49,13 @@ chainyConfig = {
     blockOffset: 666,
     
     sender: {
-        address: '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da',
-        pk: 'b35b8064c5c373629a05cc3ef39789ba4dacd404e6e864214ade934c198b636f'
+        // address: 'Ox9da26fc2e1d6ad9fdd46138906b0104ae68a65d8',
+        // pk: '0xb6a03207128827eaae0d31d97a7a6243de31f2baf99eabd764e33389ecf436fc'
+        // address: '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da',
+        // pk: 'b35b8064c5c373629a05cc3ef39789ba4dacd404e6e864214ade934c198b636f'
+        'address': '0x9da26fc2e1d6ad9fdd46138906b0104ae68a65d8',
+        'pk': 'b6a03207128827eaae0d31d97a7a6243de31f2baf99eabd764e33389ecf436fc'
     }
     
-};
+}
+

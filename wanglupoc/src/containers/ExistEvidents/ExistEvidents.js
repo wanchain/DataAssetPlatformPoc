@@ -37,7 +37,7 @@ export default class ExistEvidents extends Component {
       ExistEvidents.newHeader = <NewHeader isproof="true"/>;
       ExistEvidents.recorder = <div></div>;
     }
-    console.log('navBar=' + ExistEvidents.navBar);
+    // console.log('navBar=' + ExistEvidents.navBar);
   }
 
   componentWillReceiveProps() {

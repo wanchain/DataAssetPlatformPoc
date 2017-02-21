@@ -4,8 +4,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import * as assetsActions from 'redux/modules/assets';
-import * as depositAction from 'redux/modules/deposit';
+import * as assetsActions from '../../redux/modules/assets';
+import * as depositAction from '../../redux/modules/deposit';
 import PopDialog from '../PopDialog/PopDialog';
 
 @connect(
@@ -66,12 +66,10 @@ export default class OAssets extends Component {
     setReceipt: React.PropTypes.func
   };
   componentDidMount() {
-    // console.log('.............OAssets willMount');
-    this.props.getTransactions();
-    const self = this;
+    // this.props.getTransactions();
+    // const self = this;
     global.dataRefreshNotifier.on('updateData', function NoName() {
-      // console.log('***OAssets updateData');
-      self.props.getTransactions();
+      // self.props.getTransactions();
     });
   }
 

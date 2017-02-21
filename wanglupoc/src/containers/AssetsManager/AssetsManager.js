@@ -1,12 +1,9 @@
-/**
- * Created by jishiwu on 11/18/16.
- */
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router';
 import Helmet from 'react-helmet';
 import PathNavbar from './PathNavbar';
-import * as assetsActions from 'redux/modules/assets';
+import * as assetsActions from '../../redux/modules/assets';
 
 @connect(
   state => ({
@@ -24,17 +21,6 @@ export default class AssetsManager extends Component {
     setCreateStep: PropTypes.func,
     resetCreate: PropTypes.func
   };
-
-  constructor(props) {
-    super(props);
-
-    // once
-    this.state = {
-    };
-
-    console.log('clear all');
-  }
-
   setListActive() {
     this.props.setListActive(true);
     this.props.resetCreate();

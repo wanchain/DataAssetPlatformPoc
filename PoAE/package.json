@@ -8,16 +8,18 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/metest.js"
+    "start": "nodemon ./bin/metest.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.16.0",
     "es6-shim": "^0.35.2",
     "ethereumjs-tx": "^1.2.2",
     "json-rpc2": "^1.0.2",
     "request": "^2.79.0",
+    "solc": "^0.4.9",
     "web3": "^0.18.2"
   }
 }

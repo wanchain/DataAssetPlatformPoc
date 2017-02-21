@@ -2,11 +2,13 @@
  * Created by zy on 17-1-8.
  * Tx is short for Transaction
  */
-var redis = require('redis');
-var events = require('events');
-var mongoose = require('mongoose');
-var Web3 = require('web3');
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+ 
+const redis = require('redis');
+const events = require('events');
+const mongoose = require('mongoose');
+const ethNodeURI = 'http://127.0.0.1:8545';
+const Web3 = require('web3');
+const web3 = new Web3(new Web3.providers.HttpProvider(ethNodeURI));
 
 var ethereum = require('./ethereum/ethereum');
 
@@ -67,7 +69,7 @@ function get1TxReceipt(){
 
 function getTxReceipts(){
   client.llen('TxHash', function(err, unAckedlen){
-    if(err ||  unAckedlen < 1)
+    if(err || unAckedlen < 1)
       return;
 
     var index = unAckedlen;
@@ -89,8 +91,7 @@ function process1CachedTx(cachedTx){
       ethereum.transferCustomTokenEx(cachedTx.assetContract, cachedTx.fromAddress, cachedTx.fromUser.so_privatekey,
         cachedTx.toAddress, cachedTx.transferQuantity * 100,
         function (err, txHash) {
-          if(err){ //updated db status
-            //confirm code is useful?
+          if(err){ 
             data.status = 'failed';
             data.save(function (err, ret) {
               console.log('update tx status failed: ' + err);
@@ -107,7 +108,6 @@ function process1CachedTx(cachedTx){
 
 function retrieve1CahchedTx(){
   client.llen('TxHash', function(err, unAckedlen){
-    //console.log('retrieve1CahchedTx unAckedlen:' + unAckedlen);
     if(!err){
       if(unAckedlen < MaxUnackTxHash){
         client.lpop('CacheTx', function(err, strCacheTx){
@@ -135,7 +135,7 @@ function retrieve1CahchedTx(){
  */
 
 dispatcher.on('fetch1CachedTx', retrieve1CahchedTx);
-//dispatcher.on('newBlockGen', getTxReceipts);
+
 
 setInterval(function () {
   retrieve1CahchedTx()

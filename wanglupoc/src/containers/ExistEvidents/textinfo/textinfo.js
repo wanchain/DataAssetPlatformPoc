@@ -1,69 +1,55 @@
 import React, { Component, PropTypes } from 'react';
-// import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-// import {createStandardReqParams, requestShortCode, string2Unicode} from '../utils/utils';
-import { setDesc } from 'redux/modules/textInfo';
-// import CryptoJS from '../../../../local_modules/crypto';
-// import sendHttpRequest from '../http/httpAjax';
+import { string2Unicode } from '../utils/utils';
+import { setDesc, add, getShortLink } from '../../../redux/modules/poe';
+import CryptoJS from '../../../../local_modules/crypto';
 // import ActvionModal from '../dialog/actionModal';
 
-// const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
+// const senderAddr = '0x9da26fc2e1d6ad9fdd46138906b0104ae68a65d8';
 
+const TX_TYPE_TEXT = 'T';
 class TextInfo extends Component {
 
   static propTypes = {
+    txHash: PropTypes.string.isRequired,
+    shortLink: PropTypes.string.isRequired,
     setDesc: PropTypes.func.isRequired,
-    desc: PropTypes.string.isRequired,
-    txhash: PropTypes.string.isRequired,
-    short_code_link: PropTypes.string.isRequired
+    add: PropTypes.func.isRequired,
+    getShortLink: PropTypes.func.isRequired
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { txHash } = nextProps;
+    if (txHash.length === 66) {
+      this.props.getShortLink({txHash});
+    }
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.props.setDesc);
-    this.props.setDesc(this.refs.text_area.value);
-    // let { desc, txhash, short_code_link } = this.props;
-    // const description = ReactDOM.findDOMNode(this.refs.text_area).value.trim();
-    // const uDec = string2Unicode(description);
-    // this.setState({
-    //   desc: uDec,
-    //   txhash: '',
-    //   short_code_link: '',
-    // });
-    // const sha256 = CryptoJS.algo.SHA256.create();
-    // const text = CryptoJS.enc.Utf8.parse(description);
-    // sha256.update(text);
-    // const hashedText = sha256.finalize().toString();
-    // const txFileInfo = {
-    //   hash: hashedText,
-    //   desc: uDec
-    // };
-    // const createMethod = {
-    //   'name': 'add',
-    //   'type': 'text'
-    // };
+    const desc = this.refs.text_area.value.trim();
+    const uDesc = string2Unicode(desc);
+    this.props.setDesc(desc);
+    const sha256 = CryptoJS.algo.SHA256.create();
+    const text = CryptoJS.enc.Utf8.parse(desc);
+    sha256.update(text);
+    const hashedText = sha256.finalize().toString();
+    const txFileInfo = {
+      id: 'CHAINY',
+      version: 1,
+      type: TX_TYPE_TEXT,
+      desc: uDesc,
+      hash: hashedText
+    };
 
-    // const addTxParams = createStandardReqParams(txFileInfo, senderAddr, createMethod);
-
-    // if (addTxParams === null) {
-    //   console.log('Add-Params is null');
-    //   return;
-    // }
-
-    // sendHttpRequest(addTxParams, 2, (result)=>{
-    //   this.setState({
-    //     txhash: result.result,
-    //   });
-    // }, (error)=>{
-    //   console.log('addtx-error=' + error);
-    // }, 0);
+    this.props.add(txFileInfo);
   }
 
   render() {
     const styles = require('../localfile/localfile.scss');
     const alert = require('../../img/ic_alert.png');
-    // const { desc, txhash, short_code_link } = this.props;
-    let modalDalog;
+    const { txHash, shortLink } = this.props;
+    // let modalDalog;
     // if (dec !== 'undefined' && dec !== '') {
     //   modalDalog = (
     //     <ActvionModal toggleType="action" shortCodeValue={short_code_link}
@@ -79,6 +65,10 @@ class TextInfo extends Component {
             <img src={alert} className={styles.nomargin}/>&nbsp;&nbsp;
             提示：请输入您要存储的文本，文本内容和文本的哈希值都将被记录与区块链中
           </p>
+          <div>
+            <p className="text-danger">txHash: {txHash}</p>
+            <p className="text-danger">Short Link: {shortLink}</p>
+          </div>
         </div>
         <form name="textinfo_form" className="" action="" method="post" role="form">
           <div className={styles['ele-layout'] + ' form-group'}>
@@ -93,11 +83,11 @@ class TextInfo extends Component {
             </a>
           </div>
         </form>
-        <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        { /* <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
           <div className="modal-dialog modal-lg">
             {modalDalog}
           </div>
-        </div>
+        </div> */ }
       </div>
     );
   }
@@ -105,9 +95,9 @@ class TextInfo extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    desc: state.textInfo.desc,
-    txhash: state.textInfo.txhash,
-    short_code_link: state.textInfo.short_code_link
+    description: state.poe.description,
+    txHash: state.poe.txHash,
+    shortLink: state.poe.shortLink
   };
 };
 
@@ -115,6 +105,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setDesc: (val) => {
       dispatch(setDesc(val));
+    },
+    add: (val) => {
+      dispatch(add(val));
+    },
+    getShortLink: (val) => {
+      dispatch(getShortLink(val));
     }
   };
 };

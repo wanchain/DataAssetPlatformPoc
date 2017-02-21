@@ -1,10 +1,7 @@
-/**
- * Created by jishiwu on 11/22/16.
- */
 import React, {Component} from 'react';
 import AssetsListItem from './AssetsListItem';
 import {connect} from 'react-redux';
-import * as assetsActions from 'redux/modules/assets';
+import * as assetsActions from '../../redux/modules/assets';
 
 @connect(
   (state) => ({

@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import Helmet from 'react-helmet';
-import * as authActions from 'redux/modules/auth';
+import * as authActions from '../../redux/modules/auth';
 
 @connect(
   state => ({
@@ -18,11 +18,11 @@ export default class Login extends Component {
   };
 
   handleSubmit = (event) => {
+    const { username, password } = this.refs;
     event.preventDefault();
-    const input = this.refs.username;
-    const pwd = this.refs.password;
-    this.props.login(input.value, pwd.value);
-    input.value = '';
+    this.props.login(username.value, password.value);
+    username.value = '';
+    password.value = '';
   };
 
   render() {
@@ -49,15 +49,13 @@ export default class Login extends Component {
             <button className={'btn btn-success btn-lg ' + styles.loginBtn} onClick={this.handleSubmit}><i className="fa fa-sign-in"/>{' '}登陆
             </button>
           </form>
-          {/* <p>This will "log you in" as this user, storing the username in the session of the API server.</p> */}
         </div>
         }
         {user &&
         <div>
-          <p>You are currently logged in as {user.name}.</p>
-
+          <p>当前用户： {user.name}.</p>
           <div>
-            <button className="btn btn-danger" onClick={logout}><i className="fa fa-sign-out"/>{' '}Log Out</button>
+            <button className="btn btn-danger" onClick={logout}><i className="fa fa-sign-out"/>{' '}退出</button>
           </div>
         </div>
         }

@@ -54,7 +54,7 @@ const fileHash = (file, callback) => {
   }
   const fileReader = new FileReader();
   // In progress
-  console.log('state=' + fileReader.readyState);
+  // console.log('state=' + fileReader.readyState);
   // EMPTY : 0 : No data has been loaded yet.
   // LOADING : 1 : Data is currently being loaded.
   // DONE : 2 : The entire read request has been completed.
@@ -90,20 +90,13 @@ const fileHash = (file, callback) => {
 
   fileReader.onload = (event) =>{
     let text = event.target.result;
-    console.log('text=' + text);
     text = CryptoJS.enc.Utf8.parse(text);
-    console.log('text-urf8=' + text);
     sha256.update(text);
     ++currentChunk;
-
     if (currentChunk < chunks) {
       readNextChunk();
     } else {
       const hash = sha256.finalize().toString();
-      if (__DEVELOPMENT__) console.log('hash=' + hash);
-      // elapsed = +new Date() - startTime;
-
-      if (__DEVELOPMENT__) console.log('callback=' + callback);
       if (typeof callback === 'function') {
         callback(hash);
       }
@@ -128,12 +121,12 @@ const unicode2String = (unicode) => {
 
 const string2Unicode = (str) => {
   let result = '';
-  for (let it = 0; it < str.length; it++) {
-    result += '\\u' + parseInt(str[it].charCodeAt(0), 10).toString(16);
+  for (let index = 0; index < str.length; index++) {
+    result += '\\u' + parseInt(str[index].charCodeAt(0), 10).toString(16);
   }
-
   return result;
 };
+
 // method name 'add'
 const createAddParamsLocalFile = (fileInfo) => {
   const addParams = {
@@ -299,7 +292,6 @@ const requestShortCode = (reqTimes, txHash, callback) => {
   };
 
   const shortCodeParam = createStandardReqParams(tx, senderAddr, createMethod);
-  if (__DEVELOPMENT__) console.log('shortCodeParam=' + shortCodeParam);
 
   sendHttpRequest(shortCodeParam, 2, (result)=>{
     if (__DEVELOPMENT__) {
@@ -323,4 +315,4 @@ const requestShortCode = (reqTimes, txHash, callback) => {
   }, delay);
 };
 
-export {fileHash, createStandardReqParams, clipShortCode, requestShortCode, string2Unicode, unicode2String};
+export {fileHash, createStandardReqParams, clipShortCode, requestShortCode, string2Unicode, unicode2String, getFileType };

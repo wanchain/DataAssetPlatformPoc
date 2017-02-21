@@ -62,7 +62,7 @@ reactTransform[1].transforms.push({
 });
 
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'eval',
   context: path.resolve(__dirname, '..'),
   entry: {
     'main': [
@@ -100,6 +100,11 @@ module.exports = {
     ],
     extensions: ['', '.json', '.js', '.jsx']
   },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   plugins: [
     // hot reload
     new webpack.HotModuleReplacementPlugin(),
@@ -116,5 +121,15 @@ module.exports = {
       __DEVTOOLS__: true,  // <-------- DISABLE redux-devtools HERE
     }),
     webpackIsomorphicToolsPlugin.development()
-  ]
+  ],
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
+  resolve: {
+    alias: {
+      zlib: 'browserify-zlib-next'
+    }
+  }
 };

@@ -10,7 +10,6 @@ import SocketIo from 'socket.io';
 import mongoose from 'mongoose';
 import { setNewBlockGenCB } from './ethereum/ethereum';
 
-console.log(mongoose.Promise);
 mongoose.Promise = global.Promise;
 const mongoDB = 'mongodb://127.0.0.1/wanglutech';
 mongoose.connect(mongoDB);
@@ -40,7 +39,7 @@ app.use((req, res) => {
   if (action) {
     action(req, params)
       .then((result) => {
-        console.log("api.js:action:result:" + JSON.stringify(result));
+        console.log("API RESULT: ", result);
         if (result instanceof Function) {
           result(res);
         } else {
@@ -57,6 +56,7 @@ app.use((req, res) => {
   } else {
     res.status(404).end('NOT FOUND');
   }
+  
 });
 
 
@@ -96,6 +96,7 @@ if (config.apiPort) {
       messageIndex++;
       io.emit('msg', data);
     });
+    
   });
   io.listen(runnable);
 } else {

@@ -1,23 +1,23 @@
 import React from 'react';
 import {IndexRoute, Route} from 'react-router';
-import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
+import { isLoaded as isAuthLoaded, load as loadAuth } from './redux/modules/auth';
 import {
     App,
     About,
     Login,
     LoginSuccess,
-    AssetsManager,
-    AssetsList,
-    AssetsCreate,
-    AssetsCreate1,
-    AssetsCreate2,
-    AssetsCreate3,
+    // AssetsManager,
+    // AssetsList,
+    // AssetsCreate,
+    // AssetsCreate1,
+    // AssetsCreate2,
+    // AssetsCreate3,
     MainPage,
     OAssets,
-    Deposit,
-    Withdraw,
-    TRecords,
-    TMarket,
+    // Deposit,
+    // Withdraw,
+    // TRecords,
+    // TMarket,
     ExistEvidents,
     Signup,
     OAssetTransfer,
@@ -27,7 +27,7 @@ import {
   TextInfo,
   Proof,
     NotFound,
-  } from 'containers';
+  } from './containers';
 
 export default (store) => {
   const requireLogin = (nextState, replace, cb) => {
@@ -65,21 +65,21 @@ export default (store) => {
       <Route path="about" component={About}/>
       <Route path="login" component={Login}/>
 
-      <Route path="am" component={AssetsManager}>
+      {/* <Route path="am" component={AssetsManager}>
         <IndexRoute component={AssetsList}/>
         <Route path="/am/create" component={AssetsCreate}>
           <IndexRoute component={AssetsCreate1}/>
           <Route path="/am/create/step2" component={AssetsCreate2}/>
           <Route path="/am/create/step3" component={AssetsCreate3}/>
         </Route>
-      </Route>
+      </Route> */}
 
       <Route path="main" component={MainPage} >
         <IndexRoute component={OAssets}/>
-        <Route path="/deposit" component={Deposit}/>
+        {/* <Route path="/deposit" component={Deposit}/>
         <Route path="/withdraw" component={Withdraw}/>
         <Route path="/trecords" component={TRecords}/>
-        <Route path="/tmarket" component={TMarket}/>
+        <Route path="/tmarket" component={TMarket}/> */}
         <Route path="LFH" component={ExistEvidents}>
           <IndexRoute component={LocalFile}/>
           <Route path="/main/LFH/RFH" component={RemoteFile}/>

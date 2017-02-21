@@ -7,7 +7,7 @@ import {browserHistory} from 'react-router';
 import * as assetsActions from 'redux/modules/assets';
 
 @connect(
-  () => ({ }),
+  null,
   assetsActions
 )
 export default class AssetsCreate3 extends Component {
@@ -35,7 +35,6 @@ export default class AssetsCreate3 extends Component {
   render() {
     const rightBtnIcn = require('./icon/rightBtnIcn.png');
     const assetStyle = require('./assetmanager.scss');
-    // const isListActive = false;
 
     return (
       <div >

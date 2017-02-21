@@ -31,7 +31,6 @@ export default class AssetsCreate2 extends Component {
     this.onAssetUnitPriceChange = this.onAssetUnitPriceChange.bind(this);
     this.importOwnersFromExcel = this.importOwnersFromExcel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSave = this.handleSave.bind(this);
     this.onPublishTimeChange = this.onPublishTimeChange.bind(this);
     this.setOwnerMembers = this.setOwnerMembers.bind(this);
   }
@@ -89,29 +88,16 @@ export default class AssetsCreate2 extends Component {
   }
 
   importOwnersFromExcel(event) {
-    // const out = require('../../../local_modules/simple-excel');
-    // const csvParser = new out.SimpleExcel.Parser.CSV;
-    // csvParser.loadFile(event.target.files[0], () => {
-    //   console.log(csvParser.getSheet());
-    //   const records = csvParser.getSheet();
-    //   const cell = records.getCell(1, 1);
-    //   console.log(cell);
-    // });
-
     if (event.target.files[0]) {
       const reader = new FileReader();
       const self = this;
       reader.onload = function NoName() {
         self.setOwnerMembers(this.result);
-
-        // TODO: show table result
         const csv = require('../../../local_modules/csv');
         const out = csv.parse(this.result, { header: true });
         out.map(item => {
           for (const key in item) {
             if (item.hasOwnProperty(key)) {
-              // console.log(AssetsCreate2.stringToHex(key));
-              // console.log(key);
               console.log(item[key]);
             }
           }
@@ -124,22 +110,15 @@ export default class AssetsCreate2 extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
-    // check data, then submit
     this.props.addOneAssets(this.props.item);
     this.props.setCreateStep(3);
     browserHistory.push('/am/create/step3');
-  }
-
-  handleSave(event) {
-    console.log(event.target.value);
   }
 
   render() {
     const errorBtnIcn = require('./icon/errorBtnIcn.png');
     const rightBtnIcn = require('./icon/rightBtnIcn.png');
     const assetStyle = require('./assetmanager.scss');
-
     return (
       <div >
         <div id="target"></div>

@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 // import NavItem from 'react-bootstrap/lib/NavItem';
 // import Header from 'react-bootstrap/lib/Header'
 // import Helmet from 'react-helmet';
-import { isLoaded as isInfoLoaded, load as loadInfo } from 'redux/modules/info';
-import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
+import { isLoaded as isInfoLoaded, load as loadInfo } from '../../redux/modules/info';
+import { isLoaded as isAuthLoaded, load as loadAuth, logout } from '../../redux/modules/auth';
 // import { InfoBar } from 'components';
 import { push } from 'react-router-redux';
 // import config from '../../config';

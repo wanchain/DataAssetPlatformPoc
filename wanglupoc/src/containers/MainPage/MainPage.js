@@ -1,12 +1,9 @@
-/**
- * Created by jishiwu on 12/19/16.
- */
 import React, { Component } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 import {connect} from 'react-redux';
-import * as depositActions from 'redux/modules/deposit';
+import * as depositActions from '../../redux/modules/deposit';
 import { push } from 'react-router-redux';
 
 const styles = require('./MainPage.scss');
@@ -54,7 +51,7 @@ export default class MainPage extends Component {
   static propTypes = {
     children: React.PropTypes.object.isRequired,
     userbalance: React.PropTypes.object,
-    getbalance: React.PropTypes.func,
+    getBalance: React.PropTypes.func,
     params: React.PropTypes.object,
     pushState: React.PropTypes.func.isRequired,
     activeAssets: React.PropTypes.object,
@@ -64,39 +61,28 @@ export default class MainPage extends Component {
   constructor(props) {
     super(props);
     this.initActiveAssets = this.initActiveAssets.bind(this);
-    // console.log('.............constructor' + new Date().getTime());
-    this.props.getbalance();
+    // this.props.getBalance();
   }
 
   componentWillMount() {
-    // if (!this.props.userbalance) {
-    // console.log('.............MainPage WillMount' + new Date().getTime());
-    // }
+
   }
 
   componentDidMount() {
-    // if (!this.props.userbalance) {
-    // console.log('.............MainPage DidMount' + new Date().getTime());
-    const self = this;
+    // const self = this;
     global.dataRefreshNotifier.on('updateData', function NoName() {
-      self.props.getbalance();
+      // self.props.getBalance();
     });
-    // }
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log('.............componentWillReceiveProps' + new Date().getTime());
     if (!this.props.activeAssets && nextProps.userbalance) {
       this.initActiveAssets(nextProps.userbalance);
     }
   }
-  componentWillUpdate() {
-    // console.log('.............componentWillUpdate' + new Date().getTime());
-  }
+  componentWillUpdate() {}
 
-  componentDidUpdate() {
-    // console.log('.............componentDidUpdate' + new Date().getTime());
-  }
+  componentDidUpdate() {}
 
   initActiveAssets(userbalance) {
     if (userbalance && userbalance.assets && userbalance.assets.length > 0) {
@@ -105,7 +91,7 @@ export default class MainPage extends Component {
   }
 
   render() {
-    const {userbalance} = this.props;
+    const { userbalance } = this.props;
 
     let totalcash = 0;
     let totalstockmoney = 0;

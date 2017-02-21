@@ -1,14 +1,11 @@
-/**
- * Created by jishiwu on 12/20/16.
- */
 const DEPOSITSETFOCUS = 'deposit/DEPOSITSETFOCUS';
 const DEPOSITSENDTRANSACTION = 'deposit/DEPOSITSENDTRANSACTION';
 const DEPOSITSENDTRANSACTION_SUCCESS = 'deposit/DEPOSITSENDTRANSACTION_SUCCESS';
 const DEPOSITSENDTRANSACTION_FAIL = 'deposit/DEPOSITSENDTRANSACTION_FAIL';
 
-const DEPOSITGETTRANSACTIONS = 'deposit/DEPOSITGETTRANSACTIONS';
-const DEPOSITGETTRANSACTIONS_SUCCESS = 'deposit/DEPOSITGETTRANSACTIONS_SUCCESS';
-const DEPOSITGETTRANSACTIONS_FAIL = 'deposit/DEPOSITGETTRANSACTIONS_FAIL';
+const DEPOSIT_GET_TRANSACTIONS = 'deposit/DEPOSIT_GET_TRANSACTIONS';
+const DEPOSIT_GET_TRANSACTIONS_SUCCESS = 'deposit/DEPOSIT_GET_TRANSACTIONS_SUCCESS';
+const DEPOSIT_GET_TRANSACTIONS_FAIL = 'deposit/DEPOSIT_GET_TRANSACTIONS_FAIL';
 
 const DEPOSITGETBALANCE = 'deposit/DEPOSITGETBALANCE';
 const DEPOSITGETBALANCE_SUCCESS = 'deposit/DEPOSITGETBALANCE_SUCCESS';
@@ -23,35 +20,8 @@ const DEPOSITSETRECEIPT = 'deposit/DEPOSITSETRECEIPT';
 const DEPOSITSETACTIVEASSETS = 'deposit/DEPOSITSETACTIVEASSETS';
 
 
-// userbalance: {
-//   cash: 0,
-//     assets: [
-//     {
-//       creatorAddress: '',
-//       assetsName: '',
-//       assetsTitle: '',
-//       assetsType: 0,
-//       publishType: 0,
-//       stockNumber: 9999999,
-//       unitType: 0,
-//       unitPrice: 1,
-//       members: '',
-//       publishTime: '',
-//       totalValue: 0,
-//       exchangeState: false,
-//       contractAddress: '',
-//       hold: 0
-//     }
-//   ]
-// },
 const initialState = {
-  focusindex: 0,
-  // transactions: [
-  //   {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
-  //   {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
-  //   {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'},
-  //   {fromAddress: '0xbbbbbbbbbbbbbb', toAddress: '0xaaaaaaaaaaaaa', assetsName: '网录币', tradetype: 0, totalPrice: 200, transferQuantity: 10, valuePerShare: 20, fee: 0, status: '完成', timestamp: '2016-10-12'}
-  // ]
+  focusindex: 0
 };
 
 export default function(state = initialState, action = {}) {
@@ -61,7 +31,7 @@ export default function(state = initialState, action = {}) {
         ...state,
         focusindex: action.payload.focusindex
       };
-      // send transaction
+    // send transaction
     case DEPOSITSENDTRANSACTION:
       console.log('DEPOSITSENDTRANSACTION: begin');
       return {
@@ -81,19 +51,19 @@ export default function(state = initialState, action = {}) {
         ...state,
         error: action.error
       };
-      // get transactions
-    case DEPOSITGETTRANSACTIONS:
+    // get transactions
+    case DEPOSIT_GET_TRANSACTIONS:
       console.log('DEPOSITGETTRANSACTIONS');
       return {
         ...state
       };
-    case DEPOSITGETTRANSACTIONS_SUCCESS:
+    case DEPOSIT_GET_TRANSACTIONS_SUCCESS:
       console.log('DEPOSITGETTRANSACTIONS_SUCCESS');
       return {
         ...state,
         transactions: action.result.data
       };
-    case DEPOSITGETTRANSACTIONS_FAIL:
+    case DEPOSIT_GET_TRANSACTIONS_FAIL:
       console.log('DEPOSITGETTRANSACTIONS_FAIL');
       return {
         ...state
@@ -178,11 +148,10 @@ export function sendTransaction(transaction) {
   };
 }
 
-export function getbalance() {
-  console.log('---redux getbalance');
+export function getBalance() {
   return {
     types: [DEPOSITGETBALANCE, DEPOSITGETBALANCE_SUCCESS, DEPOSITGETBALANCE_FAIL],
-    promise: (client) => client.post('/deposit/getbalance', {})
+    promise: (client) => client.get('/deposit/getBalance')
   };
 }
 
@@ -195,7 +164,7 @@ export function doDeposit(data) {
 
 export function getTransactions() {
   return {
-    types: [DEPOSITGETTRANSACTIONS, DEPOSITGETTRANSACTIONS_SUCCESS, DEPOSITGETTRANSACTIONS_FAIL],
-    promise: (client) => client.post('/deposit/getTransactions', {})
+    types: [DEPOSIT_GET_TRANSACTIONS, DEPOSIT_GET_TRANSACTIONS_SUCCESS, DEPOSIT_GET_TRANSACTIONS_FAIL],
+    promise: (client) => client.get('/deposit/getTransactions')
   };
 }

@@ -2,21 +2,20 @@
  * 
  npm install -g es6-shim ethereumjs-tx web3 request json-rpc2 
  */
-require('es6-shim');
 
-var fs = require('fs');
+// require('es6-shim');
+
+// var fs = require('fs');
+
+const Web3 = require('web3');
+const config = require('../cfg/config.service');
+const web3 = new Web3(new Web3.providers.HttpProvider(config.ethereum.url));
+
+
 var Tx = require('ethereumjs-tx');
 var rq = require('request');
-var url = require('url');
+const url = require('url');
 
-var cfgFile = __dirname + '/../cfg/config.service.js';
-if(fs.existsSync(cfgFile)){
-    require(cfgFile);
-}
-
-if('undefined' === typeof(chainyConfig)){
-    throw 'Configuration file not found';
-}
 
 String.prototype.padLeft = function(len, c){
     var s = this, c = c || '0';
@@ -29,8 +28,7 @@ String.prototype.crop0x = function(){
 }
 
 var rpc = require('json-rpc2');
-var Web3 = require('web3');
-web3 = new Web3(new Web3.providers.HttpProvider(chainyConfig.ethereum.url));
+
 var SolidityCoder = require("web3/lib/solidity/coder.js");
 var server = rpc.Server.$create({
 	'headers':{
@@ -42,41 +40,46 @@ server.on('error', function(err){
     console.log(err);
 });
 
+var contractFactory = web3.eth.contract()
+
 Chainy = {
     // Creates transaction (and sends it if specified address is system
     add: function(args, opt, callback){
-        var from = args[0], data = args[1];
-        console.log('Add: ' + from + ' ' + JSON.stringify(data));
+        var from = args[0]; 
+        var data = args[1];
+        var systemSender = from;
+        var servicePK = config.sender.pk;
 
-        var systemSender = chainyConfig.sender ? chainyConfig.sender.address.toLowerCase() : false;
-        var servicePK = chainyConfig.sender.pk;
-        var isSystem = (from === systemSender);
+        var isSystem = true;
         var result = {};
         try {
             var rawTx = {
                 from: from,
-                to: chainyConfig.contract,
+                to: config.contract,
                 nonce: Chainy._getNonce(from),
                 gasPrice: '0x' + web3.eth.gasPrice.toString(16),
-                gasLimit: chainyConfig.gasLimit,
+                gasLimit: config.gasLimit,
                 value: '0x1000000000000000',
-              //value: '0xde0b6b3a7640000'
-                data: chainyConfig.cmd + "20".padLeft(64) + data.length.toString(16).padLeft(64) + new Buffer(data).toString("hex")
+                data: config.cmd + "20".padLeft(64) + data.length.toString(16).padLeft(64) + new Buffer(data).toString("hex")
             };
             var eTx = new Tx(rawTx);
             result = eTx.serialize().toString('hex');
-        }catch(e){
+        } catch(e) {
+            
             callback('Create TX failed', null);
             return;
         }
+
         if(isSystem){
             // Sign
+            console.log('isSystem', isSystem);
             var privateKey = new Buffer(servicePK.crop0x(), 'hex');
             var eTx = new Tx(new Buffer(result.crop0x(), 'hex'));
             eTx.sign(privateKey);
             var result = eTx.serialize().toString('hex');
             // Send
             try{
+                console.log("sendTx");
                 web3.eth.sendRawTransaction('0x' + result.crop0x(), callback);
             }catch(e){
                 callback('Send failed', null);
@@ -87,13 +90,19 @@ Chainy = {
 
         callback(null, result);
     },
+
     // Returns chaint data by code
     get: function(args, opt, callback){
         var code = args[0];
-        console.log('Get: ' + code);
         var result = false;
         try {
-            var contract = web3.eth.contract(chainyConfig.ABI).at(chainyConfig.contract);
+            var contract = web3.eth.contract(config.ABI).at(config.contract);
+            var timestamp = contract.getChainyTimestamp(code).toString();
+            var data = contract.getChainyData(code);
+            var sender = contract.getChainySender(code);
+            console.log('\nTimeStamp: ', timestamp);
+            console.log('\nData: ', data);
+            console.log('\nSender: ', sender);
             result = {
                 timestamp:  contract.getChainyTimestamp(code),
                 data:       contract.getChainyData(code),
@@ -106,32 +115,36 @@ Chainy = {
     // Get shortlink by tx hash
     getLink: function(args, opt, callback){
         var txHash = args[0];
-        console.log('GetLink: ' + txHash);
-        console.log('chainyConfig: ' + JSON.stringify(chainyConfig));
         var result = {};
         try{
             return web3.eth.getTransactionReceipt('0x' + txHash.crop0x(), function(cb){
-                 console.log('0x' + txHash.crop0x());
                 return function(error, receipt){
                     var link = '';
+                    
+                    if (receipt) {
+                        if (receipt.logs.length) {
+                            // console.log('\nReceipt: ', receipt);
+                        }
+                    }
+
                     if(!error && receipt && receipt.blockNumber && receipt.logs && receipt.logs.length){
-                        console.log("receipt" + JSON.stringify(receipt));
                         for(var i=0; i<receipt.logs.length; i++){
                             var log = receipt.logs[i];
-                            if(chainyConfig.topic === log.topics[0]){
+                            if(config.topic === log.topics[0]){
                                 try {
-                                    //var data = log.data.slice(192).replace(/0+$/, '');
-                                    //link = new Buffer(data, 'hex').toString();
-                                    //console.log("link is " + link)
-                            var data = SolidityCoder.decodeParams(["uint256", "string"], log.data.replace("0x", ""));
-                            var timestamp = parseInt(data[0]);
-                            var splited = data[1].split('/');
-                            link = splited[splited.length - 1];
-
-                                }catch(e){}
+                                    var data = SolidityCoder.decodeParams(["uint256", "string"], log.data.replace("0x", ""));
+                                    console.log('\nData: ', data);
+                                    var timestamp = parseInt(data[0]);
+                                    console.log('\nTimestamp: ', timestamp);
+                                    var splited = data[1].split('/');
+                                    link = splited[splited.length - 1];
+                                    console.log('\nLink: ', link);
+                                } catch(e) {
+                                    console.log('\ERROR: ', e);
+                                }
                             }
                         }
-                    }else{
+                    } else {
                         console.log('Link for ' + txHash + ' is not ready yet');
                     }
                     cb(null, link);
@@ -140,6 +153,7 @@ Chainy = {
         }catch(e){}
         callback(null, result);
     },
+
     // Get tx hash by shortlink code
     getTx: function(args, opt, callback){
         console.log('callback: ' + JSON.stringify(callback));
@@ -149,7 +163,7 @@ Chainy = {
             callback('Invalid code format', null);
             return;
         }
-        var block = Chainy.base58int(code.slice(0, -2)) + chainyConfig.blockOffset;
+        var block = Chainy.base58int(code.slice(0, -2)) + config.blockOffset;
         console.log("chainy in block:" + block);
         try {
             var oBlock = web3.eth.getBlock(block, true);
@@ -171,10 +185,6 @@ Chainy = {
                             for(var j=0; j<receipt.logs.length; j++){
                                 var log = receipt.logs[j];
                                 if(chainyConfig.topic === log.topics[0]){                                    
-                                    //var data = log.data.slice(192).replace(/0+$/, '');
-                                    //var link = new Buffer(data, 'hex').toString();
-                                    //console.log(link+data);
-
                             var data = SolidityCoder.decodeParams(["uint256", "string"], log.data.replace("0x", ""));
                         console.log("data:" + JSON.stringify(data));
                             var timestamp = parseInt(data[0]);
@@ -198,15 +208,20 @@ Chainy = {
         }
         callback('Transaction not found', null);
     },
+
     // Get current nonce for address
+
     _getNonce: function(address){
         var nonce = 0;
+        var coinbase = web3.eth.coinbase;
+        console.log(coinbase.substr(2) == address.substr(2));
         try {
-            nonce = parseInt(web3.eth.getTransactionCount('0x' + address.crop0x()));
+            nonce = parseInt(web3.eth.getTransactionCount(coinbase));
         }catch(e){}
-        console.log("nonce" + nonce);
+        console.log("nonce",  nonce);
         return nonce;
     },
+
     base58int: function(value){
         var alphabet = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ',
             base = alphabet.length;
@@ -226,4 +241,5 @@ server.expose('add', Chainy.add);
 server.expose('get', Chainy.get);
 server.expose('getTx', Chainy.getTx);
 server.expose('getLink', Chainy.getLink);
-var httpServer = server.listen(chainyConfig.server.port, chainyConfig.server.address);
+
+var httpServer = server.listen(config.server.port, config.server.address);

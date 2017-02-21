@@ -15,7 +15,10 @@ export default function clientMiddleware(client) {
 
       const actionPromise = promise(client);
       actionPromise.then(
-        (result) => next({...rest, result, type: SUCCESS}),
+        (result) => {
+          console.log(REQUEST + 'AJAX RESPONSE: ', result);
+          return next({...rest, result, type: SUCCESS});
+        },
         (error) => next({...rest, error, type: FAILURE})
       ).catch((error)=> {
         console.error('MIDDLEWARE ERROR:', error);

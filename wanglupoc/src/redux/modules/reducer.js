@@ -11,7 +11,8 @@ import info from './info';
 import widgets from './widgets';
 import assets from './assets';
 import deposit from './deposit';
-import textInfo from './textInfo';
+import poe from './poe';
+import poeLocal from './poeLocal';
 
 // import assetsManager from './AssetsManagerRedux';
 
@@ -30,5 +31,6 @@ export default combineReducers({
   assets,
   deposit,
   widgets,
-  textInfo
+  poe,
+  poeLocal
 });
