@@ -157,9 +157,10 @@ export default class App extends Component {
           <div className="container">
             <div className="row">
               <img className={styles.logo} src={logopng}/>
+              {this.props.user && <span className={styles.topText}>地址：{this.props.user.ethAddress}</span> }
               <ul className="nav nav-pills navbar-right">
-                {this.props.user && <li><div className={styles.topText}>欢迎：{this.props.user.name}</div></li> }
-                {this.props.user && <li><div className={styles.topText}>地址：{this.props.user.ethAddress}</div></li> }
+                 {this.props.user && <li><div className={styles.topText}>欢迎：{this.props.user.name}</div></li> }
+                {/* {this.props.user && <li><div className={styles.topText}>地址：{this.props.user.ethAddress}</div></li> }*/}
                 <li><button onClick={this.onLogin} type="button" className={styles.topbutton}>登陆</button></li>
                 <li><button onClick={this.onSignup} type="button" className={styles.topbutton}>注册</button></li>
                 <li><button type="button" className={styles.topbutton}><img className={styles.aboutpng} src={aboutpng}/>&nbsp;关于</button></li>
