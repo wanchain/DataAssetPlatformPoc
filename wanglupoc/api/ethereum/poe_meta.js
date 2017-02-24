@@ -8,6 +8,8 @@ const defaultAccount = '0x9da26fc2e1d6ad9fdd46138906b0104ae68a65d8';
 
 const topic = "0xdad5c3eecfdb62dd69e6e72053b88029e1d6277d4bc773c00fef243982adcb7d";
 
+const blockOffset = 666;
+
 const abi = [
     {
         "constant": true,
@@ -230,5 +232,6 @@ module.exports = {
 	address: contractAddress,
     privateKey: privateKey,
     defaultAccount: defaultAccount,
-    topic: topic
+    topic: topic,
+    blockOffset: blockOffset
 }

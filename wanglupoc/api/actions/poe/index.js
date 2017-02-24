@@ -1,1 +1,1 @@
-export { add, getShortLink, verify } from './poe';
+export { add, getShortLink, getTxHash, verify } from './poe';

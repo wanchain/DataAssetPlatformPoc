@@ -1,84 +1,22 @@
-import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import {createStandardReqParams, fileHash, unicode2String} from '../utils/utils';
-import sendHttpRequest from '../http/httpAjax';
-import {PROOF, LAYOUT_PROOF} from '../constants';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { fileHash } from '../utils/utils';
+import { LAYOUT_PROOF } from '../constants';
 import {browserHistory} from 'react-router';
-import AlertDialog from '../dialog/alert';
+import { getFileInfo, verify } from '../../../redux/modules/proof';
 
-const senderAddr = '0xbd2d69e3e68e1ab3944a865b3e566ca5c48740da';
-const browserPrfix = 'localhost:8000/#/';
-
-let shortCode = '';
-let alert = false;
 const styles = require('./proof.scss');
 class Proof extends Component {
   static propTypes = {
-    params: React.PropTypes.object
+    senderAddress: PropTypes.string.isRequired,
+    txHash: PropTypes.string.isRequired,
+    timeStamp: PropTypes.string.isRequired,
+    fileInfo: PropTypes.object.isRequired,
+    verify: PropTypes.func.isRequired,
+    getFileInfo: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props);
-    console.log('proof_page=' + this.props.params.proof_page);
-    // shortCode = this.props.params.proof_page;
-    this.toggleSearch = this.toggleSearch.bind(this);
-    this.inputSubmit = this.inputSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      alertContent: '',
-      timestamp: '',
-      sender: '',
-      txHash: '',
-      data: {
-        filename: '',
-        filetype: '',
-        msgHash: '',
-        filesize: '',
-        ipfsid: '',
-        description: ''
-      }
-    };
-  }
-
-  componentWillMount() {
-  }
-
-  componentDidMount() {
-    // const ele = ReactDOM.findDOMNode(this.refs.display_text_td);
-    // console.log('ele=' + ele);
-    this.search();
-  }
-
-  componentWillUpdate() {
-    // if(__DEVELOPMENT__)console.log('proof-componentWillUpdate');
-    // shortCode = '';
-    // this.search();
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-    if (alert) {
-      alert = false;
-      $('#myModal').modal('toggle');
-    }
-  }
-
-  search() {
-    if (this.props.params.proof_page !== PROOF) {
-      if (this.props.params.proof_page !== shortCode) {
-        shortCode = this.props.params.proof_page;
-        this.toggleSearch(shortCode);
-      }
-    }
-  }
-
   handleChange(event) {
-    // if(__DEVELOPMENT__)console.log('handleChange');
-    // const node = ReactDOM.findDOMNode(this.refs.toggle_mode);
-    // $(node).bootstrapToggle('on');
-    // $('#myModal').modal('show');
-    alert = true;
-
     const file = event.target.files[0];
     const msgHash = this.state.data.msgHash;
     const self = this;
@@ -95,230 +33,108 @@ class Proof extends Component {
     });
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    const { code } = this.refs;
+    this.props.verify(code.value.trim());
+  }
+
   inputSubmit() {
-    const shortCodeTmp = ReactDOM.findDOMNode(this.refs.input_short_code).value.trim();
+    const shortCodeTmp = this.refs.input_short_code.value.trim();
     const link = LAYOUT_PROOF + '/' + shortCodeTmp;
     browserHistory.push(link);
     this.toggleSearch(shortCodeTmp);
   }
 
-  toggleSearch(shortCodeTmp) {
-    if (__DEVELOPMENT__) console.log('proof:toggleSearch');
-    // ReactDOM.findDOMNode(this.refs.input_short_code).value.trim();
-    const inputShortCode = shortCodeTmp;
-    if (typeof inputShortCode !== 'undefined' && inputShortCode !== '') {
-      const createMethod = {
-        'name': 'get',
-      };
-      const self = this;
-      const params = createStandardReqParams(inputShortCode, senderAddr, createMethod);
-      sendHttpRequest(params, 2, function NoName1(result) {
-        console.log('result:' + result);
-        const jsonObjGet = result.result;
-        let time = '';
-        if (jsonObjGet.timestamp !== '') {
-          time = new Date(parseInt(jsonObjGet.timestamp, 10) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
-          if (__DEVELOPMENT__) console.log('time=' + time);
-        }
-
-        const createGetTxMethod = {
-          'name': 'getTx',
-        };
-        const paramsTx = createStandardReqParams(inputShortCode, senderAddr, createGetTxMethod);
-        sendHttpRequest(paramsTx, 2, (resultGetTx)=>{
-          console.log('result:' + resultGetTx);
-          const jsonObjGetTx = resultGetTx.result;
-          let desc = JSON.parse(jsonObjGet.data).description;
-          if (desc.indexOf('\\u') >= 0) {
-            desc = unicode2String(desc);
-          }
-
-          let fName = JSON.parse(jsonObjGet.data).filename;
-          if (fName === undefined || fName === '') {
-            fName = '';
-          } else if (fName.indexOf('\\u') >= 0) {
-            fName = unicode2String(fName);
-          }
-
-          self.setState({
-            timestamp: time,
-            sender: jsonObjGet.sender,
-            txHash: jsonObjGetTx.hash,
-            data: {
-              filename: fName,
-              msgHash: JSON.parse(jsonObjGet.data).hash,
-              filetype: JSON.parse(jsonObjGet.data).filetype,
-              filesize: JSON.parse(jsonObjGet.data).filesize,
-              ipfsid: JSON.parse(jsonObjGet.data).ipfsid,
-              description: desc
-            }
-          });
-        }, (errorGetTx)=>{
-          console.log('error:' + errorGetTx);
-        }, 0);
-      }, (error)=>{
-        console.log('error:' + error);
-      }, 0);
-    }
+  formatTime(timeStr) {
+    return new Date(parseInt(timeStr, 10) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
   }
 
   render() {
     const upload = require('../../img/ic_upload.png');
+    const { fileInfo, senderAddress } = this.props;
+    const { hash, filetype } = fileInfo;
+    const { filename, description } = fileInfo;
+    console.log(filename);
+    let { timeStamp } = this.props;
+    if (timeStamp) timeStamp = this.formatTime(timeStamp);
+    // description = unicode2String(description);
+    // filename = unicode2String(filename);
     return (
-      <div className="">
-        <div className={styles['ele-layout']}>
-          <label className={styles['proof-title']} >搜索存证</label>
-          <div className={styles['short-code-input-group']}>
-            <table>
-              <tbody>
-              <tr>
-                <td>
-                  <input type="text" ref="input_short_code" className={styles['short-code-input']} placeholder="请输入短码"/>
-                </td>
-                <td className="">
-                  <button className={styles['proof-btn']} type="button" onClick={this.inputSubmit}>&nbsp;</button>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <table className={styles['proof-content-table']}>
-            <tbody>
-            <tr>
-              <td className={styles['text-td']} ref="display_text_td">
-                <table>
-                <tbody>
-                <tr>
-                  <td>
-                    <div className="">
-                      <span className={styles['proof-text-title']}>对应的区块链数据：</span>
-                      <br/>
-                      <div className={styles['proof-text-content']}>
-                        <span>交易时间：</span><span id="trasaction-time">{this.state.timestamp}</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="">
-                      <span className={styles['proof-text-title']}>提示：</span>
-                      <br/>
-                      <div className={styles['proof-text-content']}>
-                        <span >
-                            当前页面包含嵌入到网录区块链的数字签名文件的信息，因为交易已经被确认，所以是被永远存证的。
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="">
-                      <span className={styles['proof-text-title']}>SHA256哈希值：</span>
-                      <br/>
-                      <div className={styles['proof-text-content']}>
-                        <span id="sha256hash">
-                            {this.state.data.msgHash}
-                        </span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="">
-                      <span className={styles['proof-text-title']}>交易ID：</span>
-                      <br/>
-                      <div className={styles['proof-text-content']}>
-                         <a href={browserPrfix + 'transaction/' + this.state.txHash} id="transaction-id">
-                          {this.state.txHash}
-                        </a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div className="">
-                      <span className={styles['proof-text-title']}>发送方：</span>
-                      <br/>
-                      <div className={styles['proof-text-content']}>
-                        <a href={browserPrfix + 'address/' + this.state.sender} id="send-address">
-                          {this.state.sender}
-                        </a>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                {
-
-                  (()=>{
-                    if (__DEVELOPMENT__) console.log('state.data.ipfsid=' + this.state.data.ipfsid);
-                    if (typeof (this.state.data.ipfsid) === 'undefined' || this.state.data.ipfsid === '') {
-                      return <tr/>;
-                    }
-                    return (
-                      <tr>
-                        <td>
-                          <div className="">
-                            <span className={styles['proof-text-title']}>无中心分布式存储链接：</span>
-                            <br/>
-                            <div className={styles['proof-text-content']}>
-                              <a href={'https://ipfs.io/ipfs/' + this.state.data.ipfsid} id="storage-code">
-                                {this.state.data.ipfsid}
-                              </a>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })()
-                }
-                <tr>
-                  <td>
-                    <div className="">
-                      <span className={styles['proof-text-title']}>描述信息：</span>
-                      <br/>
-                      <div className={styles['proof-text-content']}>
-                        <p href="#" id="description">
-                          {this.state.data.description}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                </tbody>
-                </table>
-              </td>
-              <td className={styles['file-area-td']}>
-                <div className={styles['proof-file-area']}>
-                  <div className={'upload-bg ' + styles['proof-upload-bg'] }>
-                    <a className={'btn ' + styles.file + ' ' + styles['upload-a']}>
-                      <input type="file" name="" id="" onDrop={this.handleDrop} onChange={this.handleChange}/>
-                      <img src={upload} />
-                      <p>
-                        请将需要存证的<br/>文件拖放于框内<br/>（小于5MB，格式不限）
-                      </p>
-                    </a>
-                  </div>
-                </div>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div id="myModal" className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-          <div className="modal-dialog modal-lg">
-            <AlertDialog content={this.state.alertContent}/>
+      <div>
+        <div className="col-lg-12">
+          <div className="input-group">
+            <input type="text" className="form-control" ref="code" placeholder="请输入存证交易短码" />
+            <span className="input-group-btn">
+              <button className="btn btn-success" type="button" onClick={(event) => this.handleSubmit(event)}>验证</button>
+            </span>
           </div>
         </div>
-
+        {hash &&
+            <div className="text-left">
+              File MD: {'  '}<span>{hash}</span>
+            </div>
+        }
+        {filename &&
+            <div className="text-left">
+              Filename: {'  '}<span>{filename}</span>
+            </div>
+        }
+        {description &&
+            <div className="text-left">
+              File description: {'  '}<span>{description}</span>
+            </div>
+        }
+        {filetype &&
+            <div className="text-left">
+              File type: {'  '}<span>{filetype}</span>
+            </div>
+        }
+        {timeStamp &&
+            <div className="text-left">
+              Transaction timestamp: {'  '}<span>{timeStamp}</span>
+            </div>
+        }
+        {senderAddress &&
+            <div className="text-left">
+              Sender Address: {'  '}<span>{senderAddress}</span>
+            </div>
+        }
+        <div className={styles['proof-file-area']}>
+          <div className={'upload-bg ' + styles['proof-upload-bg'] }>
+            <a className={'btn ' + styles.file + ' ' + styles['upload-a']}>
+              <input type="file" name="" id="" onDrop={(event) => this.handleDrop(event)} onChange={(event) => this.handleChange(event)}/>
+              <img src={upload} />
+              <p>
+                请将需要存证的<br/>文件拖放于框内<br/>（小于5MB，格式不限）
+              </p>
+            </a>
+          </div>
+        </div>
       </div>
     );
   }
 
 }
 
-export default Proof;
+const mapStateToProps = (state) => {
+  return {
+    senderAddress: state.proof.senderAddress,
+    txHash: state.proof.txHash,
+    fileInfo: state.proof.fileInfo,
+    timeStamp: state.proof.timeStamp
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    verify: (code) => {
+      dispatch(verify(code));
+    },
+    getFileInfo: (code) => {
+      dispatch(getFileInfo(code));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Proof);

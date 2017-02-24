@@ -2,9 +2,9 @@ const SET_FILE_INFO = 'wanglupoc/poeLocal/SET_FILE_INFO';
 const ADD = 'wanglupoc/poeLocal/ADD';
 const ADD_SUCCESS = 'wanglupoc/poeLocal/ADD_SUCCESS';
 const ADD_FAIL = 'wanglupoc/poeLocal/ADD_FAIL';
-const GET_SHORT_LINK = 'wanglupoc/poe/GET_SHORT_LINK';
-const GET_SHORT_LINK_SUCCESS = 'wanglupoc/poe/GET_SHORT_LINK_SUCCESS';
-const GET_SHORT_LINK_FAIL = 'wanglupoc/poe/GET_SHORT_LINK_FAIL';
+const GET_SHORT_LINK = 'wanglupoc/poeLocal/GET_SHORT_LINK';
+const GET_SHORT_LINK_SUCCESS = 'wanglupoc/poeLocal/GET_SHORT_LINK_SUCCESS';
+const GET_SHORT_LINK_FAIL = 'wanglupoc/poeLocal/GET_SHORT_LINK_FAIL';
 
 const initialState = {
   fileInfo: {},

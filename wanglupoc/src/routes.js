@@ -13,14 +13,14 @@ import {
     // AssetsCreate2,
     // AssetsCreate3,
     MainPage,
-    OAssets,
+    // OAssets,
     // Deposit,
     // Withdraw,
     // TRecords,
     // TMarket,
     ExistEvidents,
     Signup,
-    OAssetTransfer,
+    // OAssetTransfer,
   LocalFile,
   RemoteFile,
   UploadFile,
@@ -75,7 +75,7 @@ export default (store) => {
       </Route> */}
 
       <Route path="main" component={MainPage} >
-        <IndexRoute component={OAssets}/>
+        {/* <IndexRoute component={OAssets}/> */}
         {/* <Route path="/deposit" component={Deposit}/>
         <Route path="/withdraw" component={Withdraw}/>
         <Route path="/trecords" component={TRecords}/>
@@ -87,7 +87,7 @@ export default (store) => {
           <Route path="/main/LFH/TU" component={TextInfo}/>
           <Route path={'/pf' + '/:proof_page'} component={Proof}/>
         </Route>
-        <Route path="/OAtransfer" component={OAssetTransfer}/>
+        {/* <Route path="/OAtransfer" component={OAssetTransfer}/> */}
       </Route>
 
       { /* Catch all route */ }

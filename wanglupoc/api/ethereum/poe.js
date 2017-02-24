@@ -28,7 +28,6 @@ function _pushWork(payload, cb) {
   const work = {
     txHash: payload
   }
-
   _queue.push(work, cb);
 }
 
@@ -45,20 +44,56 @@ function _processTransactionReceipt(receipt, callback) {
   }
 }
 
-function _retrieve( shortLink, cb) {
+function _retrieve( shortLink, cb ) {
   const timestamp = contractInstance.getChainyTimestamp(shortLink).toString();
-  const data = JSON.parse(contractInstance.getChainyData(shortLink));
-  const uText = data.description;
-  const text = _unicode2String(data.description);
+  const fileInfo = JSON.parse(contractInstance.getChainyData(shortLink));
   const sender = contractInstance.getChainySender(shortLink);
   cb(null, {
     timestamp,
-    uText,
-    text,
-    sender
-  })
+    sender,
+    fileInfo
+  });
 }
 
+function _getTxHash( shortLink, cb ) {
+  // console.log('poe shotLink: ', shortLink);
+  const result = {};
+  if (!shortLink || shortLink.length <= 2) {
+    const err = "Invalid code format";
+    cb(err, null);
+    return;
+  }
+  const block = _base58int(shortLink.slice(0, -2)) + meta.blockOffset;
+  // console.log('block-----', block);
+  const oBlock = web3.eth.getBlock(block, true);
+  // console.log('oBlock-------', oBlock);
+  const tag = 0;
+  if (oBlock && oBlock.transactions.length) {
+    for ( let i = 0; i<oBlock.transactions.length; i++ ) {
+      const tx = oBlock.transactions[i];
+      // console.log('tx--------', tx);
+      const receipt = web3.eth.getTransactionReceipt(tx.hash);
+      // console.log('receipt---------', receipt);
+      if ( receipt && receipt.logs && receipt.logs.length ) {
+        for ( let j = 0; j < receipt.logs.length; j++) {
+          const log = receipt.logs[i];
+          // console.log('log-----------', log);
+          if ( meta.topic === log.topics[0] ) {
+            const data = SolidityCoder.decodeParams(["uint256", "string"], log.data.replace("0x", ""));
+            const timestamp = parseInt(data[0]);
+            const splited = data[1].split('/');
+            // console.log({ hash: tx.hash, sender: tx.from});
+            cb(null, { hash: tx.hash, sender: tx.from});
+            return;
+          } else {
+            cb("no transactions", null);
+          }
+        }
+      }
+    } 
+  }
+}
+ 
 function _string2Unicode(str) {
   let result = '';
   for (let index = 0; index < str.length; index++) {
@@ -67,7 +102,7 @@ function _string2Unicode(str) {
   return result;
 }
 
-function _unicode2String(unicode) {
+function _unicode2String( unicode ) {
   const data = unicode.split('\\u');
   console.log(data);
   let str = '';
@@ -79,12 +114,26 @@ function _unicode2String(unicode) {
   return str;
 }
 
+function _base58int(value){
+  const alphabet = '123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
+  const base = alphabet.length;
+  let decoded = 0;
+  while (value) {
+    let alphabetPosition = alphabet.indexOf(value[0]);
+    if (alphabetPosition < 0) return false;
+    const powerOf = value.length - 1;
+    decoded += alphabetPosition * (Math.pow(base, powerOf));
+    value = value.substring(1);
+  }
+  return decoded;    
+}
+
 // APIs
 
 function addData( ownerAddress, ownerPrivate, inputJSONStr, callback ) {
   var privateKey = new Buffer(meta.privateKey, 'hex');
   var serial = '0x' + web3.eth.getTransactionCount(ownerAddress).toString(16);
-
+  console.log('input json string', inputJSONStr);
   var rawTx = {
     nonce: serial,
     gasPrice: '0x43bb88745',
@@ -112,8 +161,13 @@ function verify( shortLinkCode, callback ) {
   _retrieve( shortLinkCode, callback);
 }
 
+function getTxHash( shortLink, callback ) {
+  _getTxHash( shortLink, callback );
+}
+
 module.exports = {
   addData: addData,
+  getTxHash: getTxHash,
   getShortLink: getShortLink,
   verify: verify
 }

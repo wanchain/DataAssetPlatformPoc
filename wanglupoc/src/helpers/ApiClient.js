@@ -10,6 +10,7 @@ function formatUrl(path) {
     return 'http://' + config.apiHost + ':' + config.apiPort + adjustedPath;
   }
   // Prepend `/api` to relative URL, to proxy to API server.
+  if (path[0] === 'h') return path;
   return '/api' + adjustedPath;
 }
 
@@ -32,7 +33,8 @@ export default class ApiClient {
           request.send(data);
         }
 
-        request.end((err, { body } = {}) => err ? reject(body || err) : resolve(body));
+        // request.end((err, { body } = {}) => err ? reject(body || err) : resolve(body));
+        request.end((err, { body, text } = {}) => err ? reject(body || err) : resolve({ body, text}));
       }));
   }
   /*

@@ -49,15 +49,6 @@ class TextInfo extends Component {
     const styles = require('../localfile/localfile.scss');
     const alert = require('../../img/ic_alert.png');
     const { txHash, shortLink } = this.props;
-    // let modalDalog;
-    // if (dec !== 'undefined' && dec !== '') {
-    //   modalDalog = (
-    //     <ActvionModal toggleType="action" shortCodeValue={short_code_link}
-    //                   txhash={txhash} />);
-    // } else {
-    //   modalDalog = <ActvionModal toggleType="alert" content="请输入文本后再提交"/>;
-    // }
-
     return (
       <div>
         <div className={styles['alert-content']} >
@@ -65,17 +56,22 @@ class TextInfo extends Component {
             <img src={alert} className={styles.nomargin}/>&nbsp;&nbsp;
             提示：请输入您要存储的文本，文本内容和文本的哈希值都将被记录与区块链中
           </p>
-          <div>
-            <p className="text-danger">txHash: {txHash}</p>
-            <p className="text-danger">Short Link: {shortLink}</p>
-          </div>
         </div>
         <form name="textinfo_form" className="" action="" method="post" role="form">
           <div className={styles['ele-layout'] + ' form-group'}>
             <label className={styles['text-title']} >文本：</label>
             <textarea id="text-info-description" className="form-control" ref="text_area" name="text-info-description" rows="5" placeholder="请输入文本数据"></textarea>
           </div>
-          {/* <div className={styles['submit-area']}> */}
+          {txHash &&
+            <div className="text-left">
+              Transaction Hash: {'  '}<span>{txHash}</span>
+            </div>
+          }
+          {shortLink &&
+            <div className="text-left">
+              Resource Shortlink: {'  '}<span>{shortLink}</span>
+            </div>
+          }
           <div className="text-center">
             <a className="btn btn-lg btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"
                 onClick={(event) => this.handleSubmit(event)}>
@@ -83,11 +79,6 @@ class TextInfo extends Component {
             </a>
           </div>
         </form>
-        { /* <div className="modal fade bs-example-modal-lg" tabIndex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-          <div className="modal-dialog modal-lg">
-            {modalDalog}
-          </div>
-        </div> */ }
       </div>
     );
   }

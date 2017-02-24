@@ -20,6 +20,3 @@ export default function getFileObject(filePathOrUrl, cb) {
   });
 }
 
-// getFileObject('img/test.jpg', function (fileObject) {
-//     console.log(fileObject);
-// });

@@ -1,1 +1,0 @@
-{"err":null,"data":{"statusCode":200,"headers":{"content-type":"application/json","vary":"Origin","date":"Wed, 15 Feb 2017 09:20:04 GMT","content-length":"117","connection":"close"},"text":"{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{\"code\":-32601,\"message\":\"The method eth_coinbase does not exist/is not available\"}}\n"}}

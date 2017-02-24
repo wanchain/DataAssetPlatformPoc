@@ -110,7 +110,7 @@ export function getCustomTokenBalance(contractAddress, userAddress) {
 
 export function monitorIssueAssets() {
 	web3.eth.filter('latest').watch(function (err, blockHash) {
-		console.log('monitoring new block---------');
+		// console.log('monitoring new block---------');
 		if (err) {
 			console.log('new asset issuing transaction failed');
 		} else {
@@ -137,7 +137,7 @@ export function monitorIssueAssets() {
 			}
 		}
 		if (newBlockCB) newBlockCB();
-		else console.log('monitor new block failed');
+		// else console.log('monitor new block failed');
 	});
 }
 

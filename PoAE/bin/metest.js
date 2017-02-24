@@ -156,46 +156,30 @@ Chainy = {
 
     // Get tx hash by shortlink code
     getTx: function(args, opt, callback){
-        console.log('callback: ' + JSON.stringify(callback));
         var code = args[0];
-        console.log('GetTx: ' + code);
         if(!code || code.length <= 2){
             callback('Invalid code format', null);
             return;
         }
         var block = Chainy.base58int(code.slice(0, -2)) + config.blockOffset;
-        console.log("chainy in block:" + block);
         try {
             var oBlock = web3.eth.getBlock(block, true);
-            var tag = 0; console.log("tag:" + tag++);
+            var tag = 0; 
             if(oBlock && oBlock.transactions.length){
-                console.log("tag:" + tag++);
                 for(var i = 0; i<oBlock.transactions.length; i++){
-                    console.log("tag:" + tag++);
                     var tx = oBlock.transactions[i];
-                    console.log("chainyConfig.contract" + chainyConfig.contract);
-                    console.log("tx.to" + tx.to);
-                    if(chainyConfig.contract.toLowerCase() === tx.to.toLowerCase()){
-                        console.log("tag:" + tag++);
-                        console.log('0x' + tx.hash.crop0x());
-                        console.log('chainyConfig: ' + JSON.stringify(chainyConfig));
+                    if(config.contract.toLowerCase() === tx.to.toLowerCase()){
                         var receipt = web3.eth.getTransactionReceipt('0x' + tx.hash.crop0x());
-                        console.log("receipt" + JSON.stringify(receipt));
                         if(receipt && receipt.logs && receipt.logs.length){
                             for(var j=0; j<receipt.logs.length; j++){
                                 var log = receipt.logs[j];
-                                if(chainyConfig.topic === log.topics[0]){                                    
-                            var data = SolidityCoder.decodeParams(["uint256", "string"], log.data.replace("0x", ""));
-                        console.log("data:" + JSON.stringify(data));
-                            var timestamp = parseInt(data[0]);
-                            var splited = data[1].split('/');
-                            link = splited[splited.length - 1];
-                        console.log("link:" + link);
-                                    // if(link && link.length && (link.length > code.length) && (code === link.slice(-code.length))){
-                        console.log("begin callback:" + JSON.stringify(callback));
-                                        callback(null, {hash: tx.hash, sender: tx.from});
-                                        return;
-                                    // }
+                                if(config.topic === log.topics[0]){                                    
+                                var data = SolidityCoder.decodeParams(["uint256", "string"], log.data.replace("0x", ""));
+                                var timestamp = parseInt(data[0]);
+                                var splited = data[1].split('/');
+                                link = splited[splited.length - 1];
+                                callback(null, {hash: tx.hash, sender: tx.from});
+                                return;
                                 }
                             }
                         }

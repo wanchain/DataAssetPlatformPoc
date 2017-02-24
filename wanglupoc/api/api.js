@@ -49,7 +49,7 @@ app.use((req, res) => {
         if (reason && reason.redirect) {
           res.redirect(reason.redirect);
         } else {
-          console.error('API ERROR:', pretty.render(reason));
+          // console.error('API ERROR:', pretty.render(reason));
           res.status(reason.status || 500).json(reason);
         }
       });
@@ -73,31 +73,31 @@ if (config.apiPort) {
     console.info('==> 💻  Send requests to http://%s:%s', config.apiHost, config.apiPort);
   });
 
-  setNewBlockGenCB(function () {
-    io.emit('newBlockGen');
-  });
+  // setNewBlockGenCB(function () {
+  //   io.emit('newBlockGen');
+  // });
 
-  io.on('connection', (socket) => {
-    socket.emit('news', {msg: `'Hello World!' from server`});
+  // io.on('connection', (socket) => {
+  //   socket.emit('news', {msg: `'Hello World!' from server`});
 
-    socket.on('history', () => {
-      for (let index = 0; index < bufferSize; index++) {
-        const msgNo = (messageIndex + index) % bufferSize;
-        const msg = messageBuffer[msgNo];
-        if (msg) {
-          socket.emit('msg', msg);
-        }
-      }
-    });
+  //   socket.on('history', () => {
+  //     for (let index = 0; index < bufferSize; index++) {
+  //       const msgNo = (messageIndex + index) % bufferSize;
+  //       const msg = messageBuffer[msgNo];
+  //       if (msg) {
+  //         socket.emit('msg', msg);
+  //       }
+  //     }
+  //   });
 
-    socket.on('msg', (data) => {
-      data.id = messageIndex;
-      messageBuffer[messageIndex % bufferSize] = data;
-      messageIndex++;
-      io.emit('msg', data);
-    });
+  //   socket.on('msg', (data) => {
+  //     data.id = messageIndex;
+  //     messageBuffer[messageIndex % bufferSize] = data;
+  //     messageIndex++;
+  //     io.emit('msg', data);
+  //   });
     
-  });
+  // });
   io.listen(runnable);
 } else {
   console.error('==>     ERROR: No PORT environment variable has been specified');

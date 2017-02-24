@@ -137,9 +137,9 @@ function retrieve1CahchedTx(){
 dispatcher.on('fetch1CachedTx', retrieve1CahchedTx);
 
 
-setInterval(function () {
-  retrieve1CahchedTx()
-}, 100);
+// setInterval(function () {
+//   retrieve1CahchedTx()
+// }, 100);
 
 web3.eth.filter('latest').watch(function (err, blockHash) {
   if(!err) {

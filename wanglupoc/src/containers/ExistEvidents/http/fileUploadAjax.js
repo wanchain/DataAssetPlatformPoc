@@ -1,4 +1,5 @@
 const uploadUrl = 'http://localhost:8090/RemoteFileHashRelay/ipfs';
+// const ipfsUrl = 'http://127.0.0.1:5001/api/v0/add?p';
 
 export default function uploadFile(formData, result, errorResult, delay) {
   const method = 'POST';
@@ -6,21 +7,21 @@ export default function uploadFile(formData, result, errorResult, delay) {
     setTimeout(()=> {
       const XHR = new XMLHttpRequest();
       XHR.open(method, uploadUrl, true);
-      XHR.addEventListener('readystatechange', () => {
+      XHR.addEventListener('readystatechange', function NoName2() {
         switch (XHR.readyState) {
-          // console.log('请求未初始化');
+          // alert('请求未初始化');
           case 0:
             break;
-          // console.log('请求启动，尚未发送');
+          // alert('请求启动，尚未发送');
           case 1:
             break;
-          // console.log('请求发送，尚未得到响应');
+          // alert('请求发送，尚未得到响应');
           case 2:
             break;
-          // console.log('请求开始响应，收到部分数据');
+          // alert('请求开始响应，收到部分数据');
           case 3:
             break;
-          // console.log('请求响应完成得到全部数据');
+          // alert('请求响应完成得到全部数据');
           case 4:
             if (XHR.status === 200) {
               try {
@@ -36,7 +37,7 @@ export default function uploadFile(formData, result, errorResult, delay) {
             break;
         }
       });
-      XHR.addEventListener('error', (error) => {
+      XHR.addEventListener('error', function NoName3(error) {
         reject(error);
       });
       XHR.send(formData);

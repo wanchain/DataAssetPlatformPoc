@@ -13,8 +13,9 @@ import assets from './assets';
 import deposit from './deposit';
 import poe from './poe';
 import poeLocal from './poeLocal';
-
-// import assetsManager from './AssetsManagerRedux';
+import poeUpload from './poeUpload';
+import poeRemote from './poeRemote';
+import proof from './proof';
 
 export default combineReducers({
   routing: routerReducer,
@@ -32,5 +33,8 @@ export default combineReducers({
   deposit,
   widgets,
   poe,
-  poeLocal
+  poeLocal,
+  poeUpload,
+  poeRemote,
+  proof
 });

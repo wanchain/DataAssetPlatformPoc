@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {fileHash, getFileType, string2Unicode } from '../utils/utils';
-// import sendHttpRequest from '../http/httpAjax';
 import { setFileInfo, add, getShortLink } from '../../../redux/modules/poeLocal';
-// import ActvionModal from '../dialog/actionModal';
 
 const TX_TYPE_HASHLINK = 'L';
 
@@ -19,7 +17,7 @@ class LocalFile extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { txHash } = nextProps;
-    console.log(txHash);
+    // console.log(txHash);
     if (txHash.length === 66) {
       this.props.getShortLink({txHash});
     }
