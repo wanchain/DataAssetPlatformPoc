@@ -1,17 +1,13 @@
-# 网录科技POC项目
 
-
----
-
-## 安装说明
+## Installation
 
 ```bash
 npm install
 ```
 
-安装mongodb [https://docs.mongodb.com/v3.0/tutorial/install-mongodb-on-ubuntu/](https://docs.mongodb.com/v3.0/tutorial/install-mongodb-on-ubuntu/)
+Install mongodb [https://docs.mongodb.com/v3.0/tutorial/install-mongodb-on-ubuntu/](https://docs.mongodb.com/v3.0/tutorial/install-mongodb-on-ubuntu/)
 
-可以修改api/models/createuser.js里的用户名，密码，创建你需要的用户
+Modify the user name and password to create your own account in api/models/createuser.js
 运行npm run createuser
 
 ## Running Dev Server
@@ -21,11 +17,11 @@ npm run dev
 ```
 
 
-## 关于工程用到的前端技术
+## Technologies
 
 
-工程主要是借鉴[react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example)
-涉及到的前端技术有
+Please refer to [react-redux-universal-hot-example](https://github.com/erikras/react-redux-universal-hot-example).
+Related technologies include:
 
 * ~~Isomorphic~~ [Universal](https://medium.com/@mjackson/universal-javascript-4761051b7ae9) rendering
 * Both client and server make calls to load data from separate API server
@@ -49,6 +45,6 @@ npm run dev
 * [webpack-isomorphic-tools](https://github.com/halt-hammerzeit/webpack-isomorphic-tools) to allow require() work for statics both on client and server
 * [mocha](https://mochajs.org/) to allow writing unit tests for the project.
 
-数据库我们用mongodb,
+We use mongodb for our database.
 
 
